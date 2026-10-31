@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0b12">
+  <meta name="description" content="Private Rate Lab — a privacy-first interactive feedback and consent experience prototype.">
+  <title>Private Rate Lab — Experimental Edition</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#home" aria-label="Private Rate Lab home">
+        <span class="brand-mark">PR</span>
+        <span class="brand-copy"><strong>PRIVATE RATE</strong><small>EXPERIMENTAL LAB</small></span>
+      </a>
+      <div class="sidebar-label">WORKSPACE</div>
+      <nav class="main-nav" id="mainNav" aria-label="Main navigation"></nav>
+      <div class="sidebar-bottom">
+        <div class="local-indicator"><span class="pulse-dot"></span><span>Local-only demo</span></div>
+        <div class="sidebar-note">No account • No server • No uploads</div>
+        <button class="nav-link" data-route="settings"><span class="nav-icon">⚙</span><span>Settings & data</span></button>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-button mobile-menu" id="mobileMenu" aria-label="Open navigation">☰</button>
+          <div><div class="eyebrow" id="sectionEyebrow">YOUR PRIVATE WORKSPACE</div><h1 id="pageTitle">Command Center</h1></div>
+        </div>
+        <div class="topbar-actions">
+          <span class="privacy-pill"><span class="pulse-dot"></span> ON-DEVICE</span>
+          <button class="icon-button quick-exit-button" id="quickExit" aria-label="Open neutral screen" title="Quick exit">↗</button>
+          <button class="avatar-button" id="profileButton" aria-label="Open profile settings">U</button>
+        </div>
+      </header>
+
+      <section class="content-wrap" id="appContent" aria-live="polite"></section>
+      <footer class="app-footer"><span>PRIVATE RATE LAB · EXPERIMENTAL EDITION</span><span>Demo data only · v0.1.0</span></footer>
+    </main>
+  </div>
+
+  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation"></nav>
+
+  <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
+
+  <dialog class="modal" id="welcomeModal">
+    <div class="modal-head"><div class="brand-mark">PR</div><span class="tag tag-violet">18+ CONCEPT DEMO</span></div>
+    <div class="modal-body">
+      <div class="eyebrow">WELCOME TO THE LAB</div>
+      <h2>A more thoughtful way to manage feedback.</h2>
+      <p class="muted">This is a front-end prototype with synthetic examples only. It does not accept intimate photos, identify real people, verify age, or connect to other users.</p>
+      <div class="notice notice-warn"><strong>Prototype boundary</strong><br>Do not enter real intimate, identifying, medical, or highly sensitive information. Demo data stays in this browser unless you export it.</div>
+      <label class="check-row"><input type="checkbox" id="adultConfirm"><span>I confirm I am 18 or older and understand this is a demo.</span></label>
+      <button class="btn btn-primary btn-block" id="enterApp" disabled>Enter the Lab <span>→</span></button>
+    </div>
+  </dialog>
+
+  <dialog class="modal quick-exit-modal" id="quickExitModal">
+    <div class="modal-head"><span class="tag">NEUTRAL VIEW</span><button class="icon-button" id="returnFromQuickExit" aria-label="Return to demo">×</button></div>
+    <div class="modal-body neutral-view">
+      <div class="neutral-mark">N</div>
+      <div class="eyebrow">PERSONAL NOTES</div>
+      <h2>Nothing to display.</h2>
+      <p class="muted">This is a visual quick-exit demo only. It does not hide browser history, protect the device, or prevent screenshots.</p>
+      <button class="btn btn-secondary btn-block" id="returnFromQuickExitButton">Return to workspace</button>
+    </div>
+  </dialog>
+
+  <dialog class="modal" id="vaultModal">
+    <form method="dialog" class="modal-head"><div><div class="eyebrow">LOCAL ENCRYPTION</div><h2>Encrypt a backup</h2></div><button class="icon-button" aria-label="Close">×</button></form>
+    <div class="modal-body">
+      <p class="muted">Create a password-protected export of this browser's demo settings and notes. The password is not stored. Use a strong password and keep it safe.</p>
+      <label class="field-label" for="vaultPassword">Backup password</label>
+      <input class="text-input" type="password" id="vaultPassword" minlength="10" autocomplete="new-password" placeholder="At least 10 characters">
+      <div class="modal-actions"><button class="btn btn-secondary" id="cancelVault">Cancel</button><button class="btn btn-primary" id="createBackup">Create encrypted backup</button></div>
+      <div class="form-message" id="vaultMessage"></div>
+    </div>
+  </dialog>
+
+  <input type="file" id="importFile" accept=".prvault,application/octet-stream" hidden>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

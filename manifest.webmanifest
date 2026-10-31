@@ -1,0 +1,13 @@
+{
+  "name": "Private Rate Lab — Experimental Edition",
+  "short_name": "PR Lab",
+  "description": "A privacy-first interactive feedback and consent experience prototype.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b0b12",
+  "theme_color": "#0b0b12",
+  "icons": [
+    { "src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
