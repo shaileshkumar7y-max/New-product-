@@ -36,7 +36,7 @@ The app uses JavaScript ES modules and browser APIs. Run it from a local web ser
 ### Option A — GitHub Codespaces
 
 1. Create a repository named `private-rate-lab` on GitHub.
-2. Upload this project folder's contents to the repository root.
+2. Extract this ZIP, open the `private-rate-fixed-pages` folder, and upload its contents to the repository root. Keep `tests/` and `.github/workflows/` as folders; do not flatten them.
 3. Open the repository on GitHub and choose **Code → Codespaces → Create codespace on main**.
 4. In the terminal, run:
 
@@ -94,11 +94,11 @@ private-rate-lab/
 ├── sw.js
 ├── package.json
 ├── README.md
-├── css/styles.css
-├── js/app.js
-├── js/store.js
-├── js/security.js
-├── assets/icon.svg
+├── styles.css
+├── app.js
+├── store.js
+├── security.js
+├── icon.svg
 ├── tests/smoke.test.js
 └── .github/workflows/tests.yml
 ```

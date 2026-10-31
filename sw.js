@@ -1,13 +1,13 @@
-const CACHE_NAME = 'private-rate-lab-shell-v1';
+const CACHE_NAME = 'private-rate-lab-shell-v2';
 const APP_FILES = [
   './',
   './index.html',
   './manifest.webmanifest',
-  './css/styles.css',
-  './js/app.js',
-  './js/store.js',
-  './js/security.js',
-  './assets/icon.svg'
+  './styles.css',
+  './app.js',
+  './store.js',
+  './security.js',
+  './icon.svg'
 ];
 
 self.addEventListener('install', event => {
