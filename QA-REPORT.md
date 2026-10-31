@@ -1,45 +1,57 @@
-# QA Report — THE NEW EDIT v2.0
+# Brand V3 — QA Report
 
-## Checks run in the build environment
+## Scope
+A new `brand-v3/` directory was created as an additive website. Existing root files are not modified by this package.
 
-| Check | Result | Evidence |
-|---|---|---|
-| `node --check app.js` | PASS | No syntax errors |
-| `node --check sw.js` | PASS | No syntax errors |
-| `npm test` | PASS | Page, asset, feature, campaign, wheel, path and archive assertions passed |
-| HTML IDs | PASS | 72 unique IDs; no duplicate IDs |
-| HTML-linked static assets | PASS | No missing stylesheet, script, manifest or icon paths |
-| Bundled images | PASS | 12 compressed WebP files are present |
-| Legacy lab archive | PASS | `private-rate-lab/index.html`, app, styles, store, security and tests are present |
-| External runtime dependencies | PASS | No external JavaScript packages; no remote font import |
-| GitHub Pages path convention | PASS | Root-relative `./styles.css`, `./app.js`, `./manifest.webmanifest` and `./sw.js` |
+## Automated checks
 
-## Test scope and limitations
+- JavaScript syntax: `app.js` — PASS
+- JavaScript syntax: `data.js` — PASS
+- Product records: 12 — PASS
+- BLXCKED campaign concepts: 10 — PASS
+- Collaboration concepts: 12 — PASS
+- Interactive wheel definitions: 4 — PASS
+- Saved root image references: 12 expected masters — PASS (validated against current GitHub root tree)
+- New local image crops: 9 WebP files — PASS
+- Relative image paths within `brand-v3/`: PASS (local crops exist; 12 repository root master filenames are confirmed in the current root tree)
 
-- The browser automation attempt was blocked by the execution environment's browser policy (`ERR_BLOCKED_BY_ADMINISTRATOR`). No live Android Chrome interaction test is claimed.
-- The site must be uploaded to the repository before GitHub Pages deployment and real-device visual verification.
-- The integration account currently has read-only effective permission on `New-product-`; this ZIP does not automatically commit or deploy changes.
-- Sample product names, sizes and colours are prototype catalogue data. No real product price, SKU, stock, checkout or delivery flow is represented.
-- The couples prompt game, date generator and wheels operate locally in one browser; they do not synchronise across devices.
-- The size helper gives an illustrative starting estimate only. Confirm final brand sizing with actual garment measurements and a production size chart.
+## Feature interaction coverage
 
-## Recommended post-upload device checklist
+The browser code implements:
 
-1. Open the Pages site in Android Chrome and reload after deployment.
-2. Check the hero, BLXCKED, HER AFTER DARK and Art Atelier image loads.
-3. Tap every bottom navigation item and open the mobile drawer.
-4. Search/filter products; open quick view; add a size to the demo bag; save and remove a wishlist item.
-5. Change all four wheels, spin each, add a custom option, reload and check persistence.
-6. Generate date ideas for multiple filters; try couple choices and skip/next.
-7. Test collection previews, art filters/lightbox, campaign tabs and fit helper validation.
-8. Export and import the local JSON backup.
-9. Open the preserved Private Rate Lab in a separate tab.
-10. Install as a PWA and verify offline reopening after the first successful online load.
+1. Hero story switching.
+2. Product filters (all, lace, everyday, men, signature).
+3. Product sorting.
+4. Search.
+5. Product detail dialog and size selection.
+6. Local wishlist toggles and count.
+7. Local demo bag add/remove and count.
+8. Four wheel modes and random selection animation.
+9. Date Night Generator filters and result generation.
+10. Boyfriend / Couples Gift Finder.
+11. Approximate fit/size helper validation and result.
+12. Image lightbox.
+13. Mobile menu open/close and section links.
+14. Campaign archive and collaboration ideas rendering.
 
-## Additional preservation verification
+## Current test run
 
-The nested `private-rate-lab/` archive was also checked independently:
-- `npm run check` — PASS.
-- `npm test` — 7/7 tests PASS, including encrypted backup round-trip, wrong-password rejection, navigation module presence, no backend SDK, PWA manifest/service worker and GitHub Pages root-path checks.
+- `npm test`: **6/6 passed**.
+- `npm run check`: **passed**.
+- Test coverage includes section IDs, 28 in-page anchor links, relative path inventory, catalogue data, campaign and collaboration counts, wheel definitions and interaction handler presence.
+- Local static HTTP smoke test: **6/6 requests returned 200** (brand page, CSS, JS, data module, one new crop and one reused root image).
+- HTML visual asset check: **15 referenced image paths present** in the merged repository fixture (9 local crops plus 6 direct HTML image references; additional product images are checked through data tests).
+- A full live Android visual run is not claimed; deploy the folder and test on the actual Pages URL.
 
-The brand-site static asset server check returned HTTP 200 for all 19 requested entry points and image files.
+## Important not-yet-verified items
+
+- Real Android Chrome visual/device interaction needs to be checked after the folder is uploaded to GitHub Pages.
+- Real online shopping, checkout, payments, stock, delivery, bookings, authentication and cross-device sync are intentionally not included (no backend / zero budget).
+- The three historical wheel source implementations were not present in the current repository. The four wheels here are working front-end recreations, not verified exact copies of the old versions.
+- The 9 new WebP assets are crops made from prior image masters, not nine additional original photos.
+- The saved sepia figure-study moodboard is intentionally not displayed in the public-facing gallery in this release; Art Atelier uses non-explicit fashion and poster visuals.
+- Additional original AI images could not be generated in this release due to the image tool's daily generation limit.
+
+## Upload safety
+
+This package is additive. It contains only the new `brand-v3/` folder and its new files. It does not contain replacement root `index.html`, root `app.js`, root `styles.css`, root manifest, or replacements for the old 12 WebP images.

@@ -3,86 +3,124 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0b0b12">
-  <meta name="description" content="Private Rate Lab — a privacy-first interactive feedback and consent experience prototype.">
-  <title>Private Rate Lab — Experimental Edition</title>
-  <link rel="manifest" href="./manifest.webmanifest">
-  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#09090b">
+  <meta name="description" content="The New Edit — a multi-collection fashion, campaign and creative studio concept featuring BLXCKED, HER AFTER DARK and Art Atelier.">
+  <title>THE NEW EDIT — BLXCKED · HER AFTER DARK · ART ATELIER</title>
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-  <div class="app-shell">
-    <aside class="sidebar" id="sidebar">
-      <a class="brand" href="#home" aria-label="Private Rate Lab home">
-        <span class="brand-mark">PR</span>
-        <span class="brand-copy"><strong>PRIVATE RATE</strong><small>EXPERIMENTAL LAB</small></span>
-      </a>
-      <div class="sidebar-label">WORKSPACE</div>
-      <nav class="main-nav" id="mainNav" aria-label="Main navigation"></nav>
-      <div class="sidebar-bottom">
-        <div class="local-indicator"><span class="pulse-dot"></span><span>Local-only demo</span></div>
-        <div class="sidebar-note">No account • No server • No uploads</div>
-        <button class="nav-link" data-route="settings"><span class="nav-icon">⚙</span><span>Settings & data</span></button>
+  <div class="announcement"><span>THE NEW EDIT</span><span>Independent collections · Editorial stories · Interactive experiences</span><span class="announcement-right">CONCEPT STORE / V3</span></div>
+  <header class="site-header">
+    <a class="wordmark" href="#home" aria-label="The New Edit home"><span>THE</span><strong>NEW EDIT</strong><i>STUDIO</i></a>
+    <nav class="desktop-nav" aria-label="Main navigation">
+      <a href="#blxcked">BLXCKED</a><a href="#after-dark">HER AFTER DARK</a><a href="#atelier">ART ATELIER</a><a href="#collections">COLLECTIONS</a><a href="#experiences">EXPERIENCES</a>
+    </nav>
+    <div class="header-actions"><button class="icon-btn" id="searchToggle" aria-label="Search">⌕</button><button class="icon-btn" id="wishlistTop" aria-label="Wishlist">♡ <small id="wishCount">0</small></button><button class="bag-btn" id="bagOpen">BAG <span id="bagCount">0</span></button><button class="menu-btn" id="menuOpen" aria-label="Open menu">☰</button></div>
+  </header>
+  <div class="search-strip" id="searchStrip" hidden><label for="siteSearch">SEARCH THE EDIT</label><input id="siteSearch" type="search" placeholder="Search collections, campaigns or products…"><button id="searchClose" aria-label="Close search">×</button></div>
+  <nav class="mobile-menu-panel" id="mobileMenuPanel" hidden>
+    <a href="#blxcked">BLXCKED</a><a href="#after-dark">HER AFTER DARK</a><a href="#atelier">ART ATELIER</a><a href="#collections">COLLECTIONS</a><a href="#experiences">EXPERIENCES</a><a href="#wellness">WELLNESS & SIZE GUIDE</a>
+  </nav>
+
+  <main id="home">
+    <section class="hero" aria-label="Featured campaigns">
+      <div class="hero-image" id="heroImage"></div><div class="hero-scrim"></div>
+      <div class="hero-copy"><p class="eyebrow" id="heroEyebrow">THE NEW EDIT / 001</p><h1 id="heroTitle">Presence<br><em>is everything.</em></h1><p class="hero-description" id="heroDescription">A world of distinct identities, considered design and stories made to be explored.</p><div class="hero-actions"><a class="button button-gold" href="#blxcked" id="heroCta">EXPLORE THE EDIT <span>↗</span></a><button class="text-button" id="heroNext">NEXT STORY ↗</button></div></div>
+      <div class="hero-index"><span id="heroIndex">01</span><span class="hero-line"></span><span>03</span></div>
+      <div class="hero-caption">EDITORIAL CAMPAIGNS / 2026</div>
+    </section>
+    <div class="brand-rail"><span>BLXCKED®</span><i>✦</i><span>HER AFTER DARK</span><i>✦</i><span>ART ATELIER</span><i>✦</i><span>ROYAL SANSKARI</span><i>✦</i><span>THE NEW EDIT</span></div>
+
+    <section class="intro-section section-pad">
+      <div class="section-kicker">A HOUSE OF DISTINCT WORLDS</div><div class="intro-grid"><h2>Different moods.<br><em>One point of view.</em></h2><div><p>The New Edit brings together product-led fashion, cinematic campaign stories and a creative art space. Each collection has its own voice, visual language and destination.</p><a class="underlink" href="#worlds">DISCOVER OUR WORLDS ↗</a></div></div>
+    </section>
+
+    <section class="worlds-section" id="worlds">
+      <div class="section-heading section-pad"><div><div class="section-kicker">THE HOUSE / 01—03</div><h2>Explore the <em>worlds</em></h2></div><p>Three lead identities, each with a different atmosphere.</p></div>
+      <div class="world-grid">
+        <a class="world-card world-blx" href="#blxcked"><img src="../blxcked-luxury-night.webp" alt="BLXCKED black and gold luxury innerwear campaign" loading="lazy"><span class="world-number">01 / PRODUCT</span><span class="world-title">BLXCKED<small>PREMIUM INNERWEAR</small></span><span class="world-arrow">↗</span></a>
+        <a class="world-card world-had" href="#after-dark"><img src="../her-after-dark.webp" alt="HER AFTER DARK red and black lingerie editorial" loading="lazy"><span class="world-number">02 / CAMPAIGN</span><span class="world-title">HER AFTER DARK<small>LINGERIE FOR YOUR REAL SIDE</small></span><span class="world-arrow">↗</span></a>
+        <a class="world-card world-art" href="#atelier"><img src="../blxcked-runway.webp" alt="Runway fashion editorial for a creative atelier" loading="lazy"><span class="world-number">03 / CREATIVE</span><span class="world-title">ART ATELIER<small>STUDIES IN FORM & MOVEMENT</small></span><span class="world-arrow">↗</span></a>
       </div>
-    </aside>
+    </section>
 
-    <main class="main-area">
-      <header class="topbar">
-        <div class="topbar-left">
-          <button class="icon-button mobile-menu" id="mobileMenu" aria-label="Open navigation">☰</button>
-          <div><div class="eyebrow" id="sectionEyebrow">YOUR PRIVATE WORKSPACE</div><h1 id="pageTitle">Command Center</h1></div>
-        </div>
-        <div class="topbar-actions">
-          <span class="privacy-pill"><span class="pulse-dot"></span> ON-DEVICE</span>
-          <button class="icon-button quick-exit-button" id="quickExit" aria-label="Open neutral screen" title="Quick exit">↗</button>
-          <button class="avatar-button" id="profileButton" aria-label="Open profile settings">U</button>
-        </div>
-      </header>
+    <section class="shop-section section-pad" id="blxcked">
+      <div class="section-heading"><div><div class="section-kicker">BLXCKED® / PREMIUM INNERWEAR</div><h2>Built around <em>confidence.</em></h2></div><p>Fabric, finish and considered details. Explore the concept catalogue and save your favourites.</p></div>
+      <div class="shop-toolbar"><div class="filter-tabs" id="productFilters"><button class="filter active" data-filter="all">ALL</button><button class="filter" data-filter="lace">LACE</button><button class="filter" data-filter="comfort">EVERYDAY</button><button class="filter" data-filter="men">MEN</button><button class="filter" data-filter="signature">SIGNATURE</button></div><label class="sort-label">SORT <select id="productSort"><option value="featured">FEATURED</option><option value="name">NAME A–Z</option></select></label></div>
+      <div class="product-grid" id="productGrid" aria-live="polite"></div>
+      <div class="shop-note" id="shop-care"><span>CONCEPT CATALOGUE</span><p>Product concepts and campaign visuals only. Prices, sizes and stock are illustrative or unlisted until a real catalogue is supplied.</p><a href="#wellness" class="underlink">OPEN FIT & SIZE GUIDE ↗</a></div>
+    </section>
 
-      <section class="content-wrap" id="appContent" aria-live="polite"></section>
-      <footer class="app-footer"><span>PRIVATE RATE LAB · EXPERIMENTAL EDITION</span><span>Demo data only · v0.1.0</span></footer>
-    </main>
-  </div>
+    <section class="campaign-band">
+      <div class="campaign-image"><img src="../blxcked-better-together.webp" alt="BLXCKED Better Together lifestyle campaign" loading="lazy"></div><div class="campaign-copy"><div class="section-kicker">BLXCKED / CAMPAIGN 06</div><h2>After hours.<br><em>BLXCKED.</em></h2><p>Luxury editorial with a product-first lens: deep velvet, warm amber light, city views and signature black-and-gold details.</p><a class="button button-outline" href="#campaign-archive">OPEN CAMPAIGN ARCHIVE ↗</a></div>
+    </section>
 
-  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation"></nav>
+    <section class="after-section section-pad" id="after-dark">
+      <div class="section-heading"><div><div class="section-kicker">HER AFTER DARK / EDITORIAL STORIES</div><h2>Elegance <em>after hours.</em></h2></div><p>Soft mornings, golden reflections and the quiet drama of a late-night story.</p></div>
+      <div class="story-grid">
+        <article class="story-card story-large"><div class="story-photo"><img src="../her-after-dark-silk-morning-golden-reflection.webp" alt="Silk Morning and Golden Reflection two-scene campaign" loading="lazy"></div><div class="story-meta"><span>STORY 04 / 08</span><span>DAYLIGHT × AFTER DARK</span></div><h3>Silk Morning /<br><em>Golden Reflection</em></h3><p>Two sides of the same confidence: a quiet, sunlit morning and a warm dressing-room mirror scene.</p></article>
+        <article class="story-card"><div class="story-photo"><img src="./assets/after-dark-detail.webp" alt="After Dark campaign detail crop" loading="lazy"></div><div class="story-meta"><span>THE SIGNATURE EDIT</span><span>BLACK / CRIMSON</span></div><h3>Elegance after hours.</h3><p>Premium comfort, confident design and real moments.</p></article>
+      </div>
+      <div class="campaign-mini-grid"><article><img src="../lace-collection-vanity.webp" alt="Lace Collection Vanity campaign" loading="lazy"><span>01 / LACE VANITY</span></article><article><img src="./assets/silk-morning-detail.webp" alt="Silk Morning close composition" loading="lazy"><span>02 / SILK MORNING</span></article><article><img src="./assets/golden-reflection-detail.webp" alt="Golden Reflection close composition" loading="lazy"><span>03 / GOLDEN REFLECTION</span></article></div>
+    </section>
 
-  <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
+    <section class="atelier-section section-pad" id="atelier">
+      <div class="section-heading"><div><div class="section-kicker">ART ATELIER / CREATIVE SPACE</div><h2>Studies in <em>form.</em></h2></div><p>An editorial gallery for fashion illustration, movement, sketchwork, sculpture and visual storytelling.</p></div>
+      <div class="atelier-grid">
+        <article class="atelier-feature"><img src="../bollywood-romance-poster-collection.webp" alt="Romantic film poster collection artwork" loading="lazy"><div><span>01 / CINEMATIC POSTER STUDIES</span><h3>Stories in a single frame.</h3></div></article>
+        <article class="atelier-tile"><img src="./assets/blxcked-runway-detail.webp" alt="Runway editorial detail" loading="lazy"><span>02 / RUNWAY & SILHOUETTE</span><h3>Fashion<br>in motion.</h3></article>
+        <article class="atelier-tile atelier-abstract"><div class="abstract-art"><span>FORM</span><i></i><b>STUDY 03</b></div><span>03 / GRAPHITE ATELIER</span><h3>Line, light<br>& texture.</h3><small>Original art image set: pending new generation.</small></article>
+      </div>
+      <div class="atelier-footer"><span>ART DIRECTION / NON-EXPLICIT EDITORIAL</span><span>New figure-study and studio images are planned as a separate image pack.</span></div>
+    </section>
 
-  <dialog class="modal" id="welcomeModal">
-    <div class="modal-head"><div class="brand-mark">PR</div><span class="tag tag-violet">18+ CONCEPT DEMO</span></div>
-    <div class="modal-body">
-      <div class="eyebrow">WELCOME TO THE LAB</div>
-      <h2>A more thoughtful way to manage feedback.</h2>
-      <p class="muted">This is a front-end prototype with synthetic examples only. It does not accept intimate photos, identify real people, verify age, or connect to other users.</p>
-      <div class="notice notice-warn"><strong>Prototype boundary</strong><br>Do not enter real intimate, identifying, medical, or highly sensitive information. Demo data stays in this browser unless you export it.</div>
-      <label class="check-row"><input type="checkbox" id="adultConfirm"><span>I confirm I am 18 or older and understand this is a demo.</span></label>
-      <button class="btn btn-primary btn-block" id="enterApp" disabled>Enter the Lab <span>→</span></button>
-    </div>
-  </dialog>
+    <section class="collections-section section-pad" id="collections">
+      <div class="section-heading"><div><div class="section-kicker">THE COLLECTIONS / COMING SOON</div><h2>More ways to <em>express.</em></h2></div><p>Distinct collection previews with their own styling, stories and future product catalogues.</p></div>
+      <div class="collection-grid">
+        <article class="collection-card"><img src="../pink-lace-collection.webp" alt="Pink Lace Collection campaign" loading="lazy"><div class="collection-overlay"><span>COLLECTION 01</span><h3>Grace Edit</h3><p>Soft details. Modern romance.</p><b>PREVIEW / COMING SOON</b></div></article>
+        <article class="collection-card"><img src="./assets/romance-poster-detail.webp" alt="Romantic collection editorial" loading="lazy"><div class="collection-overlay"><span>COLLECTION 02</span><h3>Noor Edit</h3><p>Refined occasionwear inspiration.</p><b>PREVIEW / COMING SOON</b></div></article>
+        <article class="collection-card collection-text-card"><div class="sanskari-art"><span>ROYAL</span><strong>SANSKARI</strong><i>THE HERITAGE EDIT</i></div><div class="collection-overlay"><span>COLLECTION 03</span><h3>Royal Sanskari</h3><p>Tradition with a contemporary finish.</p><b>PREVIEW / COMING SOON</b></div></article>
+      </div>
+      <div class="coming-row"><div><span class="dot"></span> CHRISTIAN-INSPIRED COLLECTION</div><span>COMING SOON / MODEST & OCCASION EDIT</span></div>
+    </section>
 
-  <dialog class="modal quick-exit-modal" id="quickExitModal">
-    <div class="modal-head"><span class="tag">NEUTRAL VIEW</span><button class="icon-button" id="returnFromQuickExit" aria-label="Return to demo">×</button></div>
-    <div class="modal-body neutral-view">
-      <div class="neutral-mark">N</div>
-      <div class="eyebrow">PERSONAL NOTES</div>
-      <h2>Nothing to display.</h2>
-      <p class="muted">This is a visual quick-exit demo only. It does not hide browser history, protect the device, or prevent screenshots.</p>
-      <button class="btn btn-secondary btn-block" id="returnFromQuickExitButton">Return to workspace</button>
-    </div>
-  </dialog>
+    <section class="gift-section" id="boyfriend">
+      <div class="gift-visual"><img src="../blxcked-everyday-comfort.webp" alt="Everyday comfort campaign" loading="lazy"><div class="gift-stamp">THE<br>GIFT<br>EDIT</div></div>
+      <div class="gift-copy"><div class="section-kicker">BOYFRIEND / COUPLES STUDIO</div><h2>A thoughtful gift.<br><em>A shared moment.</em></h2><p>Use the Gift Finder to explore a concept gift direction based on occasion, style and budget. No checkout or delivery service is connected.</p>
+        <div class="finder-form"><label>WHO IS IT FOR?<select id="giftWho"><option value="partner">Partner</option><option value="her">Her</option><option value="him">Him</option><option value="couple">A couple</option></select></label><label>OCCASION<select id="giftOccasion"><option>Birthday</option><option>Anniversary</option><option>Just because</option><option>Celebration</option></select></label><label>STYLE<select id="giftStyle"><option value="comfort">Everyday comfort</option><option value="signature">Signature luxury</option><option value="romantic">Romantic</option><option value="creative">Creative surprise</option></select></label><button class="button button-gold" id="giftFind">FIND A GIFT DIRECTION ↗</button></div><div class="finder-result" id="giftResult" aria-live="polite">Your personalised concept will appear here.</div>
+      </div>
+    </section>
 
-  <dialog class="modal" id="vaultModal">
-    <form method="dialog" class="modal-head"><div><div class="eyebrow">LOCAL ENCRYPTION</div><h2>Encrypt a backup</h2></div><button class="icon-button" aria-label="Close">×</button></form>
-    <div class="modal-body">
-      <p class="muted">Create a password-protected export of this browser's demo settings and notes. The password is not stored. Use a strong password and keep it safe.</p>
-      <label class="field-label" for="vaultPassword">Backup password</label>
-      <input class="text-input" type="password" id="vaultPassword" minlength="10" autocomplete="new-password" placeholder="At least 10 characters">
-      <div class="modal-actions"><button class="btn btn-secondary" id="cancelVault">Cancel</button><button class="btn btn-primary" id="createBackup">Create encrypted backup</button></div>
-      <div class="form-message" id="vaultMessage"></div>
-    </div>
-  </dialog>
+    <section class="experiences-section section-pad" id="experiences">
+      <div class="section-heading"><div><div class="section-kicker">INTERACTIVE EXPERIENCES</div><h2>Spin a little <em>inspiration.</em></h2></div><p>Four local-only wheels. Every result is a playful suggestion, not a booking or product promise.</p></div>
+      <div class="wheel-layout">
+        <div class="wheel-stage"><div class="wheel-pointer"></div><div class="wheel" id="wheel"><div class="wheel-core">THE<br>EDIT</div></div><div class="wheel-result" id="wheelResult">READY WHEN YOU ARE</div></div>
+        <div class="wheel-controls"><div class="wheel-tabs" id="wheelTabs"><button class="active" data-wheel="style">STYLE</button><button data-wheel="mood">MOOD</button><button data-wheel="date">DATE NIGHT</button><button data-wheel="surprise">SURPRISE</button></div><p id="wheelDescription">Find a style direction from the signature edit.</p><button class="button button-gold spin-button" id="spinWheel">SPIN THE WHEEL <span>↻</span></button><button class="text-button" id="wheelAgain">RESET WHEEL</button><div class="wheel-history" id="wheelHistory">YOUR RECENT PICKS WILL APPEAR HERE</div></div>
+      </div>
+      <div class="date-night-panel"><div><div class="section-kicker">DATE NIGHT GENERATOR</div><h3>Make a plan <em>out of a mood.</em></h3><p>Choose a vibe and let the local generator suggest a simple activity.</p></div><div class="date-controls"><label>VIBE<select id="dateVibe"><option value="cozy">Cozy</option><option value="playful">Playful</option><option value="creative">Creative</option><option value="outdoor">Outdoors</option></select></label><label>TIME<select id="dateTime"><option value="short">Under 2 hours</option><option value="long">A full evening</option></select></label><label>BUDGET<select id="dateBudget"><option value="low">Low-cost</option><option value="mid">Moderate</option><option value="any">Any</option></select></label><button class="button button-outline" id="dateGenerate">GENERATE A DATE IDEA ↗</button></div><div class="date-result" id="dateResult">Your next idea is one tap away.</div></div>
+    </section>
 
-  <input type="file" id="importFile" accept=".prvault,application/octet-stream" hidden>
+    <section class="wellness-section section-pad" id="wellness">
+      <div class="section-heading"><div><div class="section-kicker">WELLNESS / FIT & SIZE GUIDE</div><h2>Comfort begins with <em>the right fit.</em></h2></div><p>A gentle measurement helper and practical care notes. The result is a rough starting point, not a fitting diagnosis.</p></div>
+      <div class="wellness-grid"><div class="fit-visual"><img src="../lingerie-fit-guide.webp" alt="Lingerie fit guide comparison visual" loading="lazy"><div class="fit-visual-caption">FIT IS PERSONAL / START WITH YOUR MEASUREMENTS</div></div><div class="fit-tool"><h3>Quick size starting point</h3><p>Enter measurements in centimetres. Use a soft tape, keep it level and avoid pulling tightly.</p><div class="measure-fields"><label>UNDERBUST (CM)<input id="underbust" type="number" min="55" max="150" placeholder="e.g. 78"></label><label>BUST (CM)<input id="bust" type="number" min="60" max="170" placeholder="e.g. 92"></label></div><button class="button button-gold" id="sizeCalculate">ESTIMATE A STARTING SIZE</button><div class="size-result" id="sizeResult">Your estimated size will appear here.</div><div class="fit-links"><a href="#size-notes">FIT NOTES ↓</a><a href="#shop-care">FABRIC CARE ↓</a></div></div></div>
+      <div class="size-notes" id="size-notes"><article><span>01</span><h4>Measure twice</h4><p>Measure underbust and fullest bust while wearing a lightly lined, non-padded bra if possible.</p></article><article><span>02</span><h4>Check the band</h4><p>The band should sit level around the body and feel secure without digging in.</p></article><article><span>03</span><h4>Re-check the cup</h4><p>Spillage, gaping or wire discomfort can signal a different size or style may fit better.</p></article></div>
+    </section>
+
+    <section class="archive-section section-pad" id="campaign-archive">
+      <div class="section-heading"><div><div class="section-kicker">CAMPAIGN ARCHIVE / BLXCKED</div><h2>Ten visual <em>directions.</em></h2></div><p>Saved concepts retained as a browsable creative archive. These are campaign directions, not claims of completed shoots.</p></div>
+      <div class="archive-grid" id="campaignGrid"></div>
+      <div class="collab-block"><div><div class="section-kicker">COLLABORATION IDEAS</div><h3>12 ways to create <em>together.</em></h3></div><div class="collab-tags" id="collabTags"></div></div>
+    </section>
+
+    <section class="final-cta section-pad"><div class="final-cta-mark">NE</div><div class="section-kicker">THE NEW EDIT / A WORK IN PROGRESS</div><h2>Explore a world<br><em>of your own.</em></h2><p>Save favourites, try the interactive studio and browse the campaign archive. This release is a front-end concept; commerce and online fulfilment are not connected.</p><a class="button button-gold" href="#home">BACK TO THE TOP ↑</a></section>
+  </main>
+
+  <footer class="site-footer"><div class="footer-top"><a class="wordmark footer-mark" href="#home"><span>THE</span><strong>NEW EDIT</strong><i>STUDIO</i></a><p>Distinct identities. Considered design.<br>Stories worth exploring.</p><div class="footer-links"><a href="#blxcked">BLXCKED</a><a href="#after-dark">HER AFTER DARK</a><a href="#atelier">ART ATELIER</a><a href="#wellness">SIZE GUIDE</a></div></div><div class="footer-bottom"><span>© THE NEW EDIT / CONCEPT PREVIEW</span><span>NO PAYMENT · NO SHIPPING · NO BACKEND</span><a href="#home">BACK TO TOP ↑</a></div></footer>
+
+  <dialog class="product-dialog" id="productDialog"><button class="dialog-close" id="productClose" aria-label="Close">×</button><div class="dialog-product" id="dialogProduct"></div></dialog>
+  <dialog class="bag-dialog" id="bagDialog"><div class="bag-head"><div><span class="section-kicker">YOUR EDIT</span><h2>Saved bag</h2></div><button class="dialog-close" id="bagClose" aria-label="Close">×</button></div><div id="bagItems" class="bag-items"></div><div class="bag-foot"><p>Demo bag only. No checkout, payment or shipping is connected.</p><button class="button button-gold" id="bagCloseBottom">CONTINUE EXPLORING</button></div></dialog>
+  <dialog class="lightbox-dialog" id="lightboxDialog"><button class="dialog-close" id="lightboxClose" aria-label="Close">×</button><img id="lightboxImage" alt="Expanded campaign image"><p id="lightboxCaption"></p></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script type="module" src="./app.js"></script>
 </body>
 </html>
