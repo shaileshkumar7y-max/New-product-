@@ -1,26 +1,17 @@
-# THE NEW EDIT — V3 Feature Checklist
+# THE NEW EDIT V4 — Feature checklist
 
-- [x] New brand landing page (separate `/brand-v3/` route)
-- [x] BLXCKED concept storefront and catalogue
-- [x] Product detail modal and local bag/wishlist
-- [x] HER AFTER DARK stories — Silk Morning and Golden Reflection
-- [x] Art Atelier section and poster/runway gallery
-- [x] Royal Sanskari / Noor Edit / Grace Edit previews
-- [x] Christian-inspired Coming Soon preview
-- [x] Boyfriend / Couples Gift Finder
-- [x] Style Wheel
-- [x] Mood Wheel
-- [x] Date Night Wheel
-- [x] Surprise Wheel
-- [x] Date Night Generator
-- [x] Wellness & Size Guide
-- [x] 10 saved BLXCKED campaign directions
-- [x] 12 collaboration ideas
-- [x] Mobile navigation, product filters, search, image lightbox
-- [x] Reuse 12 prior root image masters
-- [x] Add 9 derivative WebP detail crops
-- [x] Preserve all existing root files and old app folder
-- [ ] Upload new folder to GitHub and verify live Pages route
-- [ ] Real Android Chrome visual test
-- [ ] Generate and add new original campaign images after image generation limit resets
-- [ ] Reconstruct exact three historical wheels if their old source code is recovered
+- [x] Fixed nested GitHub Pages image paths (parent root assets use ../; local V4 images use ./assets/).
+- [x] 12 original root image masters remain referenced without copying or replacing them.
+- [x] 9 existing root detail crops remain referenced.
+- [x] Added 16 new Library/chat image masters in WebP.
+- [x] Added 13 new detail crops in WebP.
+- [x] Added 16-image visual library gallery with lightbox.
+- [x] Expanded catalogue with boutique, pink lace, better together, Royal Sanskari, Noor preview and Art Atelier concepts.
+- [x] Added TRADITIONAL, NOOR and ART filters.
+- [x] Restored the full previous Private Rate Lab under private-rate-lab/.
+- [x] Added 18+ text-only private feedback page (session storage only; no uploads or server).
+- [x] Added links to the feedback page and archived Privacy Lab.
+- [x] Added fallback graphic for failed image requests.
+- [ ] Live GitHub Pages and Android Chrome verification after upload.
+
+No existing root file or image is modified by this additive V4 folder.

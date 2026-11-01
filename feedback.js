@@ -1,0 +1,14 @@
+const $=s=>document.querySelector(s);const KEY='private-feedback-session-v1';let records=[];
+const toast=(m)=>{const t=$('#toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)};
+function load(){try{records=JSON.parse(sessionStorage.getItem(KEY)||'[]')}catch{records=[]}render()}
+function persist(){try{sessionStorage.setItem(KEY,JSON.stringify(records))}catch{toast('Session storage unavailable. Export your notes before closing this tab.')}}
+function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function render(){const box=$('#records');if(!records.length){box.innerHTML='<p class="muted">No entries saved in this session.</p>';return}box.innerHTML=records.slice().reverse().map(r=>`<article class="record"><strong>${esc(r.kind)} · ${esc(r.area)} · ${r.score}/10</strong><small>${esc(r.focus||r.reviewer||'Private entry')} · ${new Date(r.time).toLocaleString()}</small><p>${esc(r.note||'No written note.')}</p></article>`).join('')}
+$('#ageConfirm').addEventListener('change',e=>$('#enterBtn').disabled=!e.target.checked);
+$('#enterBtn').addEventListener('click',()=>{$('#agePanel').hidden=true;$('#feedbackApp').hidden=false;load()});
+$('#selfScore').addEventListener('input',e=>$('#selfScoreValue').textContent=`${e.target.value} / 10`);
+$('#receivedScore').addEventListener('input',e=>$('#receivedScoreValue').textContent=`${e.target.value} / 10`);
+$('#saveSelf').addEventListener('click',()=>{records.push({kind:'Personal check-in',area:$('#area').value,focus:$('#focus').value,score:Number($('#selfScore').value),note:$('#selfNote').value.trim(),time:Date.now()});persist();render();$('#selfNote').value='';toast('Saved in this browser session.');});
+$('#saveReceived').addEventListener('click',()=>{records.push({kind:'Feedback received offline',area:$('#receivedArea').value,reviewer:$('#reviewerLabel').value.trim()||'Anonymous reviewer',score:Number($('#receivedScore').value),note:$('#receivedNote').value.trim(),time:Date.now()});persist();render();$('#receivedNote').value='';$('#reviewerLabel').value='';toast('Entry added to this session.');});
+$('#clearBtn').addEventListener('click',()=>{records=[];sessionStorage.removeItem(KEY);render();toast('Session entries cleared.');});
+$('#exportBtn').addEventListener('click',()=>{if(!records.length){toast('There are no entries to export.');return}const nl=String.fromCharCode(10);const lines=['PRIVATE FEEDBACK — LOCAL SESSION EXPORT','No server upload. Handle this file carefully.','',...records.map(r=>`${new Date(r.time).toISOString()} | ${r.kind} | ${r.area} | ${r.score}/10 | ${r.focus||r.reviewer||''}${nl}${r.note||''}${nl}`)];const blob=new Blob([lines.join(nl)],{type:'text/plain;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='private-feedback-session.txt';a.click();URL.revokeObjectURL(a.href);});

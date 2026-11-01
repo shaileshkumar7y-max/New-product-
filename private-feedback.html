@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0c0a0b"><title>Private Feedback — The New Edit</title><link rel="stylesheet" href="./feedback.css"></head>
+<body><main class="wrap"><a class="back" href="./index.html">← BACK TO THE NEW EDIT</a>
+<header><div class="eyebrow">18+ / PRIVATE FEEDBACK LAB</div><h1>Your feedback.<br><em>Your boundaries.</em></h1><p class="intro">A private, text-only prototype for recording intimate-area confidence and consensual feedback. No photos, video, account, backend or online reviewer network.</p></header>
+<section class="notice"><strong>Privacy boundary</strong><p>This page does not upload or share anything. Entries stay in this browser tab's session storage and are cleared when the session ends. Do not enter names, contact details, medical information or identifying details.</p></section>
+<section class="panel age-panel" id="agePanel"><h2>Adults only</h2><p>Continue only if you are 18 or older and understand this is a local demo.</p><label class="check"><input id="ageConfirm" type="checkbox"> I confirm I am 18 or older.</label><button id="enterBtn" class="primary" disabled>ENTER PRIVATE FEEDBACK</button></section>
+<div id="feedbackApp" hidden>
+<section class="panel"><div class="eyebrow">01 / YOUR PRIVATE CHECK-IN</div><h2>Personal confidence entry</h2><p class="muted">Choose an area and record your own comfort/confidence score. This is not an objective judgement or a medical assessment.</p>
+<label>AREA<select id="area"><option value="Penis">Penis</option><option value="Vulva">Vulva</option><option value="Overall intimacy confidence">Overall intimacy confidence</option></select></label>
+<label>FEEDBACK FOCUS<select id="focus"><option>Personal confidence</option><option>Comfort and fit</option><option>Grooming and presentation</option><option>Communication and boundaries</option><option>General self-reflection</option></select></label>
+<div class="range-head"><label for="selfScore">YOUR OWN CONFIDENCE SCORE</label><strong id="selfScoreValue">7 / 10</strong></div><input id="selfScore" type="range" min="1" max="10" value="7">
+<label>PRIVATE NOTE <textarea id="selfNote" rows="3" maxlength="600" placeholder="Write a respectful note to yourself…"></textarea></label>
+<button class="primary" id="saveSelf">SAVE TO THIS SESSION</button></section>
+<section class="panel"><div class="eyebrow">02 / FEEDBACK RECEIVED OFFLINE</div><h2>Record consensual feedback</h2><p class="muted">If another consenting adult has voluntarily given you feedback outside this site, you can record it here. This does not send it to them or publish it.</p>
+<label>AREA<select id="receivedArea"><option>Penis</option><option>Vulva</option><option>Overall intimacy confidence</option></select></label>
+<label>REVIEWER LABEL (OPTIONAL)<input id="reviewerLabel" maxlength="32" placeholder="Anonymous reviewer"></label>
+<div class="range-head"><label for="receivedScore">RATING RECEIVED</label><strong id="receivedScoreValue">7 / 10</strong></div><input id="receivedScore" type="range" min="1" max="10" value="7">
+<label>RESPECTFUL FEEDBACK NOTE <textarea id="receivedNote" rows="3" maxlength="600" placeholder="Only record feedback given with consent…"></textarea></label>
+<button class="primary" id="saveReceived">ADD FEEDBACK ENTRY</button></section>
+<section class="panel"><div class="eyebrow">03 / SESSION RECORD</div><div class="record-head"><h2>Your entries</h2><div class="record-actions"><button id="exportBtn" class="secondary">EXPORT TXT</button><button id="clearBtn" class="danger">CLEAR SESSION</button></div></div><div id="records" class="records"><p class="muted">No entries saved in this session.</p></div></section>
+</div>
+<footer><p>Demo only · Local session storage · No image uploads · No public profiles · No remote ratings.</p><a href="./private-rate-lab/">OPEN FULL RESTORED PRIVACY LAB ↗</a></footer></main><div id="toast" class="toast" role="status" aria-live="polite"></div><script type="module" src="./feedback.js"></script></body></html>
