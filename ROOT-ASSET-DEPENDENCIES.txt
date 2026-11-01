@@ -1,12 +1,23 @@
-The show folder references these existing repository-root assets via ../ paths:
-- blxcked-luxury-night.webp
-- her-after-dark.webp
-- blxcked-runway.webp
-- blxcked-better-together.webp
-- her-after-dark-silk-morning-golden-reflection.webp
-- lace-collection-vanity.webp
-- bollywood-romance-poster-collection.webp
-- pink-lace-collection.webp
-- confidence-together-campaign.webp
-- private-feedback.html (navigation target)
-Do not move or delete these existing files when uploading the new folder.
+These files already exist at the repository root and are reused by BIG BOSS V2.
+Do not delete or rename them when uploading this folder.
+
+show-poster-black-edition.webp
+show-poster-sydney-edition.webp
+blxcked-luxury-night.webp
+blxcked-boutique-editorial.webp
+black-lace-collection.webp
+pink-lace-collection.webp
+blxcked-better-together.webp
+stretch-closer-together.webp
+confidence-together-campaign.webp
+partner-yoga-balance.webp
+her-after-dark.webp
+her-after-dark-silk-morning-golden-reflection.webp
+private-chemistry-after-dark.webp
+elegance-after-dark-pink-campaign.webp
+royal-palace-saree.webp
+backlit-saree-atelier-sketch.webp
+mughal-royal-romance-poster.webp
+sepia-couples-moodboard.webp
+black-elegance-fashion.webp
+image-placeholder.svg

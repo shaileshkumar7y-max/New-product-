@@ -1,68 +1,128 @@
-export const PRODUCTS = [
-  {id:'blx-lace-01',name:'Black Lace Signature Set',brand:'BLXCKED',type:'lace',category:'LACE',image:'./black-lace-collection.webp',detail:'./blxcked-lace-detail.webp',description:'A signature lace direction with refined detailing and a confident finish.',sizes:['XS','S','M','L','XL'],badge:'SIGNATURE'},
-  {id:'blx-comfort-02',name:'Everyday Comfort Set',brand:'BLXCKED',type:'comfort',category:'EVERYDAY',image:'./blxcked-everyday-comfort.webp',detail:'./blxcked-comfort-detail.webp',description:'A soft, everyday-inspired concept with comfort-led styling.',sizes:['XS','S','M','L','XL'],badge:'EVERYDAY'},
-  {id:'blx-better-03',name:'Better Together Edit',brand:'BLXCKED',type:'signature',category:'SIGNATURE',image:'./blxcked-better-together.webp',detail:'./blxcked-better-together.webp',description:'A coordinated editorial direction for a shared style story.',sizes:['S','M','L','XL'],badge:'CAMPAIGN'},
-  {id:'blx-runway-04',name:'Runway Lace Body',brand:'BLXCKED',type:'lace',category:'LACE',image:'./blxcked-runway.webp',detail:'./blxcked-runway-detail.webp',description:'A runway-inspired silhouette with a statement outer layer.',sizes:['XS','S','M','L'],badge:'EDITORIAL'},
-  {id:'blx-pink-05',name:'Pink Lace Story',brand:'BLXCKED',type:'lace',category:'LACE',image:'./pink-lace-collection.webp',detail:'./pink-lace-detail.webp',description:'Romantic lace styling with a soft pastel campaign palette.',sizes:['XS','S','M','L','XL'],badge:'NEW EDIT'},
-  {id:'blx-vanity-06',name:'Lace Vanity Collection',brand:'BLXCKED',type:'signature',category:'SIGNATURE',image:'./lace-collection-vanity.webp',detail:'./lace-collection-vanity.webp',description:'Product-focused lace detailing and a premium vanity story.',sizes:['S','M','L','XL'],badge:'DETAILS'},
-  {id:'had-after-07',name:'After Dark Signature',brand:'HER AFTER DARK',type:'signature',category:'AFTER DARK',image:'./her-after-dark.webp',detail:'./after-dark-detail.webp',description:'A dramatic black-and-crimson editorial concept.',sizes:['XS','S','M','L'],badge:'AFTER HOURS'},
-  {id:'had-silk-08',name:'Silk Morning Story',brand:'HER AFTER DARK',type:'comfort',category:'STORIES',image:'./her-after-dark-silk-morning-golden-reflection.webp',detail:'./silk-morning-detail.webp',description:'A cream-and-gold morning story with soft fabric styling.',sizes:['S','M','L','XL'],badge:'STORY 04'},
-  {id:'had-gold-09',name:'Golden Reflection',brand:'HER AFTER DARK',type:'signature',category:'STORIES',image:'./golden-reflection-detail.webp',detail:'./golden-reflection-detail.webp',description:'A warm dressing-room editorial with mirror and gold accents.',sizes:['S','M','L'],badge:'STORY 08'},
-  {id:'blx-men-10',name:'Men’s Essential Trunk',brand:'BLXCKED',type:'men',category:'MEN',image:'./blxcked-luxury-night.webp',detail:'./blxcked-luxury-night.webp',description:'A minimal black-and-gold menswear concept; product photography pending.',sizes:['S','M','L','XL','XXL'],badge:'MEN’S EDIT'},
-  {id:'blx-master-11',name:'Master Series — Signature Design',brand:'BLXCKED',type:'signature',category:'SIGNATURE',image:'./blxcked-runway.webp',detail:'./blxcked-runway-detail.webp',description:'A premium signature-series direction. Final SKU details and materials are pending.',sizes:['S','M','L','XL'],badge:'MASTER SERIES'},
-  {id:'had-night-12',name:'After Hours Editorial Set',brand:'HER AFTER DARK',type:'lace',category:'AFTER DARK',image:'./lace-collection-vanity.webp',detail:'./lace-collection-vanity.webp',description:'A campaign-led lace styling concept for the evening edit.',sizes:['XS','S','M','L'],badge:'EDITORIAL'}
-
-  ,{id:'blx-boutique-13',name:'Boutique Editorial Harness Look',brand:'BLXCKED',type:'signature',category:'SIGNATURE',image:'./blxcked-boutique-editorial.webp',detail:'./blxcked-boutique-detail.webp',description:'A tailored boutique styling concept with a bold red-and-black accent.',sizes:['S','M','L','XL'],badge:'BOUTIQUE EDIT'}
-  ,{id:'blx-pink-ad-14',name:'Pink Lace Campaign Set',brand:'BLXCKED',type:'lace',category:'LACE',image:'./pink-lace-collection-ad.webp',detail:'./pink-lace-detail-v4.webp',description:'A soft pink lace campaign direction focused on fabric and details.',sizes:['XS','S','M','L','XL'],badge:'PINK LACE'}
-  ,{id:'blx-better-15',name:'Black Lace Better Together',brand:'BLXCKED',type:'signature',category:'SIGNATURE',image:'./black-lace-better-together.webp',detail:'./black-lace-detail-v4.webp',description:'A coordinated black-lace editorial with a comfortable movement theme.',sizes:['S','M','L','XL'],badge:'BETTER TOGETHER'}
-  ,{id:'blx-newlace-16',name:'New Lace Boutique Edit',brand:'BLXCKED',type:'lace',category:'LACE',image:'./new-lace-boutique-ad.webp',detail:'./new-lace-boutique-detail.webp',description:'A boutique presentation of delicate lace and premium finishing.',sizes:['XS','S','M','L'],badge:'BOUTIQUE'}
-  ,{id:'sanskari-17',name:'Royal Palace Heritage Story',brand:'ROYAL SANSKARI',type:'traditional',category:'TRADITIONAL',image:'./royal-palace-saree.webp',detail:'./royal-palace-detail.webp',description:'A gold-toned heritage editorial direction for the Royal Sanskari preview.',sizes:['S','M','L','XL'],badge:'ROYAL EDIT'}
-  ,{id:'noor-18',name:'Black Elegance Modest Direction',brand:'NOOR EDIT',type:'noor',category:'MODEST EDIT',image:'./black-elegance-fashion.webp',detail:'./black-elegance-fashion.webp',description:'A black-and-cream modest-fashion mood direction; final modestwear product imagery is still needed.',sizes:['S','M','L','XL'],badge:'NOOR PREVIEW'}
-  ,{id:'art-19',name:'Backlit Saree Graphite Study',brand:'ART ATELIER',type:'art',category:'ART STUDY',image:'./backlit-saree-atelier-sketch.webp',detail:'./atelier-backlit-detail.webp',description:'A traditional fashion portrait interpreted as a graphite atelier sketch.',sizes:['ONE SIZE'],badge:'ART ATELIER'}
-  ,{id:'art-20',name:'Mughal Royal Romance Poster',brand:'ART ATELIER',type:'art',category:'POSTER STUDY',image:'./mughal-royal-romance-poster.webp',detail:'./mughal-poster-detail.webp',description:'A vintage royal-romance poster direction for the creative archive.',sizes:['ONE SIZE'],badge:'POSTER STUDY'}
-  ,{id:'couple-21',name:'Partner Balance Campaign',brand:'COUPLES STUDIO',type:'couples',category:'MOVEMENT',image:'./partner-yoga-balance.webp',detail:'./partner-yoga-balance.webp',description:'A partner-balance lifestyle reference for the Couples Studio.',sizes:['ONE SIZE'],badge:'COUPLES'}
-  ,{id:'had-elegance-22',name:'Elegance After Dark',brand:'HER AFTER DARK',type:'lace',category:'AFTER DARK',image:'./elegance-after-dark-pink-campaign.webp',detail:'./elegance-after-dark-pink-campaign-detail.webp',description:'A pink, black and gold after-hours campaign reference from the saved visual library.',sizes:['XS','S','M','L'],badge:'AFTER DARK'}
-  ,{id:'had-chemistry-23',name:'Private Chemistry Story',brand:'HER AFTER DARK',type:'signature',category:'STORIES',image:'./private-chemistry-after-dark.webp',detail:'./private-chemistry-after-dark-detail.webp',description:'A private-chemistry editorial with warm lighting and a cinematic night palette.',sizes:['S','M','L','XL'],badge:'CAMPAIGN STORY'}
-  ,{id:'blx-confidence-24',name:'Confidence Looks Better',brand:'BLXCKED',type:'signature',category:'SIGNATURE',image:'./luxury-innerwear-confidence.webp',detail:'./luxury-innerwear-confidence-detail.webp',description:'A premium innerwear campaign reference focused on comfort, fit and confidence.',sizes:['S','M','L','XL'],badge:'CONFIDENCE'}
-  ,{id:'blx-luxury-25',name:'Luxury Innerwear Night',brand:'BLXCKED',type:'signature',category:'SIGNATURE',image:'./blacked-luxury-campaign.webp',detail:'./blacked-luxury-campaign-detail.webp',description:'A black-and-gold luxury campaign reference for the BLXCKED studio.',sizes:['S','M','L','XL'],badge:'LUXURY EDIT'}
-  ,{id:'blx-stretch-26',name:'Stretch Closer Together',brand:'BLXCKED',type:'comfort',category:'MOVEMENT',image:'./stretch-closer-together.webp',detail:'./stretch-closer-together-detail.webp',description:'A partner movement and comfort campaign reference from the saved library.',sizes:['S','M','L','XL'],badge:'MOVEMENT EDIT'}
+export const GALLERY = [
+  {title:'BLXCKED Luxury Night',category:'blxcked',src:'../blxcked-luxury-night.webp',caption:'Black and gold luxury innerwear campaign'},
+  {title:'BLXCKED Boutique Editorial',category:'blxcked',src:'../blxcked-boutique-editorial.webp',caption:'Boutique editorial'},
+  {title:'Black Lace Collection',category:'blxcked',src:'../black-lace-collection.webp',caption:'Black lace styling reference'},
+  {title:'Pink Lace Collection',category:'blxcked',src:'../pink-lace-collection.webp',caption:'Pink lace visual story'},
+  {title:'Better Together',category:'couples',src:'../blxcked-better-together.webp',caption:'Couples campaign reference'},
+  {title:'Stretch Closer Together',category:'couples',src:'../stretch-closer-together.webp',caption:'Movement and comfort campaign'},
+  {title:'Confidence Together',category:'couples',src:'../confidence-together-campaign.webp',caption:'Couples confidence campaign'},
+  {title:'Partner Balance',category:'couples',src:'../partner-yoga-balance.webp',caption:'Partner balance visual'},
+  {title:'HER AFTER DARK',category:'afterdark',src:'../her-after-dark.webp',caption:'After-hours editorial'},
+  {title:'Silk Morning / Golden Reflection',category:'afterdark',src:'../her-after-dark-silk-morning-golden-reflection.webp',caption:'Two-scene campaign artwork'},
+  {title:'Private Chemistry',category:'afterdark',src:'../private-chemistry-after-dark.webp',caption:'Private Chemistry campaign'},
+  {title:'Elegance After Dark',category:'afterdark',src:'../elegance-after-dark-pink-campaign.webp',caption:'Pink and black editorial'},
+  {title:'Royal Palace',category:'art',src:'../royal-palace-saree.webp',caption:'Royal Sanskari moodboard'},
+  {title:'Backlit Atelier',category:'art',src:'../backlit-saree-atelier-sketch.webp',caption:'Atelier sketch reference'},
+  {title:'Mughal Romance',category:'art',src:'../mughal-royal-romance-poster.webp',caption:'Romance poster study'},
+  {title:'Sepia Couples Moodboard',category:'art',src:'../sepia-couples-moodboard.webp',caption:'Sepia visual study'},
+  {title:'Black Elegance',category:'art',src:'../black-elegance-fashion.webp',caption:'Fashion editorial'}
 ];
-
-export const HERO_STORIES = [
-  {eyebrow:'THE NEW EDIT / 001',title:'Presence<br><em>is everything.</em>',description:'A world of distinct identities, considered design and stories made to be explored.',image:'./blxcked-luxury-night.webp',cta:'EXPLORE THE EDIT',target:'#blxcked'},
-  {eyebrow:'HER AFTER DARK / 002',title:'Elegance<br><em>after hours.</em>',description:'Soft mornings, golden reflections and the quiet drama of a late-night story.',image:'./her-after-dark.webp',cta:'DISCOVER THE STORIES',target:'#after-dark'},
-  {eyebrow:'ART ATELIER / 003',title:'Studies in<br><em>form & feeling.</em>',description:'A creative space for fashion illustration, movement and cinematic visual storytelling.',image:'./bollywood-romance-poster-collection.webp',cta:'ENTER THE ATELIER',target:'#atelier'}
+export const TASKS = [
+ ['Compliment Relay','Give a different genuine compliment to three people.','group','playful',45,15],
+ ['Runway Walk','Do a confident 10-second walk or pose.','solo','playful',30,10],
+ ['Perfect Date Pitch','Pitch your dream date in 20 seconds.','solo','playful',30,10],
+ ['House Soundtrack','Pick one song for the house and explain the choice.','solo','playful',45,10],
+ ['Eye Contact Challenge','Hold friendly eye contact for 10 seconds, only if both agree.','duo','bold',30,15],
+ ['Truth in Three Words','Describe your current mood in three words.','solo','playful',20,10],
+ ['Style Detective','Notice one outfit detail and give a kind compliment.','duo','playful',30,10],
+ ['Chemistry Questions','Ask one thoughtful question and listen fully.','duo','bold',60,15],
+ ['Two-Person Playlist','Choose a song you both enjoy.','duo','playful',60,15],
+ ['Mystery Pose','Strike a dramatic poster pose.','solo','bold',20,15],
+ ['No-Laugh Round','Try not to laugh while another player tells a silly joke.','duo','playful',30,10],
+ ['Memory Lane','Share a favourite harmless memory.','duo','playful',60,15],
+ ['Fashion Forecast','Invent a theme for the next runway.','group','playful',45,15],
+ ['Kindness Captain','Suggest one small act of kindness for the group.','group','playful',45,10],
+ ['One-Minute Story','Create a funny story using three random words.','solo','bold',60,20],
+ ['Silent Charades','Act out a movie without speaking.','solo','playful',45,15],
+ ['Dramatic Dialogue','Deliver a soap-opera line with full drama.','solo','bold',30,15],
+ ['Best First Impression','Introduce yourself like a superstar.','solo','playful',30,10],
+ ['Green Flag List','Name three green flags in a relationship.','solo','bold',45,15],
+ ['Red Flag Detector','Explain why a boundary should be respected.','solo','bold',45,15],
+ ['Shared Dream','Plan a tiny shared adventure.','duo','playful',60,15],
+ ['Dance Break','Pick a song and do a 10-second dance.','solo','bold',30,15],
+ ['Finish the Lyric','Hum a song and let the group guess.','group','playful',30,10],
+ ['Funny Roast Yourself','Make a harmless joke about your own habits.','solo','bold',20,10],
+ ['House Motto','Create a slogan for the group.','group','playful',30,10],
+ ['Dream Wardrobe','Describe your dream outfit.','solo','playful',30,10],
+ ['Compliment Card','Write a nice one-line note to a willing player.','duo','playful',40,10],
+ ['The Big Question','Ask a meaningful question; answer is optional.','duo','bold',60,15],
+ ['Future Headlines','Invent a funny headline about yourself.','solo','playful',30,10],
+ ['Confidence Pose','Hold your favourite confident pose for 5 seconds.','solo','playful',15,10],
+ ['Shared Boundary','Name one boundary that makes games comfortable.','duo','bold',45,15],
+ ['Slow-Motion Scene','Re-enact entering the house in slow motion.','solo','playful',30,10],
+ ['Guess the Mood','Choose a song that matches your mood.','solo','playful',30,10],
+ ['Two Truths','Share two true facts and one made-up fact.','group','playful',60,15],
+ ['House Reporter','Give a 15-second news update about the game.','solo','bold',30,15],
+ ['The Pause Power','Lead a 20-second breathing break.','group','playful',30,10],
+ ['Best Advice','Offer one useful, kind piece of advice.','solo','bold',45,15],
+ ['Mirror Move','Copy a simple dance move from a willing player.','duo','playful',30,10],
+ ['Fashion Pitch','Sell an imaginary outfit in 20 seconds.','solo','bold',30,15],
+ ['Dream Collab','Choose a brand collaboration and pitch it.','group','playful',45,15],
+ ['Lucky Number','Pick a number and make a harmless mini-challenge.','solo','playful',20,10],
+ ['Chemistry Check-in','Ask what helps each person feel respected.','duo','bold',60,15],
+ ['Rom-Com Scene','Act out a meet-cute scene with no physical contact required.','duo','spicy',40,15],
+ ['Cheeky Compliment','Give a playful but respectful compliment.','duo','spicy',20,10],
+ ['Date Night Draft','Plan a date with a tiny budget.','duo','playful',60,15],
+ ['Secret Talent','Show or describe a harmless talent.','solo','playful',45,10],
+ ['The Hype Squad','Give the group a dramatic pep talk.','group','bold',30,15],
+ ['Emoji Story','Tell a story using only five emojis.','solo','playful',30,10],
+ ['Finale Speech','Deliver a 20-second winner speech.','solo','bold',30,20],
+ ['Flirty Question','Ask a flirty but respectful question. The other person may pass.','duo','spicy',30,15],
+ ['Private Date Pitch','Describe a romantic date idea without graphic details.','duo','spicy',45,15],
+ ['Chemistry Compliment','Share one quality that makes someone feel special.','duo','spicy',30,15],
+ ['House Promise','Name one promise to keep the game kind and fun.','group','playful',30,10]
 ];
-
-export const WHEELS = {
-  style:{description:'Find a style direction from the signature edit.',items:['Black lace','Everyday comfort','Soft pink','Golden detail','Minimal black','Runway mood','Silk story','Signature set']},
-  mood:{description:'Choose the atmosphere for your next creative or styling idea.',items:['Quiet luxury','Romantic','Bold & modern','Soft morning','After hours','Golden hour','Classic','Playful']},
-  date:{description:'Let the wheel choose a simple date-night direction.',items:['Coffee & conversation','At-home movie','Sunset walk','Cook together','Gallery visit','Dessert stop','Board-game night','Photo walk']},
-  surprise:{description:'A fresh prompt for a little unexpected inspiration.',items:['Create a moodboard','Write a note','Plan a mini shoot','Try a new colour','Make a playlist','Style a gift','Explore a new place','Make something']}
+export const PROMPTS = {
+ truth:{1:['What outfit makes you feel most confident?','What is your funniest first-date story?','Who has the best style in the room?','What is your most-used emoji?'],2:['What is a harmless fantasy date you would love?','What compliment do you secretly enjoy?','What makes chemistry feel real to you?','What is your boldest fashion choice?'],3:['What romantic moment would you replay?','What makes someone attractive beyond looks?','What is a flirty line you are comfortable sharing?','Describe your perfect private date, keeping it as simple or detailed as you like.']},
+ dare:{1:['Give someone a sincere compliment.','Do a 10-second runway walk.','Pick the house soundtrack.','Strike your best campaign pose.'],2:['Hold friendly eye contact for 10 seconds if both agree.','Whisper a kind compliment or pass.','Do a short slow-dance moment if both choose yes.','Invent a bold outfit theme.'],3:['Ask for a kiss only as a question; a no ends it with no pressure.','Plan a surprise date in three sentences.','Share a playful secret you are happy to tell.','Let another player pick your confident pose.']},
+ chemistry:{1:['Sunrise date or late-night drive?','Pick a song for a shared playlist.','Name one thing that makes you feel appreciated.'],2:['Describe an ideal date in 20 seconds each.','Choose a shared style mood: classic, bold or playful.','Share one boundary that makes games comfortable.'],3:['Agree on a romantic gesture both would enjoy.','Create a two-person challenge either player can skip.','Ask what helps each person feel safe and respected.']},
+ confession:{1:['What silly thing makes you instantly happy?','What is your harmless guilty-pleasure song?'],2:['What is your funniest awkward moment?','What is one brave thing you want to try?'],3:['What is a thoughtful thing you wish people asked you?','What does trust look like to you?']},
+ double:{1:['Both players choose a song and explain why.','Swap a funny nickname for one round.'],2:['Create a two-person pose without touching.','Pitch a dream trip together in 30 seconds.'],3:['Choose one shared boundary and one shared adventure idea.','Build a romantic scene using only words and mutual agreement.']}
+};
+export const FEED = [
+ ['TASK ALERT','Contestant #05 unlocked a confidence challenge.'],['INNERWEAR SPECIAL','The BLXCKED runway round is ready.'],['AFTER DARK','A new chemistry prompt has entered the house.'],['POWER CARD','The immunity vault has a surprise waiting.'],['HOUSE DRAMA','Someone has challenged the weekly high score.'],['GALLERY DROP','A fresh visual has been selected for the house.']
+];
+export const POWERS = [['SKIP TOKEN','Skip one task without losing points.'],['DOUBLE POINTS','Double the next completed task.'],['HOUSE DJ','Choose the next music mood.'],['CHOICE CARD','Choose the next game mode.'],['PAUSE POWER','Pause and reset the round.'],['STYLE CAPTAIN','Choose the runway theme.'],['IMMUNITY SHIELD','Protect yourself from one fictional nomination.']];
+export const MISSIONS = [['KINDNESS SPY','Give two sincere compliments.'],['STYLE DETECTIVE','Notice a detail and appreciate the styling.'],['SOUNDTRACK SECRET','Pick a song to shift the mood.'],['CALM BOSS','Suggest a 30-second reset.'],['CHEMISTRY CLUE','Ask a thoughtful question.'],['RUNWAY SHADOW','Copy a confident campaign pose.']];
+export const FLAGS = [
+ {q:'Someone respects your “no” the first time.',a:'green',why:'Respecting boundaries is a green flag.'},
+ {q:'Someone keeps pushing after you say you want to stop.',a:'red',why:'Pressure after a no is a red flag.'},
+ {q:'Someone asks what you are comfortable with before a game.',a:'green',why:'Checking in shows care and respect.'},
+ {q:'Someone records a private moment without permission.',a:'red',why:'Recording without consent is not okay.'},
+ {q:'Someone lets you change your mind without guilt.',a:'green',why:'Consent can be changed at any time.'},
+ {q:'Someone uses insults to embarrass a player.',a:'red',why:'Humiliation is not required for fun.'}
+];
+export const KNOW = [
+ {q:'Which date would your partner choose?',o:['Coffee and conversation','Adventure walk','Movie and dessert'],a:0},
+ {q:'Which quality matters most to them?',o:['Kindness','Humour','Reliability'],a:1},
+ {q:'What makes them feel appreciated?',o:['A thoughtful note','Quality time','A useful surprise'],a:0},
+ {q:'Which weekend mood fits them?',o:['Relaxed home day','Explore somewhere new','Friends and games'],a:1}
+];
+export const MYSTERY = ['A 10-second dance break','Give yourself a silly award title','Pick a song for the next round','Take a 30-second reset','Compliment the house vibe','Invent a harmless team name','Draw a surprise task','Choose the next game mode'];
+export const SLANG = {
+ clean:['Kya baat hai, shandaar khel!','Wah boss, kya kamaal kiya!','Agla round aur mazedaar hoga.'],
+ hinglish:['Arey bhai, kya scene hai!','Oye hoye, full bawaal!','Kya mast bakchodi chal rahi hai!','Boss, tune toh game palat diya!'],
+ desi:['Abe wah, kya zabardast bakchodi hai!','Saala, kya bawaal macha diya!','Arey chutiye timer dekh, round nikal gaya!','Kya dhinchak panga hai re baba!']
 };
 
-export const CAMPAIGNS = [
- ['Almost Kiss','Soft amber light, a close portrait and a considered product arrangement.'],
- ['Back Embrace','An affectionate adult-couple editorial with fabric and silhouette in focus.'],
- ['Bedside Chemistry','Warm bedroom styling, subtle props and product-first framing.'],
- ['Mirror Tension','A dressing-room mirror story with gold highlights and polished details.'],
- ['Silk Wrap','Flowing fabric, a quiet palette and a comfort-led product story.'],
- ['After-Hours Sofa','Deep velvet, an adult couple, warm rim light and city-night atmosphere.'],
- ['Penthouse Balcony','A city-view campaign with sharp black tailoring and a luxury mood.'],
- ['Private Suite','A refined hotel-suite story with soft lighting and elegant product placement.'],
- ['Cinematic Near-Kiss','A close, romantic editorial with tasteful, non-graphic styling.'],
- ['Signature Heat','Black-and-gold hero styling with the product clearly visible.']
-];
+export const WHEELS = {
+ style:{items:['Black lace','Everyday comfort','Soft pink','Golden detail','Minimal black','Runway mood','Silk story','Signature set']},
+ mood:{items:['Quiet luxury','Romantic','Bold & modern','Soft morning','After hours','Golden hour','Classic','Playful']},
+ date:{items:['Coffee & conversation','At-home movie','Sunset walk','Cook together','Gallery visit','Dessert stop','Board-game night','Photo walk']},
+ surprise:{items:['Create a moodboard','Write a note','Plan a mini shoot','Try a new colour','Make a playlist','Style a gift','Explore a new place','Make something']}
+};
 
-export const COLLABORATIONS = ['Luxury Hotel','Perfume','Fashion','Jewellery','Watch','Spa','Couples Game','Photography Studio','Travel','Fitness','Skincare','Café / Date'];
-
-export const DATE_IDEAS = [
- {vibe:'cozy',time:'short',budget:'low',title:'A slow coffee and conversation',detail:'Choose a quiet café, leave phones away for half an hour and trade three favourite memories.'},
- {vibe:'cozy',time:'long',budget:'mid',title:'At-home movie and dessert night',detail:'Pick a film together, make one simple dessert and create a relaxed no-rush evening.'},
- {vibe:'playful',time:'short',budget:'low',title:'Two-stop surprise walk',detail:'Take turns choosing the next street, snack or photo spot. Keep the plan flexible.'},
- {vibe:'playful',time:'long',budget:'any',title:'Couples game night',detail:'Try a quiz, a board game or a friendly challenge. Skip anything that feels uncomfortable.'},
- {vibe:'creative',time:'short',budget:'low',title:'Make a shared moodboard',detail:'Choose five colours, three places and one song that describe your next chapter.'},
- {vibe:'creative',time:'long',budget:'mid',title:'Gallery and sketchbook date',detail:'Visit an exhibition and each sketch or photograph one detail that catches your eye.'},
- {vibe:'outdoor',time:'short',budget:'low',title:'Golden-hour sunset walk',detail:'Take a familiar route at golden hour and stop for a small treat on the way back.'},
- {vibe:'outdoor',time:'long',budget:'any',title:'A day-trip mini adventure',detail:'Choose a nearby place, plan one scenic stop and leave space for spontaneous discoveries.'}
+export const MEMORY_PROMPTS = [
+ 'What was the first small thing that made you laugh together?',
+ 'Which song reminds you of a fun shared moment?',
+ 'What is one kind thing someone did that you still remember?',
+ 'Which simple date would you happily repeat?',
+ 'What is a funny harmless misunderstanding you both remember?',
+ 'What shared tradition would you like to start?'
 ];
+export const CHEMISTRY_LINES = {
+ talk:'Choose a flirty question deck. Keep answers optional.',
+ compliment:'Choose a compliment round. Make it genuine.',
+ dance:'Choose a dance or eye-contact round. Ask first.',
+ quiz:'Choose a couple quiz. Either person can pass.'
+};

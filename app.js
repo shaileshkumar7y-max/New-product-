@@ -1,175 +1,101 @@
+import {GALLERY,TASKS,PROMPTS,FEED,POWERS,MISSIONS,FLAGS,KNOW,MYSTERY,SLANG,WHEELS,MEMORY_PROMPTS,CHEMISTRY_LINES} from './data.js';
+(() => {
+  'use strict';
+  const $ = (s,root=document)=>root.querySelector(s);
+  const $$ = (s,root=document)=>[...root.querySelectorAll(s)];
+  const KEY='bbkr-v2-local-state';
+  const safeLoad=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch{return {}}};
+  const saved=safeLoad();
+  const state={score:Number(saved.score)||0,rounds:Number(saved.rounds)||0,votes:saved.votes||{'05':0,'08':0},player:saved.player||null,achievements:saved.achievements||[],nominations:saved.nominations||[],immunity:!!saved.immunity,slang:saved.slang||saved.language||'hinglish',sound:!!saved.sound,reducedMotion:!!saved.reducedMotion,mode:'truth',level:2,taskIndex:0,taskRemaining:45,taskTimer:null,sixtyRemaining:60,sixtyTimer:null,flagIndex:0,knowIndex:0,finale:Number(saved.finale)||0,customGallery:null,customWheelItems:saved.customWheelItems||{},bestReaction:Number(saved.bestReaction)||0,confession:saved.confession||'',runwayVotes:saved.runwayVotes||{'BLXCKED BLACK LACE':0,'SYDNEY INNERWEAR':0,'PINK LACE EDIT':0},lastGallery:-1,currentGallery:[],lastSurprise:-1,poster:0,played:0,reactionTimeout:null,reactionReady:false,reactionStartAt:0,wheelRotation:0,wheelTimeout:null,truthSkipRound:Number(saved.truthSkipRound)||0,memoryIndex:0};
+  const posters=['../show-poster-black-edition.webp','../show-poster-sydney-edition.webp'];
+  let currentImageIndex=0;
+  let activeFilter='all';
+  let currentTask=null;
+  const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify({score:state.score,rounds:state.rounds,votes:state.votes,player:state.player,achievements:state.achievements,nominations:state.nominations,immunity:state.immunity,slang:state.slang,sound:state.sound,reducedMotion:state.reducedMotion,finale:state.finale,played:state.played,customWheelItems:state.customWheelItems,bestReaction:state.bestReaction,confession:state.confession,runwayVotes:state.runwayVotes,truthSkipRound:state.truthSkipRound}))}catch{toast('Local storage full hai. Export ya reset kar lo.')}};
+  function toast(msg){const el=$('#toast');if(!el)return;el.textContent=msg;el.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('show'),2400)}
+  function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+  function addPoints(n,reason='Round complete'){state.score=Math.max(0,state.score+n);state.rounds++;updateStats();persist();playTone();toast(`${reason} · +${n} points`)}
+  function playTone(){if(!state.sound)return;try{const AudioCtx=window.AudioContext||window.webkitAudioContext;if(!AudioCtx)return;const ctx=new AudioCtx();const osc=ctx.createOscillator(),gain=ctx.createGain();osc.type='sine';osc.frequency.value=660;gain.gain.setValueAtTime(.035,ctx.currentTime);gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.13);osc.connect(gain);gain.connect(ctx.destination);osc.start();osc.stop(ctx.currentTime+.13);osc.onended=()=>ctx.close()}catch{}}
+  function updateStats(){const score=state.score;$('#scoreValue').textContent=String(score).padStart(3,'0');$('#heroPoints').textContent=String(score).padStart(3,'0');$('#heroRounds').textContent=String(state.rounds).padStart(2,'0');$('#scoreBar').style.width=`${Math.min(100,score%100)}%`;$('#rankLabel').textContent=rankName(score);$('#rankName').textContent=rankName(score);$('#badgeCount').textContent=`${state.achievements.length} BADGES`;$('#rankDescription').textContent=rankDescription(score);renderLeaderboard();renderAchievements()}
+  function rankName(s){return s>=300?'HOUSE LEGEND':s>=180?'TASK BOSS':s>=90?'GAME CHANGER':s>=30?'HOUSE REGULAR':'HOUSE ROOKIE'}
+  function rankDescription(s){return s>=300?'The house knows your name.':s>=180?'You are running the task arena.':s>=90?'Momentum ban raha hai.':s>=30?'Good start, keep the game kind.':'Play a few rounds to unlock your first badge.'}
+  function renderLeaderboard(){const rows=[{name:state.player?.name||'You',score:state.score,tag:'YOUR LOCAL PROFILE'},{name:'Contestant #05',score:Number(state.votes['05']||0)*5+55,tag:'FICTIONAL DEMO SCORE'},{name:'Contestant #08',score:Number(state.votes['08']||0)*5+48,tag:'FICTIONAL DEMO SCORE'}].sort((a,b)=>b.score-a.score);$('#leaderboardList').innerHTML=rows.map((r,i)=>`<div class="leader-row"><b>${i+1}</b><div>${esc(r.name)}<small>${r.tag}</small></div><b>${r.score} PTS</b></div>`).join('')}
+  function renderAchievements(){const items=[];if(state.score>=10)items.push('FIRST ROUND');if(state.score>=50)items.push('POINT COLLECTOR');if(state.rounds>=5)items.push('FIVE ROUNDS');if(state.achievements.includes('kind'))items.push('KINDNESS CAPTAIN');if(state.finale>=5)items.push('FINALE FIVE');$('#achievementBadges').innerHTML=items.length?items.map(x=>`<span>✦ ${x}</span>`).join(''):'<span>✦ FIRST BADGE WAITING</span>'}
+  function renderPlayer(){const p=state.player;$('#playerDisplay').textContent=p?.name||'Guest Player';$('#playerMeta').textContent=p?`${p.vibe} · LOCAL HOUSEMATE`:'Set your nickname and play vibe.';$('#playerAvatar').textContent=(p?.name||'G').charAt(0).toUpperCase();if(p){$('#playerName').value=p.name;$('#playerVibe').value=p.vibe}}
+  function renderVotes(){$('#vote05').textContent=state.votes['05']||0;$('#vote08').textContent=state.votes['08']||0}
+  function refreshFeed(){const item=FEED[Math.floor(Math.random()*FEED.length)];$('#feedHeadline').textContent=item[0];$('#feedCopy').textContent=item[1];$('#feedList').innerHTML=[...FEED].sort(()=>Math.random()-.5).slice(0,4).map((x,i)=>`<div class="feed-item"><span class="feed-symbol">${['✦','◉','♡','★'][i]}</span><div><strong>${esc(x[0])}</strong><small>${esc(x[1])}</small></div><span class="feed-time">${i?'JUST NOW':'LIVE'}</span></div>`).join('')}
+  function setPoster(n){state.poster=(n+posters.length)%posters.length;const img=$('#heroPoster');img.src=posters[state.poster];img.alt=`BIG BOSS KE RANDIYA ${state.poster?'Sydney':'Black'} Edition poster`;}
+  function drawTask(){clearInterval(state.taskTimer);state.taskTimer=null;const mode=$('#taskMode').value,level=$('#taskLevel').value;let list=TASKS.filter(t=>(mode==='all'||t[2]===mode)&&(level==='all'||t[3]===level));if(!list.length)list=TASKS;const t=list[Math.floor(Math.random()*list.length)];currentTask=t;state.taskRemaining=t[4];$('#taskNumber').textContent=`TASK ${String(TASKS.indexOf(t)+1).padStart(2,'0')} / ${TASKS.length}`;$('#taskTitle').textContent=t[0];$('#taskPrompt').textContent=t[1];$('#taskTime').textContent=`⏱ ${t[4]} SEC`;$('#taskPoints').textContent=`★ ${t[5]} POINTS`;$('#taskLevelBadge').textContent=t[3].toUpperCase();updateTaskTimer();$('#taskStatus').textContent='New task ready. Start, skip ya pass kar sakte ho.'}
+  function updateTaskTimer(){const total=currentTask?.[4]||45;$('#taskTimer').textContent=`00:${String(state.taskRemaining).padStart(2,'0')}`;$('#taskTimerBar').style.width=`${Math.max(0,state.taskRemaining/total*100)}%`}
+  function startTask(){if(!currentTask)drawTask();if(state.taskTimer)return;if(state.taskRemaining<=0)state.taskRemaining=currentTask[4];$('#taskStatus').textContent='Timer chal raha hai… focus boss!';state.taskTimer=setInterval(()=>{state.taskRemaining--;updateTaskTimer();if(state.taskRemaining<=0){clearInterval(state.taskTimer);state.taskTimer=null;$('#taskStatus').textContent='Time up! Complete ya skip choose karo.';toast('Task timer complete.')}} ,1000)}
+  function pauseTask(){if(!state.taskTimer){$('#taskStatus').textContent='Timer already paused.';return}clearInterval(state.taskTimer);state.taskTimer=null;$('#taskStatus').textContent='Paused. Jab ready ho resume karna.'}
+  function skipTask(){clearInterval(state.taskTimer);state.taskTimer=null;$('#taskStatus').textContent='Task skipped. Koi penalty nahi.';drawTask()}
+  function completeTask(){if(!currentTask){toast('Pehle task select karo.');return}clearInterval(state.taskTimer);state.taskTimer=null;addPoints(currentTask[5],currentTask[0]);state.achievements.push('task');persist();drawTask()}
+  function drawPower(){const p=POWERS[Math.floor(Math.random()*POWERS.length)];$('#powerTitle').textContent=p[0];$('#powerCopy').textContent=p[1];toast(`${p[0]} unlocked`)}
+  function drawSecret(){const p=MISSIONS[Math.floor(Math.random()*MISSIONS.length)];$('#secretTitle').textContent=p[0];$('#secretCopy').textContent=p[1];toast('Secret mission revealed')}
+  function drawPrompt(){const arr=PROMPTS[state.mode][state.level]||PROMPTS.truth[1];const p=arr[Math.floor(Math.random()*arr.length)];$('#promptKind').textContent=`${state.mode.toUpperCase()} / LEVEL ${state.level}`;$('#promptText').textContent=p;$('#promptMeta').textContent='Both players choose yes. Pass, pause or stop any time.';}
+  function setMode(mode){state.mode=mode;$$('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));$('#promptKind').textContent=`${mode.toUpperCase()} / READY`;$('#promptText').textContent='Mode set. Draw a fresh prompt.'}
+  function setLevel(v){state.level=Number(v);$('#heatValue').textContent=['','1 · PLAYFUL','2 · BOLD','3 · SPICY'][state.level]}
+  function renderGallery(filter='all'){activeFilter=filter;$$('[data-gallery]').forEach(b=>b.classList.toggle('active',b.dataset.gallery===filter));const items=GALLERY.filter(x=>filter==='all'||x.category===filter);state.currentGallery=items;$('#galleryGrid').innerHTML=items.map((x,i)=>`<article class="gallery-card"><button data-gallery-index="${i}" aria-label="Open ${esc(x.title)}"><img src="${x.src}" alt="${esc(x.title)}" loading="lazy"><span>${esc(x.title)}</span></button></article>`).join('');$$('#galleryGrid img').forEach(img=>img.addEventListener('error',()=>{img.src='../image-placeholder.svg';img.alt='Image unavailable';},{once:true}))}
+  function openImage(i){currentImageIndex=Math.max(0,Math.min(i,state.currentGallery.length-1));const item=state.currentGallery[currentImageIndex];if(!item)return;$('#modalImage').src=item.src;$('#modalImage').onerror=()=>{$('#modalImage').src='../image-placeholder.svg'};$('#imageModalTitle').textContent=item.title;$('#modalCaption').textContent=item.caption;showDialog('imageModal')}
+  function nextImage(){if(!state.currentGallery.length)return;openImage((currentImageIndex+1)%state.currentGallery.length)}
+  function surprise(){const choices=GALLERY.filter(x=>['blxcked','afterdark','couples','art'].includes(x.category));let n=Math.floor(Math.random()*choices.length);if(choices.length>1&&n===state.lastSurprise)n=(n+1)%choices.length;state.lastSurprise=n;const x=choices[n];$('#surprisePanel').hidden=false;$('#surpriseImage').src=x.src;$('#surpriseImage').onerror=()=>{$('#surpriseImage').src='../image-placeholder.svg'};$('#surpriseTitle').textContent=x.title;$('#surpriseDescription').textContent=x.caption+' · Tap next for another random pick.';$('#surprisePanel').scrollIntoView({behavior:state.reducedMotion?'auto':'smooth',block:'nearest'})}
 
-import { PRODUCTS, CAMPAIGNS, COLLABORATIONS, WHEELS, DATE_IDEAS } from './data.js';
-
-const $ = (s,root=document)=>root.querySelector(s);
-const $$ = (s,root=document)=>[...root.querySelectorAll(s)];
-const KEY='innerwear-new-edit-v5';
-const safeLoad=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch{return {}}};
-const saved=safeLoad();
-const state={
- filter:'ALL',query:'',sort:'featured',
- bag:Array.isArray(saved.bag)?saved.bag:[],
- wishlist:Array.isArray(saved.wishlist)?saved.wishlist:[],
- custom:{...(saved.custom||{})},
- wheelRotation:0, selectedSizes:{},
- campaignTab:'ads'
-};
-const artImages=[
- ['./mughal-royal-romance-poster.webp','Mughal royal romance poster'],
- ['./backlit-saree-atelier-sketch.webp','Backlit saree graphite study'],
- ['./bollywood-romance-poster-collection.webp','Romance poster collection'],
- ['./sepia-couples-moodboard.webp','Sepia couples moodboard']
-];
-function persist(){try{localStorage.setItem(KEY,JSON.stringify({bag:state.bag,wishlist:state.wishlist,custom:state.custom}))}catch{toast('Browser storage is full; this change is temporary.')}}
-function toast(msg){const el=$('#toast');if(!el)return;el.textContent=msg;el.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('show'),2200)}
-function renderProducts(){
- let list=PRODUCTS.filter(p=>(state.filter==='ALL'||p.brand===state.filter)&&(`${p.name} ${p.brand} ${p.category} ${p.description}`.toLowerCase().includes(state.query.toLowerCase())));
- if(state.sort==='az')list.sort((a,b)=>a.name.localeCompare(b.name));
- if(state.sort==='za')list.sort((a,b)=>b.name.localeCompare(a.name));
- $('#productGrid').innerHTML=list.map(p=>`
- <article class="product-card">
-  <div class="product-image"><img src="${p.image}" alt="${esc(p.name)}" loading="lazy" onerror="this.onerror=null;this.src='./image-placeholder.svg'">
-   <span class="product-badge">${esc(p.badge||p.category)}</span>
-   <button class="heart-btn ${state.wishlist.includes(p.id)?'active':''}" data-wish="${p.id}" aria-label="Toggle wishlist">♡</button>
-  </div>
-  <div class="product-info"><span class="product-brand">${esc(p.brand)}</span><h3>${esc(p.name)}</h3><p>${esc(p.description)}</p>
-   <div class="product-bottom"><span>${esc((p.sizes||[]).join(' / '))}</span><button class="quick-view" data-view="${p.id}">QUICK VIEW ↗</button></div>
-  </div>
- </article>`).join('')||'<p class="section-note">No matching concept products. Try another filter.</p>';
- $('#productCount').textContent=`${list.length} concept pieces`;
- updateCounts();
-}
-function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function updateCounts(){$('#bagCount').textContent=state.bag.length;$('#wishCount').textContent=state.wishlist.length}
-function findProduct(id){return PRODUCTS.find(p=>p.id===id)}
-function openDialog(id){const d=$(id);if(d?.showModal)d.showModal()}
-function closeDialog(id){const d=$(id);if(d?.open)d.close()}
-function productModal(id){
- const p=findProduct(id);if(!p)return;
- const size=p.sizes?.[0]||'ONE SIZE';state.selectedSizes[id]=state.selectedSizes[id]||size;
- $('#productModalBody').innerHTML=`<img src="${p.detail||p.image}" alt="${esc(p.name)}" onerror="this.onerror=null;this.src='./image-placeholder.svg'">
- <div><span class="product-brand">${esc(p.brand)} / ${esc(p.badge||'CONCEPT')}</span><h3>${esc(p.name)}</h3><p>${esc(p.description)}</p><p><b>Concept preview</b> · Product details, material and live availability are not confirmed.</p>
- <div class="size-options">${(p.sizes||['ONE SIZE']).map(s=>`<button data-size="${esc(s)}" data-product="${id}" class="${state.selectedSizes[id]===s?'selected':''}">${esc(s)}</button>`).join('')}</div>
- <button class="btn btn-gold" id="addProduct" data-add="${id}">ADD TO DEMO BAG</button>
- <button class="btn btn-outline" id="modalWish" data-wish="${id}">♡ SAVE TO WISHLIST</button></div>`;
- openDialog('#productModal');
-}
-function addBag(id){const p=findProduct(id);if(!p)return;state.bag.push({id,size:state.selectedSizes[id]||p.sizes?.[0]||'ONE SIZE'});persist();renderBag();updateCounts();toast('Added to your demo bag.')}
-function renderBag(){
- const box=$('#bagItems');if(!state.bag.length){box.innerHTML='<p class="section-note">Your demo bag is empty.</p>';return}
- box.innerHTML=state.bag.map((item,i)=>{const p=findProduct(item.id);return `<div class="bag-item"><img src="${p.image}" alt=""><div><b>${esc(p.name)}</b><br>${esc(p.brand)} · Size ${esc(item.size)}</div><button data-remove-bag="${i}">REMOVE</button></div>`}).join('');
-}
-function renderWishlist(){
- const box=$('#wishlistItems');if(!state.wishlist.length){box.innerHTML='<p class="section-note">No saved items yet.</p>';return}
- box.innerHTML=state.wishlist.map(id=>{const p=findProduct(id);return p?`<div class="bag-item"><img src="${p.image}" alt=""><div><b>${esc(p.name)}</b><br>${esc(p.brand)}</div><button data-remove-wish="${id}">REMOVE</button></div>`:''}).join('');
-}
-function toggleWish(id){state.wishlist=state.wishlist.includes(id)?state.wishlist.filter(x=>x!==id):[...state.wishlist,id];persist();renderProducts();renderWishlist();toast(state.wishlist.includes(id)?'Saved to wishlist.':'Removed from wishlist.')}
-function renderCampaigns(){
- const box=$('#campaignContent');
- if(state.campaignTab==='ads')box.innerHTML=CAMPAIGNS.map((x,i)=>`<article class="campaign-item"><small>BLXCKED / AD CONCEPT ${String(i+1).padStart(2,'0')}</small><h3>${esc(x[0])}</h3><p>${esc(x[1])}</p></article>`).join('');
- if(state.campaignTab==='collabs')box.innerHTML=COLLABORATIONS.map((x,i)=>`<article class="campaign-item"><small>COLLABORATION / ${String(i+1).padStart(2,'0')}</small><h3>${esc(x)}</h3><p>Creative collaboration direction for INNERWEAR.</p></article>`).join('');
- if(state.campaignTab==='visuals')box.innerHTML=artImages.map((x,i)=>`<button class="gallery-tile" data-image="${x[0]}"><img src="${x[0]}" alt="${esc(x[1])}"><span>${esc(x[1])}</span></button>`).join('');
-}
-function generateDate(){
- const vibe=$('#dateMood').value,time=$('#dateTime').value,budget=$('#dateBudget').value;
- const matches=DATE_IDEAS.filter(x=>x.vibe===vibe&&(x.time===time||!x.time)&&(x.budget===budget||x.budget==='any'||budget==='any'));
- const item=(matches.length?matches:DATE_IDEAS.filter(x=>x.vibe===vibe))[Math.floor(Math.random()*(matches.length||1))]||DATE_IDEAS[0];
- $('#dateResult').innerHTML=`<b>${esc(item.title)}</b><br>${esc(item.detail)}`;
-}
-function generateGift(){
- const vibe=$('#giftVibe').value,budget=$('#giftBudget').value;
- const map={
- 'Classic':['A clean everyday essentials set','A minimal travel organiser','A classic watch/bracelet styling edit'],
- 'Playful':['A custom playlist + date kit','A graphic lounge set concept','A playful surprise box'],
- 'Minimal':['A monochrome essentials set','A premium fabric care kit','A clean wardrobe organiser'],
- 'Romantic':['A handwritten note + curated gift box','A matching style edit','A planned dinner and photo walk']
- };
- const items=map[vibe]||map.Classic;
- $('#giftResult').innerHTML=`<b>${esc(vibe)} gift directions</b><br>${items.map(esc).join(' · ')}<br><small>${esc(budget)} · Inspiration only; no checkout or live stock.</small>`;
-}
-function wheelItems(){const type=$('#wheelType').value;return [...(WHEELS[type]?.items||[]),...(state.custom[type]||[]) ]}
-function spinWheel(){
- const items=wheelItems();const wheel=$('#wheel');const pick=items[Math.floor(Math.random()*items.length)];
- state.wheelRotation+=1440+Math.random()*720;
- wheel.style.transform=`rotate(${state.wheelRotation}deg)`;
- $('#wheelResult').textContent='SPINNING…';
- setTimeout(()=>{$('#wheelResult').textContent=pick.toUpperCase();toast(`Wheel result: ${pick}`)},2450);
-}
-function addWheelOption(){
- const type=$('#wheelType').value,val=$('#customWheelOption').value.trim();
- if(!val)return toast('Enter an option first.');
- state.custom[type]=[...(state.custom[type]||[]),val].slice(-12);$('#customWheelOption').value='';persist();toast('Custom wheel option saved locally.');
-}
-function estimateSize(){
- const under=Number($('#underbust').value),bust=Number($('#bust').value);
- if(!under||!bust||under<50||under>150||bust<50||bust>170||bust<=under){$('#sizeResult').textContent='Enter valid measurements. Bust should be higher than underbust.';return}
- const band=Math.round(under/5)*5;
- const diff=bust-under;
- const cup=diff<10?'AA/A':diff<12?'A':diff<14?'B':diff<16?'C':diff<18?'D':diff<20?'DD/E':'F+';
- $('#sizeResult').innerHTML=`<b>Rough starting point: ${band} / ${cup}</b><br>Compare with the brand-specific size chart and actual fit. This estimate is not a final size recommendation. Measurements are not saved.`;
-}
-function renderSearch(q){
- const val=q.toLowerCase();const found=PRODUCTS.filter(p=>`${p.name} ${p.brand} ${p.category}`.toLowerCase().includes(val)).slice(0,8);
- $('#searchResults').innerHTML=found.map(p=>`<a class="search-result" href="#shop" data-search-view="${p.id}">${esc(p.name)} <small>· ${esc(p.brand)}</small></a>`).join('')||'<p class="section-note">No matches found.</p>';
-}
-function bindEvents(){
- $('#brandFilters').addEventListener('click',e=>{const b=e.target.closest('[data-filter]');if(!b)return;state.filter=b.dataset.filter;$$('.filter').forEach(x=>x.classList.toggle('active',x===b));renderProducts()});
- $('#productSearch').addEventListener('input',e=>{state.query=e.target.value;renderProducts()});
- $('#sortProducts').addEventListener('change',e=>{state.sort=e.target.value;renderProducts()});
- $('#resetShop').addEventListener('click',()=>{state.filter='ALL';state.query='';state.sort='featured';$('#productSearch').value='';$('#sortProducts').value='featured';$$('.filter').forEach(x=>x.classList.toggle('active',x.dataset.filter==='ALL'));renderProducts()});
- $('#productGrid').addEventListener('click',e=>{const view=e.target.closest('[data-view]');const wish=e.target.closest('[data-wish]');if(view)productModal(view.dataset.view);if(wish)toggleWish(wish.dataset.wish)});
- $('#productModalBody').addEventListener('click',e=>{const s=e.target.closest('[data-size]');const a=e.target.closest('[data-add]');const w=e.target.closest('[data-wish]');if(s){state.selectedSizes[s.dataset.product]=s.dataset.size;$$('[data-size]','#productModalBody').forEach(x=>x.classList.toggle('selected',x===s))}if(a)addBag(a.dataset.add);if(w)toggleWish(w.dataset.wish)});
- $('#openBag').addEventListener('click',()=>{renderBag();openDialog('#bagModal')});
- $('#openWishlist').addEventListener('click',()=>{renderWishlist();openDialog('#wishlistModal')});
- $('#bagItems').addEventListener('click',e=>{const b=e.target.closest('[data-remove-bag]');if(!b)return;state.bag.splice(Number(b.dataset.removeBag),1);persist();renderBag();updateCounts()});
- $('#wishlistItems').addEventListener('click',e=>{const b=e.target.closest('[data-remove-wish]');if(!b)return;toggleWish(b.dataset.removeWish)});
- $('#clearBag').addEventListener('click',()=>{state.bag=[];persist();renderBag();updateCounts()});
- $$('[data-close]').forEach(b=>b.addEventListener('click',()=>closeDialog('#'+b.dataset.close)));
- $$('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d)d.close()}));
- $('#campaignContent').addEventListener('click',e=>{const b=e.target.closest('[data-image]');if(b)openLightbox(b.dataset.image,b.querySelector('span')?.textContent||'Campaign visual')});
- $$('.campaign-tabs button').forEach(b=>b.addEventListener('click',()=>{$$('.campaign-tabs button').forEach(x=>x.classList.toggle('active',x===b));state.campaignTab=b.dataset.campaignTab;renderCampaigns()}));
- $('#artGallery').addEventListener('click',e=>{const b=e.target.closest('[data-image]');if(b)openLightbox(b.dataset.image,b.querySelector('span')?.textContent||'Art Atelier')});
- $('#generateDate').addEventListener('click',generateDate);
- $('#generateGift').addEventListener('click',generateGift);
- $('#spinWheel').addEventListener('click',spinWheel);
- $('#addWheelOption').addEventListener('click',addWheelOption);
- $('#estimateSize').addEventListener('click',estimateSize);
- $('#wheelType').addEventListener('change',()=>{$('#wheelResult').textContent='READY TO SPIN';$('#wheel').style.transform='rotate(0deg)';state.wheelRotation=0});
- $('#menuToggle').addEventListener('click',()=>{$('#mobileNav').hidden=!$('#mobileNav').hidden});
- $('#openSearch').addEventListener('click',()=>openDialog('#searchModal'));
- $('#globalSearch').addEventListener('input',e=>renderSearch(e.target.value));
- $('#searchResults').addEventListener('click',e=>{const a=e.target.closest('[data-search-view]');if(!a)return;closeDialog('#searchModal');setTimeout(()=>productModal(a.dataset.searchView),100)});
- $('#globalSearch').addEventListener('keydown',e=>{if(e.key==='Escape')closeDialog('#searchModal')});
-
-}
-function openLightbox(src,caption){$('#lightboxImage').src=src;$('#lightboxCaption').textContent=caption;openDialog('#lightbox')}
-
-function initShowUpgrade(){
- const KEY='innerwear-show-upgrade-v5';
- let data={};
- try{data=JSON.parse(localStorage.getItem(KEY)||'{}')}catch{data={}}
- const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(data))}catch{}};
- const result=$('#nominationResult');
- const pts=$('#upgradePoints');
- const immunity=$('#immunityState');
- const render=()=>{
-   pts.textContent=String(data.points||0);
-   immunity.textContent=data.immunity?'Immunity card claimed for this demo round.':'One local immunity card is available for this demo round.';
-   result.textContent=data.nomination?`Contestant #${data.nomination.person} nominated · ${data.nomination.reason}`:'No nominations recorded in this browser yet.';
- };
- $('#submitNomination')?.addEventListener('click',()=>{
-   data.nomination={person:$('#nomineePick').value,reason:$('#nominationReason').value,time:Date.now()};
-   save();render();toast('Nomination saved locally.');
- });
- $('#claimImmunity')?.addEventListener('click',()=>{
-   if(data.immunity){toast('Immunity card has already been claimed.');return;}
-   data.immunity=true;save();render();toast('Immunity card claimed.');
- });
- $('#addUpgradePoints')?.addEventListener('click',()=>{data.points=(data.points||0)+5;save();render();toast('+5 house points.')});
- render();
-}
-
-function init(){renderProducts();renderBag();renderWishlist();renderCampaigns();updateCounts();bindEvents();initShowUpgrade()}
-init();
-
-if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {})); }
+  function openAnatomy(type){const file=type==='vulva'?'./assets/vulva-educational.svg':'./assets/penis-educational.svg';$('#anatomyTitle').textContent=type==='vulva'?'CHUT GALLERY · VULVA EDUCATION':'LUND GALLERY · PENIS EDUCATION';$('#anatomyBody').innerHTML=`<div class="anatomy-art"><img src="${file}" alt="Non-explicit educational anatomy diagram"></div><p class="muted">Anatomy basics: normal variation is common. If you have pain, unusual symptoms or health concerns, consult a qualified clinician.</p>`;showDialog('anatomyModal')}
+  function setFlag(){const f=FLAGS[state.flagIndex%FLAGS.length];$('#flagPrompt').textContent=f.q;$('#flagResult').textContent='Choose RED or GREEN.'}
+  function answerFlag(v){const f=FLAGS[state.flagIndex%FLAGS.length];const correct=v===f.a;$('#flagResult').textContent=(correct?'Correct! ':'Not quite. ')+f.why;if(correct)addPoints(5,'Flag check');}
+  function setKnow(){const q=KNOW[state.knowIndex%KNOW.length];$('#knowQuestion').textContent=q.q;$('#knowOptions').innerHTML=q.o.map((o,i)=>`<button data-know="${i}">${esc(o)}</button>`).join('');$('#knowResult').textContent='Pick the answer you think fits.'}
+  function answerKnow(n){const q=KNOW[state.knowIndex%KNOW.length];if(Number(n)===q.a){$('#knowResult').textContent='Nice guess! +5 points.';addPoints(5,'Good guess')}else $('#knowResult').textContent='Good try. Ask them and find out!';}
+  function compliment(text){$('#complimentResult').textContent=text;addPoints(3,'Kind words');state.achievements.push('kind');persist()}
+  function newSixty(){const options=['Name five things that make a great date.','Name five green flags in a relationship.','List five songs for a house playlist.','Name five ways to make a friend feel welcome.','Pitch five imaginary fashion ideas.'];$('#sixtyPrompt').textContent=options[Math.floor(Math.random()*options.length)]}
+  function updateSixty(){const m=String(Math.floor(state.sixtyRemaining/60)).padStart(2,'0'),s=String(state.sixtyRemaining%60).padStart(2,'0');$('#sixtyTimer').textContent=`${m}:${s}`}
+  function startSixty(){if(state.sixtyTimer)return;$('#sixtyStatus').textContent='Timer running!';state.sixtyTimer=setInterval(()=>{state.sixtyRemaining--;updateSixty();if(state.sixtyRemaining<=0){clearInterval(state.sixtyTimer);state.sixtyTimer=null;$('#sixtyStatus').textContent='Time up. Nice round!';addPoints(10,'60-second round')}},1000)}
+  function resetSixty(){clearInterval(state.sixtyTimer);state.sixtyTimer=null;state.sixtyRemaining=60;updateSixty();$('#sixtyStatus').textContent='Timer reset.'}
+  function mystery(){const p=MYSTERY[Math.floor(Math.random()*MYSTERY.length)];$('#mysteryResult').textContent=p;toast('Mystery opened!')}
+  function advanceFinale(){if(state.finale>=5){toast('Finale complete. Champion!');return}state.finale++;$$('#finaleSteps span').forEach((x,i)=>x.classList.toggle('done',i<state.finale));$('#finaleStatus').textContent=`Level ${state.finale} / 5`;addPoints(15,'Finale ladder');if(state.finale===5){state.achievements.push('finale');persist();$('#finaleStatus').textContent='Finale champion unlocked!'}}
+  function renderWheels(){const type=$('#wheelType').value;const items=[...(WHEELS[type]?.items||WHEELS.style.items),...(state.customWheelItems[type]||[])];$('#wheelResult').textContent=`${type.toUpperCase()} WHEEL · ${items.length} OPTIONS`;$('#wheelDisc').setAttribute('aria-label',`${type} wheel with ${items.length} options`)}
+  function addWheelOption(){const text=$('#customWheelOption').value.trim().replace(/[<>]/g,'').slice(0,36);if(!text){toast('Pehle custom option likho.');return}const type=$('#wheelType').value;state.customWheelItems[type]=state.customWheelItems[type]||[];if(state.customWheelItems[type].some(x=>x.toLowerCase()===text.toLowerCase())){toast('Ye option pehle se hai.');return}state.customWheelItems[type].push(text);$('#customWheelOption').value='';persist();renderWheels();toast('Custom option added!')}
+  function spinWheel(){const type=$('#wheelType').value;const items=[...(WHEELS[type]?.items||WHEELS.style.items),...(state.customWheelItems[type]||[])];const index=Math.floor(Math.random()*items.length);const item=items[index];state.wheelRotation+=1440+(360-index*(360/items.length));$('#wheelDisc').style.transform=`rotate(${state.wheelRotation}deg)`;$('#spinWheel').disabled=true;$('#wheelResult').textContent='SPINNING…';clearTimeout(state.wheelTimeout);state.wheelTimeout=setTimeout(()=>{$('#wheelResult').textContent=`${type.toUpperCase()} PICK: ${item}`;$('#spinWheel').disabled=false;addPoints(3,'Wheel spin')},3050)}
+  function startReaction(){clearTimeout(state.reactionTimeout);state.reactionReady=false;state.reactionStartAt=0;$('#reactionZone').classList.remove('ready');$('#reactionZone').textContent='WAIT FOR GREEN…';$('#reactionStart').disabled=true;const wait=1300+Math.random()*2700;state.reactionTimeout=setTimeout(()=>{state.reactionReady=true;state.reactionStartAt=performance.now();$('#reactionZone').classList.add('ready');$('#reactionZone').textContent='TAP NOW!';$('#reactionStart').disabled=false},wait)}
+  function reactionTap(){if(!state.reactionStartAt){toast('False start! Green light ka wait karo.');return}if(!state.reactionReady)return;const ms=Math.round(performance.now()-state.reactionStartAt);state.reactionReady=false;state.reactionStartAt=0;$('#reactionZone').classList.remove('ready');$('#reactionZone').textContent='NICE REFLEX';if(!state.bestReaction||ms<state.bestReaction)state.bestReaction=ms;$('#reactionResult').textContent=`Your time: ${ms} ms · Best: ${state.bestReaction} ms`;persist();addPoints(ms<450?10:5,'Reaction test')}
+  function saveConfession(){state.confession=$('#confessionText').value.slice(0,400);persist();$('#confessionStatus').textContent='Saved in this browser only. Nothing is uploaded.';toast('Confession saved locally.')}
+  function clearConfession(){state.confession='';$('#confessionText').value='';persist();$('#confessionStatus').textContent='Confession cleared.'}
+  function buildAlliance(){const ally=$('#allyPick').value,goal=$('#allianceGoal').value;$('#allianceResult').textContent=`Alliance formed with ${ally} · Strategy: ${goal}. Local demo only.`;addPoints(5,'Alliance formed')}
+  function voteRunway(name){state.runwayVotes[name]=(Number(state.runwayVotes[name])||0)+1;renderRunway();persist();$('#runwayResult').textContent=`Vote saved for ${name}. Local house vote only.`;toast('Runway vote recorded!')}
+  function renderRunway(){const ids={'BLXCKED BLACK LACE':'#runwayBlack','SYDNEY INNERWEAR':'#runwaySydney','PINK LACE EDIT':'#runwayPink'};Object.entries(ids).forEach(([k,sel])=>$(sel).textContent=`${state.runwayVotes[k]||0} VOTES`)}
+  function buildChemistry(){const chosen=[['chemTalk','talk'],['chemCompliment','compliment'],['chemDance','dance'],['chemQuiz','quiz']].filter(([id])=>$('#'+id).checked).map(([,key])=>key);if(!chosen.length){$('#chemistryResult').textContent='Choose at least one option, or skip the round.';return}const key=chosen[Math.floor(Math.random()*chosen.length)];$('#chemistryResult').textContent=CHEMISTRY_LINES[key];addPoints(3,'Chemistry round built')}
+  function renderTruthSkip(){const total=5;$$('#truthSkipProgress span').forEach((x,i)=>x.classList.toggle('done',i<state.truthSkipRound));$('#truthSkipStatus').textContent=`Round ${Math.min(state.truthSkipRound,total)} / ${total}`;if(state.truthSkipRound>=total){$('#truthSkipPrompt').textContent='Tournament complete. You made it through!';$('#truthAnswer').disabled=true;$('#truthSkip').disabled=true}else{const all=Object.values(PROMPTS.truth).flat();$('#truthSkipPrompt').textContent=all[(state.truthSkipRound+2)%all.length];$('#truthAnswer').disabled=false;$('#truthSkip').disabled=false}}
+  function truthAdvance(answered){if(state.truthSkipRound>=5){toast('Tournament already complete.');return}const round=state.truthSkipRound+1;state.truthSkipRound=round;if(answered)addPoints(5,'Truth tournament');else toast('Skip accepted. No points lost.');renderTruthSkip();persist()}
+  function nextMemory(){const p=MEMORY_PROMPTS[state.memoryIndex%MEMORY_PROMPTS.length];$('#memoryPrompt').textContent=p;state.memoryIndex++;$('#memoryStatus').textContent='Answer together, or pass. No score pressure.'}
+  function nominate(){const n=$('#nominee').value,reason=$('#nominationReason').value;state.nominations.unshift({id:n,reason,time:Date.now()});state.nominations=state.nominations.slice(0,8);renderNominations();persist();toast(`Contestant #${n} nominated (local demo)`)}
+  function renderNominations(){const box=$('#nominationList');if(!state.nominations.length){box.textContent='No nominations yet.';return}box.innerHTML=state.nominations.map(x=>`<div class="nomination-row"><b>#${x.id}</b> · ${esc(x.reason)}</div>`).join('')}
+  function claimImmunity(){if(state.immunity){toast('Immunity already claimed for this save.');return}state.immunity=true;$('#immunityTitle').textContent='Immunity protected';$('#immunityCopy').textContent='Your local immunity card is active for this demo.';$('#claimImmunity').disabled=true;persist();toast('Immunity card unlocked!')}
+  function slangReaction(){const mode=$('input[name="slang"]:checked')?.value||'hinglish';state.slang=mode;const a=SLANG[mode]||SLANG.hinglish;$('#slangLine').textContent=a[Math.floor(Math.random()*a.length)];persist()}
+  function openPlayer(){showDialog('playerModal')}
+  function savePlayer(){const name=$('#playerName').value.trim().replace(/[<>]/g,'').slice(0,18);if(name.length<2){$('#playerStatus').textContent='Nickname kam se kam 2 letters ka rakho.';return}state.player={name,vibe:$('#playerVibe').value};persist();renderPlayer();$('#playerStatus').textContent='Saved locally. Welcome to the house!';setTimeout(()=>closeDialog('playerModal'),600)}
+  function showDialog(id){const d=$('#'+id);if(d?.showModal)d.showModal();else if(d)d.setAttribute('open','')}
+  function closeDialog(id){const d=$('#'+id);if(d?.close)d.close();else d?.removeAttribute('open')}
+  function bindDialogs(){ $$('[data-close]').forEach(b=>b.addEventListener('click',()=>closeDialog(b.dataset.close)));$$('dialog.modal').forEach(d=>d.addEventListener('click',e=>{if(e.target===d)closeDialog(d.id)})); }
+  function exportData(){const payload={version:2,score:state.score,rounds:state.rounds,votes:state.votes,player:state.player,achievements:state.achievements,nominations:state.nominations,immunity:state.immunity,customWheelItems:state.customWheelItems,bestReaction:state.bestReaction,confession:state.confession,runwayVotes:state.runwayVotes,exportedAt:new Date().toISOString()};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='bbkr-v2-local-progress.json';a.click();URL.revokeObjectURL(a.href);$('#dataStatus').textContent='Export created on this device.'}
+  function resetData(){if(!confirm('Reset all local game progress on this browser?'))return;localStorage.removeItem(KEY);location.reload()}
+  function saveRules(){if(!$('#everyoneAdult').checked){$('#rulesStatus').textContent='Har player 18+ confirm kare, tabhi proceed karein.';return}if(!$('#skipAllowed').checked||!$('#recordingBan').checked){$('#rulesStatus').textContent='Skip/stop and no-recording rules must stay enabled.';return}$('#rulesStatus').textContent='House rules saved. Ask first, respect every answer.';toast('House rules saved.')}
+  function initAgeGate(){const ok=sessionStorage.getItem('bbkr-v2-adult')==='yes';if(!ok)showDialog('ageGate');$('#ageConfirm').addEventListener('change',e=>$('#ageEnter').disabled=!e.target.checked);$('#ageEnter').addEventListener('click',()=>{if(!$('#ageConfirm').checked)return;sessionStorage.setItem('bbkr-v2-adult','yes');closeDialog('ageGate')})}
+  function init(){
+    bindDialogs();initAgeGate();renderPlayer();renderVotes();updateStats();refreshFeed();renderGallery();renderNominations();drawTask();setFlag();setKnow();updateSixty();setPoster(0);renderRunway();renderWheels();$('#confessionText').value=state.confession;$('#reactionResult').textContent=state.bestReaction?`Best time: ${state.bestReaction} ms`:'Best: —';$$('#finaleSteps span').forEach((x,i)=>x.classList.toggle('done',i<state.finale));$('#finaleStatus').textContent=`Level ${state.finale} / 5`;renderTruthSkip();
+    $('#menuToggle').addEventListener('click',()=>{$('#mobileMenu').hidden=!$('#mobileMenu').hidden});$$('#mobileMenu a').forEach(a=>a.addEventListener('click',()=>$('#mobileMenu').hidden=true));
+    ['#headerEnter','#enterHouse'].forEach(s=>$(s).addEventListener('click',()=>$('#house').scrollIntoView({behavior:state.reducedMotion?'auto':'smooth'})));
+    $('#openSettings').addEventListener('click',()=>showDialog('settingsModal'));
+    $('#posterPrev').addEventListener('click',()=>setPoster(state.poster-1));$('#posterNext').addEventListener('click',()=>setPoster(state.poster+1));
+    $('#refreshFeed').addEventListener('click',()=>{refreshFeed();toast('Fresh house update aa gaya!')});
+    $('#editPlayer').addEventListener('click',openPlayer);$('#joinContestant').addEventListener('click',openPlayer);$('#savePlayer').addEventListener('click',savePlayer);
+    $$('[data-vote]').forEach(b=>b.addEventListener('click',()=>{const n=b.dataset.vote;state.votes[n]=(Number(state.votes[n])||0)+1;renderVotes();persist();toast(`Vote recorded for #${n} locally.`)}));
+    $('#taskMode').addEventListener('change',drawTask);$('#taskLevel').addEventListener('change',drawTask);$('#startTask').addEventListener('click',startTask);$('#pauseTask').addEventListener('click',pauseTask);$('#skipTask').addEventListener('click',skipTask);$('#completeTask').addEventListener('click',completeTask);$('#drawPower').addEventListener('click',drawPower);$('#drawSecret').addEventListener('click',drawSecret);
+    $$('[data-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));$('#heatLevel').addEventListener('input',e=>setLevel(e.target.value));$('#drawPrompt').addEventListener('click',drawPrompt);$('#passPrompt').addEventListener('click',()=>{$('#promptMeta').textContent='Skipped. No points lost. Pick a fresh prompt.';toast('Pass accepted. No penalty.')});$('#completePrompt').addEventListener('click',()=>{addPoints(10,'Prompt completed');$('#promptText').textContent='Round complete! Draw another when ready.'});
+    $$('[data-gallery]').forEach(b=>b.addEventListener('click',()=>renderGallery(b.dataset.gallery)));$('#galleryGrid').addEventListener('click',e=>{const b=e.target.closest('[data-gallery-index]');if(b)openImage(Number(b.dataset.galleryIndex))});$('#modalNext').addEventListener('click',nextImage);$('#surpriseMe').addEventListener('click',surprise);$('#nextSurprise').addEventListener('click',surprise);$('#openChutGallery').addEventListener('click',()=>openAnatomy('vulva'));$('#openLundGallery').addEventListener('click',()=>openAnatomy('penis'));
+    $('#reactionStart').addEventListener('click',startReaction);$('#reactionZone').addEventListener('click',reactionTap);$('#buildChemistry').addEventListener('click',buildChemistry);$('#truthAnswer').addEventListener('click',()=>truthAdvance(true));$('#truthSkip').addEventListener('click',()=>truthAdvance(false));$('#nextMemory').addEventListener('click',nextMemory);$('#saveConfession').addEventListener('click',saveConfession);$('#clearConfession').addEventListener('click',clearConfession);$('#buildAlliance').addEventListener('click',buildAlliance);$$('[data-runway]').forEach(b=>b.addEventListener('click',()=>voteRunway(b.dataset.runway)));$('#wheelType').addEventListener('change',renderWheels);$('#addWheelOption').addEventListener('click',addWheelOption);$('#spinWheel').addEventListener('click',spinWheel);
+    $$('[data-flag]').forEach(b=>b.addEventListener('click',()=>answerFlag(b.dataset.flag)));$('#nextFlag').addEventListener('click',()=>{state.flagIndex++;setFlag()});$('#knowOptions').addEventListener('click',e=>{const b=e.target.closest('[data-know]');if(b)answerKnow(b.dataset.know)});$('#nextKnow').addEventListener('click',()=>{state.knowIndex++;setKnow()});$$('[data-compliment]').forEach(b=>b.addEventListener('click',()=>compliment(b.dataset.compliment)));$('#startSixty').addEventListener('click',startSixty);$('#resetSixty').addEventListener('click',resetSixty);$('#newSixty').addEventListener('click',newSixty);$('#openMystery').addEventListener('click',mystery);$('#finaleAdvance').addEventListener('click',advanceFinale);
+    $('#submitNomination').addEventListener('click',nominate);$('#claimImmunity').addEventListener('click',claimImmunity);$('#slangReaction').addEventListener('click',slangReaction);$$('input[name="slang"]').forEach(r=>r.addEventListener('change',()=>{state.slang=r.value;persist()}));$('#saveRules').addEventListener('click',saveRules);
+    $('#immunityTitle').textContent=state.immunity?'Immunity protected':'One shield. One round.';$('#immunityCopy').textContent=state.immunity?'Your local immunity card is active for this demo.':'Claim your once-per-save immunity card.';$('#claimImmunity').disabled=state.immunity;$('#languageSelect').value=state.slang;$('#languageSelect').addEventListener('change',e=>{state.slang=e.target.value;$$('input[name="slang"]').forEach(r=>r.checked=r.value===state.slang);persist();toast('Banter mode updated.')});$$('input[name="slang"]').forEach(r=>r.checked=r.value===state.slang);$('#soundToggle').checked=state.sound;$('#soundToggle').addEventListener('change',e=>{state.sound=e.target.checked;persist()});$('#motionToggle').checked=state.reducedMotion;$('#motionToggle').addEventListener('change',e=>{state.reducedMotion=e.target.checked;document.body.classList.toggle('reduce-motion',state.reducedMotion);persist()});document.body.classList.toggle('reduce-motion',state.reducedMotion);$('#exportData').addEventListener('click',exportData);$('#resetData').addEventListener('click',resetData);
+  }
+  init();
+})();

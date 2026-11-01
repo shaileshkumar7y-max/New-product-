@@ -1,25 +1,39 @@
-# QA report — V5 image-path repair
+# V2 QA Report
 
-## Confirmed fixes
+## Automated checks
 
-- Root asset layout matched against current GitHub tree: 52 WebP images are already at repository root.
-- Corrected static images, gallery/lightbox images, product-card/detail data and dynamic poster carousel paths.
-- Reconnected Show House and Private Feedback routes.
-- Removed the dead `private-rate-lab/` feedback footer link.
-- Updated Service Worker cache version and core routes.
-- Corrected package test/check scripts.
+- JavaScript syntax: PASS (`node --check app.js`, `node --check data.js`)
+- Node regression tests: **8/8 PASS**
+- All direct JavaScript `#id` selectors exist in HTML: PASS
+- Duplicate HTML IDs: 0
+- `<img>` elements missing `alt`: 0
+- CSS parser top-level errors: 0
+- Task catalogue: 53 entries
+- Prompt decks: 5
+- Wheel modes: 4
+- Gallery entries: 17 unique root image assets
+- Existing root image dependencies: **20/20 filenames found in GitHub `main` tree**
+- Local HTTP smoke test: **27/27 requested local page / script / stylesheet / SVG / root-image routes returned HTTP 200** using local test mirrors for the existing root asset filenames
+- ZIP integrity: checked before delivery
 
-## Automated results
+## Test coverage
 
-- JavaScript syntax checks: PASS (main app, data module, restored show script).
-- Regression tests: 7/7 PASS.
-- Product catalogue: 26/26 entries have valid image and detail paths.
-- Static page routes: 12/12 return HTTP 200 in local flat-root preview.
-- Image paths referenced by HTML/data/scripts: 49/49 return HTTP 200 in local flat-root preview.
-- Existing WebP assets: 52/52 passed image-file integrity verification.
-- Duplicate/missing direct DOM IDs: none found in main or show page.
-- ZIP image entries: 0 (intentionally, to avoid re-uploading existing images).
+1. Show name, INNERWEAR identity and all major section anchors
+2. Direct JavaScript selector IDs
+3. 53 tasks, 5 prompt decks, four wheels and mini-game inventories
+4. All gallery references point to existing root-level image assets (not copies)
+5. Poster, fallback and two new educational SVG files
+6. New and upgraded interaction handlers
+7. Age gate, consent, skip/pause and frontend-only storage safeguards
+8. Responsive breakpoints, bottom navigation and reduced-motion support
 
-## Not verified
+## Not claimed as tested
 
-The environment blocked Chromium page navigation, so no claim is made about real Android Chrome visual rendering. After upload, inspect the live page once on the phone.
+A real Android Chrome session was not completed in this environment. The headless Chromium process failed to produce a screenshot, so visual verification on the user's Android phone remains a post-upload check. This ZIP has not been committed to GitHub; the user must upload the `big-boss-v2/` folder.
+
+## Browser / privacy boundaries
+
+- LocalStorage holds score, votes, nickname, preferences and demo progress in this browser only.
+- There is no backend, online multiplayer, account, payment, stream or remote upload.
+- Age gate is self-attestation, not formal age verification.
+- CHUT / LUND galleries show non-explicit educational anatomy schematics only.

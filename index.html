@@ -1,141 +1,163 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b0911">
-<meta name="description" content="INNERWEAR — The New Edit. Brand studio, innerwear collections, campaign library and Big Boss Ke Randiya experience.">
-<title>INNERWEAR — THE NEW EDIT V5</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#090713">
+  <meta name="description" content="BIG BOSS KE RANDIYA — an adults-only INNERWEAR house game with playful, consent-first challenges.">
+  <title>BIG BOSS KE RANDIYA — INNERWEAR V2</title>
+  <link rel="icon" href="../icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-<div class="announcement"><span>18+ CONCEPT EXPERIENCE</span><span>INNERWEAR · STYLE · STORIES · GAMES</span><span>FRONTEND DEMO · NO CHECKOUT</span></div>
-<header class="site-header">
-  <a class="wordmark" href="#home"><span class="mark">I</span><span><b>INNERWEAR</b><small>THE NEW EDIT / V5</small></span></a>
-  <nav class="desktop-nav">
-    <a href="#brands">BRANDS</a><a href="#shop">SHOP THE EDIT</a><a href="#campaigns">CAMPAIGNS</a><a href="#experiences">EXPERIENCES</a><a href="#show">THE SHOW</a>
-  </nav>
-  <div class="header-tools"><button id="openSearch" class="icon-btn" aria-label="Search">⌕</button><button id="openWishlist" class="icon-btn" aria-label="Wishlist">♡ <small id="wishCount">0</small></button><button id="openBag" class="bag-btn">BAG <b id="bagCount">0</b></button><button id="menuToggle" class="menu-toggle" aria-label="Menu">☰</button></div>
-</header>
-<nav id="mobileNav" class="mobile-nav" hidden><a href="#brands">BRANDS</a><a href="#shop">SHOP THE EDIT</a><a href="#campaigns">CAMPAIGNS</a><a href="#experiences">EXPERIENCES</a><a href="#show">THE SHOW</a><a href="./private-feedback.html">PRIVATE FEEDBACK</a></nav>
+  <div class="ticker-top"><span>18+ SELF-ATTESTED DEMO</span><span>POWERED BY <b>INNERWEAR</b></span><span>LOCAL PLAY · NO BACKEND · NO UPLOADS</span></div>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="Big Boss Ke Randiya home"><span class="brand-eye">◉</span><span><b>BIG BOSS</b><strong>KE RANDIYA</strong><small>AN INNERWEAR ORIGINAL</small></span></a>
+    <nav class="desktop-nav" aria-label="Main navigation">
+      <a href="#house">HOUSE</a><a href="#contestants">CONTESTANTS</a><a href="#tasks">TASKS</a><a href="#games">AFTER DARK</a><a href="#gallery">GALLERY</a><a href="#leaderboard">SCOREBOARD</a>
+    </nav>
+    <div class="header-actions"><button class="icon-btn" id="openSettings" aria-label="Open settings">⚙</button><button class="gold-btn small" id="headerEnter">ENTER HOUSE ↗</button><button class="menu-btn" id="menuToggle" aria-label="Open menu">☰</button></div>
+  </header>
+  <nav class="mobile-menu" id="mobileMenu" hidden><a href="#house">HOUSE</a><a href="#contestants">CONTESTANTS</a><a href="#tasks">TASKS</a><a href="#games">AFTER DARK</a><a href="#gallery">GALLERY</a><a href="#leaderboard">SCOREBOARD</a><a href="#settings">SETTINGS</a></nav>
 
-<main id="home">
-<section class="hero">
-  <div class="hero-copy">
-    <p class="eyebrow"><i></i> INNERWEAR PRESENTS / THE NEW EDIT</p>
-    <h1>Wear your<br><em>own story.</em></h1>
-    <p class="hero-lead">A multi-world destination for innerwear, campaign stories, art, style, and playful experiences — all under INNERWEAR.</p>
-    <div class="hero-actions"><a class="btn btn-gold" href="#brands">EXPLORE THE WORLDS ↗</a><a class="underlink" href="#show">ENTER THE SHOW ↓</a></div>
-    <div class="hero-stats"><div><b>06</b><span>CREATIVE WORLDS</span></div><div><b>26</b><span>CONCEPT PRODUCTS</span></div><div><b>04</b><span>INTERACTIVE WHEELS</span></div></div>
-  </div>
-  <div class="hero-art">
-    <div class="hero-card hero-card-back"><img src="./her-after-dark.webp" alt="HER AFTER DARK campaign"></div>
-    <div class="hero-card hero-card-front"><img src="./blacked-luxury-campaign.webp" alt="BLXCKED luxury innerwear campaign"><span>BLXCKED / SIGNATURE</span></div>
-    <div class="hero-seal">INNER<br>WEAR<br><small>EST. / THE EDIT</small></div>
-  </div>
-</section>
-<div class="ticker"><span>BLXCKED INNERWEAR</span><b>✦</b><span>HER AFTER DARK</span><b>✦</b><span>ART ATELIER</span><b>✦</b><span>SANSKARI EDIT</span><b>✦</b><span>BIG BOSS KE RANDIYA</span></div>
-
-<section class="section" id="brands">
-  <div class="section-heading"><div><p class="eyebrow">01 / CHOOSE YOUR WORLD</p><h2>One universe.<br><em>Different moods.</em></h2></div><p class="section-note">The main brand is INNERWEAR. Every collection has its own identity, visual language and destination.</p></div>
-  <div class="world-grid">
-    <a class="world-card world-blx" href="#shop"><img src="./blxcked-boutique-editorial.webp" alt="BLXCKED boutique campaign"><div><small>PREMIUM INNERWEAR</small><h3>BLXCKED</h3><span>Explore the collection ↗</span></div></a>
-    <a class="world-card world-had" href="#after-dark"><img src="./private-chemistry-after-dark.webp" alt="Her After Dark campaign"><div><small>LINGERIE / EDITORIAL STORIES</small><h3>HER AFTER DARK</h3><span>Discover the stories ↗</span></div></a>
-    <a class="world-card world-art" href="#atelier"><img src="./backlit-saree-atelier-sketch.webp" alt="Art Atelier sketch"><div><small>CREATIVE STUDIO</small><h3>ART ATELIER</h3><span>Enter the gallery ↗</span></div></a>
-    <a class="world-card world-sanskari" href="#collections"><img src="./royal-palace-saree.webp" alt="Royal Sanskari editorial"><div><small>HERITAGE / MODEST STYLE</small><h3>SANSKARI EDIT</h3><span>Explore the edits ↗</span></div></a>
-    <a class="world-card world-couple" href="#experiences"><img src="./partner-yoga-balance.webp" alt="Couples movement study"><div><small>TOGETHER / DATE NIGHT</small><h3>COUPLES STUDIO</h3><span>Explore experiences ↗</span></div></a>
-    <a class="world-card world-show" href="#show"><img src="./show-poster-black-edition.webp" alt="Big Boss Ke Randiya show poster"><div><small>18+ FICTIONAL GAME SHOW</small><h3>BIG BOSS KE RANDIYA</h3><span>Enter the house ↗</span></div></a>
-  </div>
-</section>
-
-<section class="section shop-section" id="shop">
-  <div class="section-heading"><div><p class="eyebrow">02 / THE INNERWEAR SHOP STUDIO</p><h2>Find your <em>signature.</em></h2></div><p class="section-note">Concept catalogue. Products, size ranges and imagery are previews; no payment, stock or shipping is connected.</p></div>
-  <div class="shop-controls">
-    <div class="filters" id="brandFilters"><button class="filter active" data-filter="ALL">ALL</button><button class="filter" data-filter="BLXCKED">BLXCKED</button><button class="filter" data-filter="HER AFTER DARK">HER AFTER DARK</button><button class="filter" data-filter="ROYAL SANSKARI">SANSKARI</button><button class="filter" data-filter="NOOR EDIT">NOOR</button><button class="filter" data-filter="ART ATELIER">ART</button></div>
-    <div class="sort-tools"><input id="productSearch" type="search" placeholder="Search the edit…" aria-label="Search products"><select id="sortProducts" aria-label="Sort products"><option value="featured">Featured</option><option value="az">Name A–Z</option><option value="za">Name Z–A</option></select></div>
-  </div>
-  <div class="product-grid" id="productGrid"></div>
-  <div class="load-row"><span id="productCount">26 concept pieces</span><button class="btn btn-outline" id="resetShop">RESET FILTERS</button></div>
-</section>
-
-<section class="section split-story" id="after-dark">
-  <div class="story-image"><img src="./elegance-after-dark-pink-campaign.webp" alt="HER AFTER DARK elegance campaign"><span class="image-label">HER AFTER DARK / CAMPAIGN 01</span></div>
-  <div class="story-copy"><p class="eyebrow">03 / HER AFTER DARK</p><h2>Elegance<br><em>after hours.</em></h2><p>Silk Morning. Golden Reflection. Private Chemistry. A distinct editorial world built around confidence, fabric, atmosphere and personal style.</p><div class="story-pills"><span>SILK MORNING</span><span>GOLDEN REFLECTION</span><span>PRIVATE CHEMISTRY</span></div><a href="#campaigns" class="btn btn-gold">EXPLORE CAMPAIGNS ↗</a></div>
-</section>
-
-<section class="section" id="atelier">
-  <div class="section-heading"><div><p class="eyebrow">04 / ART ATELIER</p><h2>Stories in <em>form.</em></h2></div><p class="section-note">A creative archive for fashion illustration, poster studies, movement and visual storytelling.</p></div>
-  <div class="gallery-grid" id="artGallery">
-    <button class="gallery-tile tall" data-image="./mughal-royal-romance-poster.webp"><img src="./mughal-royal-romance-poster.webp" alt="Mughal royal romance poster"><span>MUGHAL ROMANCE / POSTER STUDY</span></button>
-    <button class="gallery-tile" data-image="./backlit-saree-atelier-sketch.webp"><img src="./backlit-saree-atelier-sketch.webp" alt="Backlit saree graphite sketch"><span>BACKLIT / GRAPHITE STUDY</span></button>
-    <button class="gallery-tile" data-image="./bollywood-romance-poster-collection.webp"><img src="./bollywood-romance-poster-collection.webp" alt="Romance poster collection"><span>ROMANCE / POSTER ARCHIVE</span></button>
-    <button class="gallery-tile" data-image="./sepia-couples-moodboard.webp"><img src="./sepia-couples-moodboard.webp" alt="Sepia couples moodboard"><span>COUPLES / MOODBOARD</span></button>
-  </div>
-</section>
-
-<section class="section collection-section" id="collections">
-  <div class="section-heading"><div><p class="eyebrow">05 / THE COLLECTION EDITS</p><h2>Tradition meets <em>expression.</em></h2></div><p class="section-note">Distinct collection previews under INNERWEAR. Coming Soon means preview only, not a live catalogue.</p></div>
-  <div class="collection-grid">
-    <article><img src="./royal-palace-saree.webp" alt="Royal Sanskari palace editorial"><div><small>ROYAL / HERITAGE</small><h3>ROYAL SANSKARI</h3><p>Gold-toned heritage and occasion-wear direction.</p><span>PREVIEW</span></div></article>
-    <article><img src="./black-elegance-fashion.webp" alt="Noor modest fashion direction"><div><small>MODEST / REFINED</small><h3>NOOR EDIT</h3><p>Modest fashion concept with a black-and-cream visual identity.</p><span>COMING SOON</span></div></article>
-    <article><img src="./royal-palace-saree.webp" alt="Grace Edit traditional fashion"><div><small>GRACE / LIGHT</small><h3>GRACE EDIT</h3><p>Soft traditional occasion styling and elegant silhouettes.</p><span>PREVIEW</span></div></article>
-    <article><img src="./black-elegance-fashion.webp" alt="Christian inspired style preview"><div><small>COMING SOON / MODEST STYLE</small><h3>GRACE & LIGHT</h3><p>A faith-inspired modest fashion preview with respectful styling.</p><span>COMING SOON</span></div></article>
-  </div>
-</section>
-
-<section class="section campaign-section" id="campaigns">
-  <div class="section-heading"><div><p class="eyebrow">06 / CAMPAIGN ARCHIVE</p><h2>Made for the <em>moment.</em></h2></div><p class="section-note">Saved BLXCKED creative directions and collaboration concepts, organised for quick browsing.</p></div>
-  <div class="campaign-tabs"><button class="active" data-campaign-tab="ads">10 AD CONCEPTS</button><button data-campaign-tab="collabs">12 COLLAB IDEAS</button><button data-campaign-tab="visuals">VISUAL ARCHIVE</button></div>
-  <div id="campaignContent" class="campaign-content"></div>
-</section>
-
-<section class="section experiences-section" id="experiences">
-  <div class="section-heading"><div><p class="eyebrow">07 / COUPLES STUDIO</p><h2>Make a night <em>of it.</em></h2></div><p class="section-note">Offline-first playful tools. Every suggestion can be changed, skipped or ignored.</p></div>
-  <div class="experience-grid">
-    <article class="experience-card date-card"><small>DATE NIGHT GENERATOR</small><h3>Pick the mood.<br><em>Get an idea.</em></h3><div class="form-row"><label>MOOD<select id="dateMood"><option value="cozy">Cozy</option><option value="playful">Playful</option><option value="creative">Creative</option><option value="outdoor">Outdoor</option></select></label><label>TIME<select id="dateTime"><option value="short">Under 2 hours</option><option value="long">Long evening</option></select></label><label>BUDGET<select id="dateBudget"><option value="low">Low</option><option value="mid">Medium</option><option value="any">Flexible</option></select></label></div><button class="btn btn-gold" id="generateDate">GENERATE A DATE ↗</button><div class="result-panel" id="dateResult">Your next date idea will appear here.</div></article>
-    <article class="experience-card gift-card"><small>BOYFRIEND GIFT FINDER</small><h3>Find a thoughtful<br><em>gift direction.</em></h3><div class="form-row"><label>VIBE<select id="giftVibe"><option>Classic</option><option>Playful</option><option>Minimal</option><option>Romantic</option></select></label><label>BUDGET<select id="giftBudget"><option>Under ₹999</option><option>₹1,000–₹2,499</option><option>Flexible</option></select></label></div><button class="btn btn-outline" id="generateGift">FIND GIFT IDEAS ↗</button><div class="result-panel" id="giftResult">Choose a vibe and budget.</div></article>
-  </div>
-  <div class="wheel-lab">
-    <div class="wheel-intro"><small>INTERACTIVE WHEEL LAB</small><h3>Let the wheel<br><em>choose.</em></h3><p>Four local wheels with custom categories and a saved last result.</p><select id="wheelType"><option value="style">Style Wheel</option><option value="mood">Mood Wheel</option><option value="date">Date Night Wheel</option><option value="surprise">Surprise Wheel</option></select><button class="btn btn-gold" id="spinWheel">SPIN THE WHEEL ↻</button><label class="custom-wheel">ADD A CUSTOM OPTION <input id="customWheelOption" maxlength="36" placeholder="Type your own option"><button id="addWheelOption">ADD</button></label></div>
-    <div class="wheel-stage"><div class="wheel-pointer">▼</div><div class="wheel" id="wheel"><span>INNERWEAR</span></div><div class="wheel-result" id="wheelResult">READY TO SPIN</div></div>
-  </div>
-</section>
-
-<section class="section fit-section" id="wellness">
-  <div class="fit-visual"><img src="./lingerie-fit-guide.webp" alt="Innerwear fit guide visual"></div>
-  <div class="fit-copy"><p class="eyebrow">08 / WELLNESS & SIZE GUIDE</p><h2>Comfort starts<br><em>with the fit.</em></h2><p>Use the measurement helper as a rough starting point, then compare with the confirmed size chart for the actual product. Fit varies by cut and brand.</p><div class="measure-grid"><label>UNDERBUST (CM)<input type="number" id="underbust" min="50" max="150" placeholder="e.g. 78"></label><label>BUST (CM)<input type="number" id="bust" min="50" max="170" placeholder="e.g. 92"></label></div><button class="btn btn-gold" id="estimateSize">ESTIMATE STARTING POINT</button><div class="result-panel" id="sizeResult">No measurement saved. Values are not stored.</div></div>
-</section>
-
-<section class="section show-launch" id="show">
-  <div class="show-poster"><img src="./show-poster-black-edition.webp" alt="Big Boss Ke Randiya Black Edition poster"><img class="show-poster-small" src="./show-poster-sydney-edition.webp" alt="Sydney Innerwear Edition poster"></div>
-  <div class="show-copy"><p class="eyebrow">09 / INNERWEAR ORIGINAL EXPERIENCE · 18+</p><h2>BIG BOSS<br><em>KE RANDIYA.</em></h2><p>Housemates #05 and #08, Task Arena, Truth/Dare/Chemistry, House Feed, Confession Room, Runway Vote and local scoreboard — the show remains a separate full experience.</p><div class="show-actions"><a class="btn btn-gold" href="./show-house.html">OPEN SHOW HOUSE ↗</a><a class="btn btn-outline" href="./private-feedback.html">PRIVATE FEEDBACK ↗</a></div><small>Fictional local game. Adult-only self-attestation, no live stream, no backend, no real participant profiles.</small>
-    <div class="house-upgrade">
-      <div class="upgrade-head"><span>V5 / HOUSE STRATEGY DESK</span><b>LOCAL DEMO</b></div>
-      <h3>Nomination Night <em>& Immunity Vault.</em></h3>
-      <div class="upgrade-grid">
-        <div><label for="nomineePick">NOMINATE A HOUSEMATE</label><select id="nomineePick"><option value="05">Contestant #05 · The Bold One</option><option value="08">Contestant #08 · The Game Changer</option></select><label for="nominationReason">YOUR REASON</label><select id="nominationReason"><option>Most strategic player</option><option>Strongest rival</option><option>Surprise move</option><option>Friendly game twist</option></select><button class="btn btn-gold" id="submitNomination">SUBMIT NOMINATION</button></div>
-        <div><span class="vault-icon">✦</span><b>IMMUNITY VAULT</b><p id="immunityState">One local immunity card is available for this demo round.</p><button class="btn btn-outline" id="claimImmunity">CLAIM IMMUNITY CARD</button></div>
+  <main id="home">
+    <section class="hero wrap">
+      <div class="hero-poster">
+        <img id="heroPoster" src="../show-poster-black-edition.webp" alt="BIG BOSS KE RANDIYA Black Edition poster">
+        <div class="poster-shade"></div>
+        <div class="poster-tag">THE INNERWEAR HOUSE / V2</div>
+        <div class="poster-controls"><button id="posterPrev" aria-label="Previous poster">‹</button><button id="posterNext" aria-label="Next poster">›</button></div>
       </div>
-      <div class="nomination-result" id="nominationResult">No nominations recorded in this browser yet.</div>
-      <div class="upgrade-score"><span>WEEKLY HOUSE POINTS</span><b id="upgradePoints">0</b><button id="addUpgradePoints" class="line-btn">ADD 5 TASK POINTS</button></div>
-    </div>
-  </div>
-</section>
+      <div class="hero-copy">
+        <p class="eyebrow"><i class="live-dot"></i> DESI AFTER DARK / GAME NIGHT</p>
+        <h1>BIG BOSS<br><em>KE RANDIYA</em></h1>
+        <p class="hero-kicker">REAL WOMEN. REAL FANTASIES. <b>ALL CHOICES. ALL CONSENT.</b></p>
+        <p class="hero-description">A cheeky, high-energy house of style, drama, spicy questions and ridiculous challenges. Bring your sense of humour, set your boundaries and play your own way.</p>
+        <div class="hero-actions"><button class="gold-btn large" id="enterHouse">ENTER THE HOUSE ↗</button><a class="text-link" href="#games">EXPLORE AFTER DARK ↓</a></div>
+        <div class="sponsor-row"><span>POWERED BY</span><b>INNERWEAR</b><i></i><b class="sponsor-alt">BLXCKED</b><small>PREMIUM INNERWEAR</small></div>
+        <div class="hero-stats"><div><b id="heroPoints">000</b><span>HOUSE POINTS</span></div><div><b id="heroRounds">00</b><span>ROUNDS PLAYED</span></div><div><b>18+</b><span>ADULTS ONLY</span></div></div>
+      </div>
+    </section>
 
-<section class="section feedback-banner">
-  <div><p class="eyebrow">PRIVATE / 18+ PERSONAL SPACE</p><h2>Your feedback.<br><em>Your boundaries.</em></h2><p>Open your local-only feedback journal for personal confidence notes and voluntarily received feedback. No photo uploads or public rankings.</p></div>
-  <a class="btn btn-gold" href="./private-feedback.html">OPEN PRIVATE FEEDBACK ↗</a>
-</section>
-</main>
-<footer class="footer"><div class="footer-brand"><span class="mark">I</span><div><b>INNERWEAR</b><small>THE NEW EDIT / V5</small></div></div><p>Concept storefront and entertainment experience. No real checkout, payment, inventory, account, booking or remote game sync is connected.</p><div class="footer-links"><a href="#brands">WORLDS</a><a href="#campaigns">CAMPAIGNS</a><a href="#show">SHOW HOUSE</a><a href="./private-feedback.html">PRIVATE FEEDBACK</a></div></footer>
+    <div class="marquee"><span>AREY BHAI, HOUSE MEIN SWAGAT HAI</span><b>✦</b><span>STYLE · STRATEGY · BAKCHODI</span><b>✦</b><span>PASS IS ALWAYS POWER</span><b>✦</b><span>POWERED BY INNERWEAR</span></div>
 
-<dialog id="productModal" class="modal"><div class="modal-head"><span>PRODUCT CONCEPT</span><button data-close="productModal">×</button></div><div id="productModalBody" class="product-modal-body"></div></dialog>
-<dialog id="bagModal" class="modal side-modal"><div class="modal-head"><span>YOUR DEMO BAG</span><button data-close="bagModal">×</button></div><div id="bagItems"></div><div class="modal-foot"><p>Demo bag only — no checkout.</p><button class="btn btn-outline" id="clearBag">CLEAR BAG</button></div></dialog>
-<dialog id="wishlistModal" class="modal side-modal"><div class="modal-head"><span>YOUR WISHLIST</span><button data-close="wishlistModal">×</button></div><div id="wishlistItems"></div></dialog>
-<dialog id="lightbox" class="modal lightbox"><button data-close="lightbox" class="lightbox-close">×</button><img id="lightboxImage" alt="Gallery preview"><p id="lightboxCaption"></p></dialog>
-<dialog id="searchModal" class="modal search-modal"><div class="modal-head"><span>SEARCH THE EDIT</span><button data-close="searchModal">×</button></div><input id="globalSearch" type="search" placeholder="Search products, collections, campaigns…"><div id="searchResults"></div></dialog>
-<div id="toast" class="toast" role="status" aria-live="polite"></div>
-<script type="module" src="./app.js"></script>
-</body></html>
+    <section class="section wrap" id="house">
+      <div class="section-head"><div><p class="eyebrow">01 / HOUSE CONTROL</p><h2>Welcome to the <em>house.</em></h2></div><p class="section-note">A local game-show simulation. No real contestants, livestream, account, matchmaking or remote voting.</p></div>
+      <div class="dashboard-grid">
+        <article class="panel spotlight-panel"><div class="panel-kicker">HOUSE FEED / LIVE-STYLE DEMO</div><div class="spotlight-orb">BB<span>✦</span></div><h3 id="feedHeadline">Aaj ghar mein kya pak raha hai?</h3><p id="feedCopy">House feed refresh karo aur ek naya drama update pao.</p><button class="outline-btn" id="refreshFeed">REFRESH HOUSE FEED ↻</button></article>
+        <article class="panel feed-panel"><div class="panel-head"><div><div class="panel-kicker">INSIDE THE HOUSE</div><h3>Latest updates</h3></div><span class="badge">SIMULATED</span></div><div id="feedList" class="feed-list"></div></article>
+        <article class="panel player-panel"><div class="panel-kicker">YOUR HOUSE ID</div><div class="player-avatar" id="playerAvatar">G</div><h3 id="playerDisplay">Guest Player</h3><p id="playerMeta">Set your nickname and play vibe.</p><button class="gold-btn" id="editPlayer">CREATE / EDIT PLAYER</button></article>
+      </div>
+    </section>
+
+    <section class="section wrap" id="contestants">
+      <div class="section-head"><div><p class="eyebrow">02 / THE HOUSEMATES</p><h2>Choose your <em>chaos.</em></h2></div><p class="section-note">Fictional poster-based contestants. Tap vote to support a favourite in this browser only.</p></div>
+      <div class="contestant-grid">
+        <article class="contestant-card"><img src="../show-poster-black-edition.webp" alt="Contestant 05 Black Edition poster" loading="lazy"><div class="contestant-overlay"><span>CONTESTANT #05</span><h3>THE BOLD ONE</h3><p>Style · Strength · Strategy</p><button class="vote-btn" data-vote="05">VOTE #05 <b id="vote05">0</b></button></div></article>
+        <article class="contestant-card"><img src="../show-poster-sydney-edition.webp" alt="Contestant 08 Sydney Edition poster" loading="lazy"><div class="contestant-overlay"><span>CONTESTANT #08</span><h3>THE GAME CHANGER</h3><p>Confidence · Charisma · Control</p><button class="vote-btn" data-vote="08">VOTE #08 <b id="vote08">0</b></button></div></article>
+        <article class="contestant-card join-card"><div class="join-orbit">✦</div><span>YOUR TURN</span><h3>Apna naam<br><em>likhwa de.</em></h3><p>Nickname banao, vibe set karo aur local house game mein enter karo.</p><button class="gold-btn" id="joinContestant">JOIN THE HOUSE ↗</button></article>
+      </div>
+    </section>
+
+    <section class="section wrap" id="tasks">
+      <div class="section-head"><div><p class="eyebrow">03 / TASK ARENA V2</p><h2>Task kar, <em>points maar.</em></h2></div><p class="section-note">50+ local task prompts across playful, bold and team modes. Timer, skip and pause controls are included.</p></div>
+      <div class="task-layout">
+        <div class="panel task-board">
+          <div class="panel-head"><span class="panel-kicker">WEEKLY TASK BOARD</span><span class="badge gold">V2 ENGINE</span></div>
+          <div class="task-controls"><label>MODE<select id="taskMode"><option value="all">All tasks</option><option value="solo">Solo</option><option value="duo">Duo</option><option value="group">Group</option></select></label><label>LEVEL<select id="taskLevel"><option value="all">Any level</option><option value="playful">Playful</option><option value="bold">Bold</option><option value="spicy">Spicy (non-graphic)</option></select></label></div>
+          <div class="task-card"><span class="task-number" id="taskNumber">TASK 01 / 50+</span><h3 id="taskTitle">THE CONFIDENCE CHALLENGE</h3><p id="taskPrompt">Give someone three genuine compliments. Keep it kind, specific and fun.</p><div class="task-meta"><span id="taskTime">⏱ 45 SEC</span><span id="taskPoints">★ 15 POINTS</span><span id="taskLevelBadge">PLAYFUL</span></div><div class="timer-row"><strong id="taskTimer">00:45</strong><div class="timer-track"><i id="taskTimerBar"></i></div></div><div class="task-actions"><button class="gold-btn" id="startTask">START TIMER</button><button class="outline-btn" id="pauseTask">PAUSE</button><button class="text-btn" id="skipTask">SKIP TASK →</button><button class="text-btn" id="completeTask">COMPLETE +PTS</button></div><small id="taskStatus" class="status-note">Ready ho? Start dabao.</small></div>
+        </div>
+        <aside class="task-side">
+          <article class="panel score-card"><span class="panel-kicker">YOUR TOTAL SCORE</span><strong id="scoreValue">000</strong><div class="score-bar"><i id="scoreBar"></i></div><div class="score-meta"><span id="rankLabel">HOUSE ROOKIE</span><span id="badgeCount">0 BADGES</span></div></article>
+          <article class="panel power-card"><span class="panel-kicker">POWER CARD VAULT</span><h3 id="powerTitle">Draw your advantage.</h3><p id="powerCopy">Skip token, double points, immunity and more.</p><button class="outline-btn" id="drawPower">DRAW POWER CARD ✦</button></article>
+          <article class="panel power-card"><span class="panel-kicker">SECRET MISSION</span><h3 id="secretTitle">Kya raaz hai?</h3><p id="secretCopy">Reveal a harmless, funny mission.</p><button class="outline-btn" id="drawSecret">REVEAL MISSION ◈</button></article>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section wrap" id="games">
+      <div class="section-head"><div><p class="eyebrow">04 / AFTER DARK · 18+</p><h2>Thoda spicy. <em>Thoda silly.</em></h2></div><p class="section-note">Hindi slang mode is optional. Prompts stay non-graphic, every player can pass, and real-life intimacy is never a task.</p></div>
+      <div class="game-console panel">
+        <div class="game-console-copy"><div class="panel-kicker">THE GAME CONSOLE</div><h3>Truth, Dare<br><em>aur Chemistry.</em></h3><p>Pick a mode, choose intensity and draw a fresh prompt.</p><label class="field-label">BOLDNESS LEVEL <b id="heatValue">2 · BOLD</b><input type="range" id="heatLevel" min="1" max="3" value="2"></label><div class="heat-legend"><span>PLAYFUL</span><span>BOLD</span><span>SPICY</span></div><div class="mode-tabs"><button class="active" data-mode="truth">TRUTH</button><button data-mode="dare">DARE</button><button data-mode="chemistry">CHEMISTRY</button><button data-mode="confession">CONFESSION</button><button data-mode="double">DOUBLE TROUBLE</button></div><button class="gold-btn large" id="drawPrompt">DRAW A PROMPT ↗</button><div class="prompt-actions"><button class="outline-btn" id="passPrompt">PASS / SKIP</button><button class="outline-btn" id="completePrompt">DONE +10 PTS</button></div></div>
+        <div class="prompt-display"><span id="promptKind">YOUR NEXT PROMPT</span><div class="prompt-symbol">✦</div><p id="promptText">Ready ho? Prompt draw karo.</p><small id="promptMeta">No penalty for passing.</small></div>
+      </div>
+      <div class="mini-game-grid">
+        <article class="panel mini-game"><span class="mini-icon">🚩</span><div class="panel-kicker">MINI GAME 01</div><h3>Red Flag / Green Flag</h3><p id="flagPrompt">Someone respects your “no” without asking twice.</p><div class="mini-actions"><button class="outline-btn" data-flag="green">GREEN FLAG</button><button class="outline-btn" data-flag="red">RED FLAG</button></div><small id="flagResult">Choose your answer.</small><button class="text-btn" id="nextFlag">NEXT SCENARIO ↻</button></article>
+        <article class="panel mini-game"><span class="mini-icon">🧠</span><div class="panel-kicker">MINI GAME 02</div><h3>Who Knows Whom?</h3><p id="knowQuestion">Pick the answer your partner would choose.</p><div id="knowOptions" class="option-stack"></div><small id="knowResult">Correct answers earn 5 points.</small><button class="text-btn" id="nextKnow">NEXT QUESTION ↻</button></article>
+        <article class="panel mini-game"><span class="mini-icon">💬</span><div class="panel-kicker">MINI GAME 03</div><h3>Compliment Battle</h3><p>Choose a compliment style and give it sincerely.</p><div class="option-stack"><button data-compliment="Style game strong hai, boss!">STYLE</button><button data-compliment="Teri energy se poora room bright ho gaya.">ENERGY</button><button data-compliment="Teri smile full scene steal karti hai.">SMILE</button></div><small id="complimentResult">Kindness wins this round.</small></article>
+        <article class="panel mini-game"><span class="mini-icon">⏱</span><div class="panel-kicker">MINI GAME 04</div><h3>60-Second Challenge</h3><p id="sixtyPrompt">Name five things that make a great date.</p><div class="timer-large" id="sixtyTimer">01:00</div><div class="mini-actions"><button class="gold-btn" id="startSixty">START</button><button class="outline-btn" id="resetSixty">RESET</button><button class="text-btn" id="newSixty">NEW PROMPT</button></div><small id="sixtyStatus">Ready when you are.</small></article>
+        <article class="panel mini-game"><span class="mini-icon">🎁</span><div class="panel-kicker">MINI GAME 05</div><h3>Mystery Mood Box</h3><p id="mysteryResult">Open the box to reveal a random mood or game twist.</p><button class="gold-btn" id="openMystery">OPEN THE BOX ✦</button></article>
+        <article class="panel mini-game"><span class="mini-icon">🏁</span><div class="panel-kicker">MINI GAME 06</div><h3>Finale Ladder</h3><p>Complete different mini rounds and climb the finale ladder.</p><div class="finale-steps" id="finaleSteps"><span>01</span><span>02</span><span>03</span><span>04</span><span>05</span></div><button class="gold-btn" id="finaleAdvance">ADVANCE +15 PTS</button><small id="finaleStatus">Level 1 / 5</small></article>
+        <article class="panel mini-game"><span class="mini-icon">♡</span><div class="panel-kicker">MINI GAME 07 / OLD FEATURE V2</div><h3>Chemistry Check</h3><p>Select the kind of round everyone is comfortable with.</p><div class="chemistry-checks"><label><input type="checkbox" id="chemTalk" checked> Flirty talk</label><label><input type="checkbox" id="chemCompliment" checked> Compliments</label><label><input type="checkbox" id="chemDance"> Dance / eye contact</label><label><input type="checkbox" id="chemQuiz" checked> Couple quiz</label></div><button class="outline-btn" id="buildChemistry">BUILD SHARED ROUND</button><small id="chemistryResult">Only selected options are used in the local prompt.</small></article>
+        <article class="panel mini-game"><span class="mini-icon">🎟</span><div class="panel-kicker">MINI GAME 08</div><h3>Truth or Skip Tournament</h3><p>Five rounds. Choose truth or pass. Skip never costs points.</p><div class="tournament-progress" id="truthSkipProgress"><span>01</span><span>02</span><span>03</span><span>04</span><span>05</span></div><p id="truthSkipPrompt">Ready for round one?</p><div class="mini-actions"><button class="outline-btn" id="truthAnswer">ANSWER +5</button><button class="text-btn" id="truthSkip">SKIP FREE</button></div><small id="truthSkipStatus">Round 0 / 5</small></article>
+        <article class="panel mini-game"><span class="mini-icon">🧠</span><div class="panel-kicker">MINI GAME 09</div><h3>Couple Memory Challenge</h3><p id="memoryPrompt">Reveal a light-hearted memory question.</p><button class="outline-btn" id="nextMemory">REVEAL MEMORY PROMPT ↻</button><small id="memoryStatus">Answer only if comfortable.</small></article>
+      </div>
+      <div class="panel legacy-upgrades">
+        <div class="panel-head"><div><div class="panel-kicker">OLD HOUSE FEATURES / V2</div><h3>Classic games. Better controls.</h3></div><span class="badge gold">UPGRADED</span></div>
+        <div class="legacy-grid">
+          <article><span class="mini-icon">◉</span><b>REACTION TEST</b><p>Wait for the light, then tap fast. Personal best is saved locally.</p><button class="outline-btn" id="reactionStart">START REACTION TEST</button><button class="reaction-zone" id="reactionZone" disabled>WAITING</button><small id="reactionResult">Best: —</small></article>
+          <article><span class="mini-icon">✦</span><b>CONFESSION ROOM</b><p>Write a harmless house confession or game-night thought.</p><textarea id="confessionText" maxlength="400" placeholder="My secret house strategy is…"></textarea><div class="mini-actions"><button class="outline-btn" id="saveConfession">SAVE LOCALLY</button><button class="text-btn" id="clearConfession">CLEAR</button></div><small id="confessionStatus">Saved only in this browser.</small></article>
+          <article><span class="mini-icon">♜</span><b>ALLIANCE BUILDER</b><p>Pick a fictional ally and strategy for the next round.</p><label class="field-label">ALLY<select id="allyPick"><option>#05 · The Bold One</option><option>#08 · The Game Changer</option></select></label><label class="field-label">STRATEGY<select id="allianceGoal"><option>Style & runway</option><option>Task strategy</option><option>Comedy & chaos</option><option>Kindness squad</option></select></label><button class="outline-btn" id="buildAlliance">FORM ALLIANCE</button><small id="allianceResult">No alliance formed yet.</small></article>
+        </div>
+      </div>
+      <div class="panel wheel-panel">
+        <div class="wheel-copy"><div class="panel-kicker">FOUR CLASSIC WHEELS / V2</div><h3>Spin karo, <em>scene banao.</em></h3><p>Style, Mood, Date Night and Surprise wheels. Add your own custom option too.</p><label class="field-label">SELECT WHEEL<select id="wheelType"><option value="style">Style Wheel</option><option value="mood">Mood Wheel</option><option value="date">Date Night Wheel</option><option value="surprise">Surprise Wheel</option></select></label><label class="field-label">ADD CUSTOM OPTION<input id="customWheelOption" maxlength="36" placeholder="Apna option likho"></label><div class="mini-actions"><button class="outline-btn" id="addWheelOption">ADD OPTION</button><button class="gold-btn" id="spinWheel">SPIN THE WHEEL ↻</button></div><div class="wheel-result" id="wheelResult">READY TO SPIN</div></div>
+        <div class="wheel-visual"><div class="wheel-pointer">▼</div><div class="wheel-disc" id="wheelDisc"><span>INNERWEAR</span></div></div>
+      </div>
+      <div class="panel runway-panel">
+        <div class="panel-head"><div><div class="panel-kicker">INNERWEAR RUNWAY / HOUSE VOTE</div><h3>Which look wins the spotlight?</h3></div><span class="badge">LOCAL VOTE</span></div>
+        <div class="runway-grid">
+          <button class="runway-card" data-runway="BLXCKED BLACK LACE"><img src="../black-lace-collection.webp" alt="BLXCKED Black Lace visual"><b>BLXCKED / BLACK LACE</b><small id="runwayBlack">0 VOTES</small></button>
+          <button class="runway-card" data-runway="SYDNEY INNERWEAR"><img src="../show-poster-sydney-edition.webp" alt="Sydney Innerwear poster"><b>SYDNEY / INNERWEAR</b><small id="runwaySydney">0 VOTES</small></button>
+          <button class="runway-card" data-runway="PINK LACE EDIT"><img src="../pink-lace-collection.webp" alt="Pink Lace visual"><b>PINK LACE / EDIT</b><small id="runwayPink">0 VOTES</small></button>
+        </div><p id="runwayResult" class="muted">Runway votes are saved locally.</p>
+      </div>
+    </section>
+
+    <section class="section wrap gallery-section" id="gallery">
+      <div class="section-head"><div><p class="eyebrow">05 / AFTER DARK GALLERY</p><h2>Pick a lane. <em>Surprise yourself.</em></h2></div><p class="section-note">Your saved campaign library, fashion/editorial images and non-explicit educational anatomy illustrations. No user photo uploads.</p></div>
+      <div class="gallery-controls">
+        <button class="gallery-filter active" data-gallery="all">ALL</button><button class="gallery-filter" data-gallery="blxcked">BLXCKED</button><button class="gallery-filter" data-gallery="afterdark">HER AFTER DARK</button><button class="gallery-filter" data-gallery="couples">COUPLES</button><button class="gallery-filter" data-gallery="art">ART</button>
+      </div>
+      <div class="anatomy-buttons"><button class="anatomy-btn" id="openChutGallery">CHUT GALLERY <small>VULVA / EDUCATIONAL ART</small></button><button class="anatomy-btn" id="openLundGallery">LUND GALLERY <small>PENIS / EDUCATIONAL ART</small></button><button class="surprise-btn" id="surpriseMe">HORNY? SURPRISE ME ✦</button></div>
+      <div id="galleryGrid" class="gallery-grid"></div>
+      <div class="gallery-surprise panel" id="surprisePanel" hidden><img id="surpriseImage" alt="Random gallery selection"><div><span class="panel-kicker">RANDOM HOUSE PICK</span><h3 id="surpriseTitle">A surprise is waiting.</h3><p id="surpriseDescription">Tap again for another visual.</p><button class="outline-btn" id="nextSurprise">NEXT IMAGE ↻</button></div></div>
+    </section>
+
+    <section class="section wrap" id="houseStrategy">
+      <div class="section-head"><div><p class="eyebrow">06 / GAME STRATEGY</p><h2>Nomination Night <em>V2.</em></h2></div><p class="section-note">Local-only voting, immunity and score history. No online leaderboard or remote user data.</p></div>
+      <div class="strategy-grid">
+        <article class="panel"><div class="panel-kicker">NOMINATION BOARD</div><h3>Who is on your list?</h3><label class="field-label">CONTESTANT<select id="nominee"><option value="05">#05 · The Bold One</option><option value="08">#08 · The Game Changer</option></select></label><label class="field-label">REASON<select id="nominationReason"><option>Strongest rival</option><option>Most strategic player</option><option>Surprise game twist</option><option>Friendly nomination</option></select></label><button class="gold-btn" id="submitNomination">SUBMIT NOMINATION</button><div id="nominationList" class="result-list">No nominations yet.</div></article>
+        <article class="panel"><div class="panel-kicker">IMMUNITY VAULT</div><div class="vault-icon">✦</div><h3 id="immunityTitle">One shield. One round.</h3><p id="immunityCopy">Claim your once-per-save immunity card.</p><button class="gold-btn" id="claimImmunity">CLAIM IMMUNITY</button></article>
+        <article class="panel"><div class="panel-kicker">DESI SLANG MODE</div><h3>Apni zubaan set kar.</h3><p>Pick how the game reacts. Slang is optional and aimed at the situation, not at a person or identity.</p><div class="slang-options"><label><input type="radio" name="slang" value="clean"> CLEAN HINDI</label><label><input type="radio" name="slang" value="hinglish" checked> FUNNY HINGLISH</label><label><input type="radio" name="slang" value="desi"> DESI GAALI MODE</label></div><button class="outline-btn" id="slangReaction">SAY SOMETHING, BOSS!</button><p id="slangLine" class="slang-line">Arey wah, kya badiya scene hai!</p></article>
+      </div>
+    </section>
+
+    <section class="section wrap" id="leaderboard">
+      <div class="section-head"><div><p class="eyebrow">07 / HOUSE SCOREBOARD</p><h2>Points ka <em>panga.</em></h2></div><p class="section-note">Your progress is local to this browser. Reset is available in Settings.</p></div>
+      <div class="leaderboard-grid"><article class="panel leaderboard-panel"><div class="panel-head"><h3>Weekly leaderboard</h3><span class="badge">LOCAL</span></div><div id="leaderboardList"></div></article><article class="panel achievements-panel"><div class="panel-kicker">YOUR ACHIEVEMENTS</div><h3 id="rankName">HOUSE ROOKIE</h3><p id="rankDescription">Play a round to start collecting badges.</p><div id="achievementBadges" class="achievement-badges"></div></article></div>
+    </section>
+
+    <section class="section wrap final-rules" id="rules">
+      <div class="rules-card"><div><p class="eyebrow">HOUSE RULE ZERO</p><h2>Consent is the <em>boss.</em></h2><p>Every player must be an adult and freely choose to play. No pressure, no intoxication-based dares, no recording, and no real-life sexual activity as a task. Pass, pause or stop anytime.</p></div><div class="rules-checks"><label><input id="everyoneAdult" type="checkbox"> Everyone playing is 18+</label><label><input id="touchConsent" type="checkbox" checked> Ask before any touch</label><label><input id="recordingBan" type="checkbox" checked> No photos or recording</label><label><input id="skipAllowed" type="checkbox" checked> Pass / pause / stop is always allowed</label><button class="gold-btn" id="saveRules">SAVE HOUSE RULES</button><small id="rulesStatus">Set boundaries before playing together.</small></div></div>
+    </section>
+
+    <section class="section wrap" id="settings">
+      <div class="section-head"><div><p class="eyebrow">08 / PLAYER SETTINGS</p><h2>Own your <em>experience.</em></h2></div><p class="section-note">Local browser settings and saved demo progress.</p></div>
+      <div class="settings-grid"><article class="panel"><h3>Language & sound</h3><label class="field-label">BANTER MODE<select id="languageSelect"><option value="clean">Clean Hindi</option><option value="hinglish">Funny Hinglish</option><option value="desi">Desi Gaali Mode</option></select></label><label class="toggle-row"><span>Sound effects</span><input id="soundToggle" type="checkbox"></label><label class="toggle-row"><span>Reduced motion</span><input id="motionToggle" type="checkbox"></label></article><article class="panel"><h3>Local data</h3><p>Score, votes, achievements and settings stay in this browser only.</p><button class="outline-btn" id="exportData">EXPORT MY GAME DATA</button><button class="danger-btn" id="resetData">RESET ALL LOCAL PROGRESS</button><small id="dataStatus">No account or server storage.</small></article></div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="Quick navigation"><a href="#home"><span>⌂</span>HOME</a><a href="#tasks"><span>⚑</span>TASKS</a><a href="#games"><span>✦</span>GAMES</a><a href="#gallery"><span>▧</span>GALLERY</a><a href="#leaderboard"><span>♜</span>SCORE</a></nav>
+  <footer class="site-footer"><b>BIG BOSS KE RANDIYA</b><span>POWERED BY INNERWEAR</span><p>Fictional adults-only game-show concept. Not affiliated with any television show or broadcaster. No live stream, online contestants, payments or intimate-media upload.</p><a href="../index.html">BACK TO INNERWEAR HUB ↗</a></footer>
+
+  <dialog class="modal" id="ageGate"><div class="modal-box gate-box"><div class="gate-mark">18<span>+</span></div><p class="eyebrow">INNERWEAR HOUSE / ADULT ACCESS</p><h2>Welcome to the<br><em>after-dark house.</em></h2><p>Continue only if you are 18 or older. This self-confirmation is not formal age verification.</p><label class="check-row"><input id="ageConfirm" type="checkbox"> I confirm that I am 18 or older.</label><button class="gold-btn large" id="ageEnter" disabled>ENTER THE HOUSE ↗</button><small>If you are under 18, leave this page. Prompts are playful and non-graphic.</small></div></dialog>
+  <dialog class="modal" id="playerModal"><div class="modal-box"><div class="modal-head"><span class="panel-kicker">HOUSEMATE PROFILE</span><button class="close-modal" data-close="playerModal">×</button></div><h2>Choose your <em>nickname.</em></h2><label class="field-label">NICKNAME<input id="playerName" maxlength="18" placeholder="e.g. DramaBoss"></label><label class="field-label">YOUR VIBE<select id="playerVibe"><option>Funny</option><option>Bold</option><option>Strategist</option><option>Romantic</option><option>Chill</option></select></label><button class="gold-btn" id="savePlayer">SAVE PLAYER</button><small id="playerStatus"></small></div></dialog>
+  <dialog class="modal" id="imageModal"><div class="modal-box image-modal-box"><div class="modal-head"><span id="imageModalTitle">GALLERY IMAGE</span><button class="close-modal" data-close="imageModal">×</button></div><img id="modalImage" alt="Selected gallery image"><p id="modalCaption"></p><button class="outline-btn" id="modalNext">NEXT IMAGE ↻</button></div></dialog>
+  <dialog class="modal" id="anatomyModal"><div class="modal-box anatomy-box"><div class="modal-head"><span id="anatomyTitle">EDUCATIONAL ANATOMY ART</span><button class="close-modal" data-close="anatomyModal">×</button></div><div id="anatomyBody"></div><p class="muted">Non-explicit educational schematic. Not erotic imagery, medical diagnosis or personal medical advice.</p><button class="gold-btn" data-close="anatomyModal">GOT IT</button></div></dialog>
+  <dialog class="modal" id="settingsModal"><div class="modal-box"><div class="modal-head"><span>QUICK SETTINGS</span><button class="close-modal" data-close="settingsModal">×</button></div><p>Use Settings below for language, sound, motion and local-data controls.</p><a class="gold-btn" href="#settings" data-close="settingsModal">OPEN SETTINGS</a></div></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="./data.js"></script>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

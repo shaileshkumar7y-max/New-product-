@@ -1,46 +1,37 @@
-# V5 Feature Checklist
+# V2 Feature Checklist
 
-## INNERWEAR hub
-- [x] Main brand identity and world navigation
-- [x] BLXCKED
-- [x] HER AFTER DARK
-- [x] ART ATELIER
-- [x] Royal Sanskari / Noor / Grace previews
-- [x] Couples Studio
-- [x] BIG BOSS KE RANDIYA launch link
-- [x] Nomination Night mini-board
-- [x] Immunity Vault local claim
-- [x] Weekly house points tracker
-
-## Commerce concept UI
-- [x] 26 concept products
-- [x] Brand filters
-- [x] Search and sorting
-- [x] Product quick view
-- [x] Size selector
-- [x] Local demo bag
-- [x] Local wishlist
-
-## Creative and interactive
-- [x] 10 ad campaigns
-- [x] 12 collaboration concepts
-- [x] Art gallery and lightbox
-- [x] Date night generator
-- [x] Boyfriend gift finder
-- [x] 4 wheels with local custom options
-- [x] Approximate measurement helper
-
-## Constraints
-- [x] No backend
-- [x] No paid API
-- [x] Existing root files preserved by upload design
-- [x] Existing show and private feedback URLs linked
-- [ ] Live Android device verification after deployment
-
-## Release hardening
-- [x] PWA manifest and scoped service worker
-- [x] Offline app-shell cache and runtime image cache
-- [x] 8 automated smoke tests
-- [x] CSS parse check
-- [x] 47 unique local image references verified over HTTP
-- [ ] Android Chrome screenshot and touch testing after upload
+- [x] BIG BOSS KE RANDIYA name preserved
+- [x] INNERWEAR remains the main/sponsor brand
+- [x] New black / purple / gold mobile-first UI
+- [x] Desktop nav and Android bottom nav
+- [x] #05 / #08 poster carousel and contestant vote
+- [x] House Feed refresh
+- [x] Housemate nickname and vibe
+- [x] 53 task cards; Solo / Duo / Group filters
+- [x] Playful / Bold / Spicy (non-graphic) task filter
+- [x] Timer, pause, skip and complete
+- [x] Power Cards and Secret Missions
+- [x] Truth / Dare / Chemistry / Confession / Double Trouble
+- [x] Red Flag / Green Flag
+- [x] Who Knows Whom?
+- [x] Compliment Battle
+- [x] 60-Second Challenge
+- [x] Mystery Mood Box
+- [x] Finale Ladder
+- [x] Reaction Test
+- [x] Confession Room
+- [x] Alliance Builder
+- [x] Chemistry Check builder
+- [x] Truth or Skip Tournament
+- [x] Couple Memory Challenge
+- [x] 4 wheels with custom options
+- [x] Innerwear Runway local votes
+- [x] Nomination board and Immunity Vault
+- [x] Local leaderboard, rank and achievements
+- [x] Clean Hindi / Funny Hinglish / Desi Gaali mode
+- [x] Gallery filters, lightbox and next-image navigation
+- [x] 17 reused gallery visuals and random surprise picker
+- [x] CHUT / LUND educational anatomy diagrams
+- [x] Age self-attestation and consent rules
+- [x] Local storage, JSON export and reset
+- [x] No duplicated root WebP files in ZIP

@@ -1,8 +1,10 @@
-# Changelog — V5
+# Changelog — V2
 
-- Added one INNERWEAR-branded hub with all previous brand worlds and show links.
-- Reused the saved 26-product data catalogue and normalized every image/detail path to local `./assets/` files.
-- Preserved 10 BLXCKED campaigns, 12 collaboration ideas, 4 wheels and Date Night presets.
-- Added local demo bag, wishlist, product quick view, search, filters, sorting, campaign archive, Art Atelier lightbox, Gift Finder, size helper and wheel customization.
-- Added show upgrade desk: nomination board, immunity card and weekly points.
-- Kept the existing root show and private feedback pages unchanged; V5 links to them.
+- Reworked the show shell into an INNERWEAR-powered, mobile-first black / purple / gold interface.
+- Expanded the Task Arena to 53 local tasks with filters, timer, pause, skip and points.
+- Added five prompt decks and nine-plus quick mini-game experiences.
+- Restored legacy show modules: reaction test, confession room, alliance builder, chemistry check, runway voting and local feed.
+- Added four customisable wheels, nomination, immunity, leaderboard and achievements.
+- Added optional desi slang mode and the Surprise Gallery.
+- Reused existing root WebP images without duplicating them in the package.
+- Added two new non-explicit educational SVG anatomy schematics.

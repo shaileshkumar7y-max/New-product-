@@ -1,10 +1,7 @@
 {
-  "name": "innerwear-the-new-edit",
-  "version": "5.0.1",
+  "name": "big-boss-ke-randiya-innerwear-v2",
+  "version": "2.0.0",
   "private": true,
   "type": "module",
-  "scripts": {
-    "check": "node --check app.js && node --check data.js && node --check show-house.js",
-    "test": "node --test v5-regression.test.mjs"
-  }
+  "scripts": {"check":"node --check app.js && node --check data.js","test":"node --test tests/*.test.mjs"}
 }
