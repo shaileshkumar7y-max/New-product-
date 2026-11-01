@@ -15,21 +15,20 @@ const state={
  campaignTab:'ads'
 };
 const artImages=[
- ['./assets/mughal-royal-romance-poster.webp','Mughal royal romance poster'],
- ['./assets/backlit-saree-atelier-sketch.webp','Backlit saree graphite study'],
- ['../bollywood-romance-poster-collection.webp','Romance poster collection'],
- ['../sepia-couples-moodboard.webp','Sepia couples moodboard']
+ ['./mughal-royal-romance-poster.webp','Mughal royal romance poster'],
+ ['./backlit-saree-atelier-sketch.webp','Backlit saree graphite study'],
+ ['./bollywood-romance-poster-collection.webp','Romance poster collection'],
+ ['./sepia-couples-moodboard.webp','Sepia couples moodboard']
 ];
 function persist(){try{localStorage.setItem(KEY,JSON.stringify({bag:state.bag,wishlist:state.wishlist,custom:state.custom}))}catch{toast('Browser storage is full; this change is temporary.')}}
 function toast(msg){const el=$('#toast');if(!el)return;el.textContent=msg;el.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('show'),2200)}
-function allImagePath(path){return path.replace('../','../').replace('./assets/','./assets/')}
 function renderProducts(){
  let list=PRODUCTS.filter(p=>(state.filter==='ALL'||p.brand===state.filter)&&(`${p.name} ${p.brand} ${p.category} ${p.description}`.toLowerCase().includes(state.query.toLowerCase())));
  if(state.sort==='az')list.sort((a,b)=>a.name.localeCompare(b.name));
  if(state.sort==='za')list.sort((a,b)=>b.name.localeCompare(a.name));
  $('#productGrid').innerHTML=list.map(p=>`
  <article class="product-card">
-  <div class="product-image"><img src="${p.image}" alt="${esc(p.name)}" loading="lazy" onerror="this.onerror=null;this.src='../image-placeholder.svg'">
+  <div class="product-image"><img src="${p.image}" alt="${esc(p.name)}" loading="lazy" onerror="this.onerror=null;this.src='./image-placeholder.svg'">
    <span class="product-badge">${esc(p.badge||p.category)}</span>
    <button class="heart-btn ${state.wishlist.includes(p.id)?'active':''}" data-wish="${p.id}" aria-label="Toggle wishlist">♡</button>
   </div>
@@ -48,7 +47,7 @@ function closeDialog(id){const d=$(id);if(d?.open)d.close()}
 function productModal(id){
  const p=findProduct(id);if(!p)return;
  const size=p.sizes?.[0]||'ONE SIZE';state.selectedSizes[id]=state.selectedSizes[id]||size;
- $('#productModalBody').innerHTML=`<img src="${p.detail||p.image}" alt="${esc(p.name)}" onerror="this.src='${p.image}'">
+ $('#productModalBody').innerHTML=`<img src="${p.detail||p.image}" alt="${esc(p.name)}" onerror="this.onerror=null;this.src='./image-placeholder.svg'">
  <div><span class="product-brand">${esc(p.brand)} / ${esc(p.badge||'CONCEPT')}</span><h3>${esc(p.name)}</h3><p>${esc(p.description)}</p><p><b>Concept preview</b> · Product details, material and live availability are not confirmed.</p>
  <div class="size-options">${(p.sizes||['ONE SIZE']).map(s=>`<button data-size="${esc(s)}" data-product="${id}" class="${state.selectedSizes[id]===s?'selected':''}">${esc(s)}</button>`).join('')}</div>
  <button class="btn btn-gold" id="addProduct" data-add="${id}">ADD TO DEMO BAG</button>

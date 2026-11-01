@@ -1,29 +1,25 @@
-# V5 QA Report
+# QA report — V5 image-path repair
 
-Local verification:
-- JavaScript syntax check: PASS
-- Data module syntax check: PASS
-- 8 automated smoke tests: PASS (`node --test tests/v5-smoke.test.mjs`)
-- 26 product entries retained
-- 4 wheels retained, with custom local options
-- Nomination Night, Immunity Vault and weekly house points wired
-- 10 campaign directions retained
-- 12 collaboration ideas retained
-- 3 hero story records retained
-- Product image and detail paths normalized to `./assets/`
-- V5 page image references bundled locally
-- Responsive mobile CSS breakpoint present
-- PWA manifest and service worker cache checked
+## Confirmed fixes
 
-Not yet verified:
-- Actual GitHub Pages deployment after user upload
-- Android Chrome visual rendering on the user's device
-- Third-party font download when offline
+- Root asset layout matched against current GitHub tree: 52 WebP images are already at repository root.
+- Corrected static images, gallery/lightbox images, product-card/detail data and dynamic poster carousel paths.
+- Reconnected Show House and Private Feedback routes.
+- Removed the dead `private-rate-lab/` feedback footer link.
+- Updated Service Worker cache version and core routes.
+- Corrected package test/check scripts.
 
-No root repository file is changed by this ZIP. It adds `innerwear-v5/` only.
+## Automated results
 
-Browser screenshot capture attempted with headless Chromium but stalled in this runtime; no device-render claim is made. Recheck on Android Chrome after Pages upload.
+- JavaScript syntax checks: PASS (main app, data module, restored show script).
+- Regression tests: 7/7 PASS.
+- Product catalogue: 26/26 entries have valid image and detail paths.
+- Static page routes: 12/12 return HTTP 200 in local flat-root preview.
+- Image paths referenced by HTML/data/scripts: 49/49 return HTTP 200 in local flat-root preview.
+- Existing WebP assets: 52/52 passed image-file integrity verification.
+- Duplicate/missing direct DOM IDs: none found in main or show page.
+- ZIP image entries: 0 (intentionally, to avoid re-uploading existing images).
 
-Image inventory: 52 WebP files bundled (7.56 MB raw asset total).
-Image path HTTP check: 47/47 referenced assets returned 200 on local static server.
-CSS parser: no syntax errors. Headless browser navigation was blocked by this runtime, so Android visual verification remains pending.
+## Not verified
+
+The environment blocked Chromium page navigation, so no claim is made about real Android Chrome visual rendering. After upload, inspect the live page once on the phone.
