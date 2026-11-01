@@ -1,108 +1,57 @@
-# PRIVATE RATE LAB — Experimental Edition
+# BIG BOSS KE RANDIYA — INNERWEAR House
 
-A mobile-first, frontend-only prototype for exploring consent, privacy controls, respectful feedback and personal data awareness.
+A frontend-only, adults-only, consent-first reality-game concept for the existing `shaileshkumar7y-max/New-product-` GitHub Pages repository.
 
-**This is a local interactive concept demo, not a production adult-content platform.** It uses synthetic sample data only. It has no backend, no user accounts, no remote reviewer network, no intimate-media upload, no third-party AI API and no public gallery.
+## Show identity
+- Show title: **BIG BOSS KE RANDIYA** (kept as requested).
+- Main category/sponsor identity: **INNERWEAR**.
+- Sponsor lockup: **BLXCKED INNERWEAR**.
+- Featured brand special: **SYDNEY INNERWEAR**.
+- Poster editions: Black Edition and Sydney Edition (the two poster images supplied in this conversation).
+- The website uses an original spotlight/iris motif, not an official television-show logo. Supplied poster art is shown as concept artwork; this is not affiliated with any broadcaster or television franchise.
 
-## Included experiences
+## Install on GitHub Pages (Android-friendly)
+1. Extract the ZIP.
+2. Upload the complete `big-boss-ke-randiya/` folder into the repository root. Preserve the `assets/` subfolder.
+3. Do not replace existing root app files or root image assets.
+4. Commit to `main` and wait for Pages deployment.
+5. Open: `https://shaileshkumar7y-max.github.io/New-product-/big-boss-ke-randiya/`
 
-- Privacy Control Room — live local permission switches and consequence preview.
-- Consent Universe — interactive radial permission controls.
-- Privacy Time Machine — simulated session lifecycle and expiry previews.
-- Private Room Studio — local room preview, sample invite code and consent receipt.
-- Reality Preview Lens — owner, reviewer and limited preview modes.
-- Boundary DNA — configurable local preference profile.
-- Feedback Translator — local phrase rules, no AI API.
-- Emotion Shield — check-in, results hiding and a break timer.
-- Blind Review Theater — simulated reviewer, safety reviewer and owner perspectives.
-- Rating DNA Map — synthetic feedback-quality radar chart.
-- Consent Replay — local event timeline.
-- Feedback Weather — visual summary of fictional sample feedback.
-- What-If Studio — compare hypothetical settings.
-- Digital Privacy Shadow — inspect app-scoped browser storage.
-- Safety Playground — practice moderation actions on fictional reports.
-- Quick Exit — neutral-screen visual demo (not a device-security feature).
-- Privacy Escape Room — privacy learning mini-game.
-- Feedback Composer — build a custom checklist.
-- Consent Simulator — apply local consent presets.
-- Personal Score Museum — synthetic feedback-quality exhibit history.
-- Boundary Challenge — short respectful-interaction scenarios.
-- Settings & Data — JSON export, password-protected encrypted backup, restore and reset.
+The page references existing root WebP images using `../filename.webp`; those existing images must remain at repository root. The two supplied show posters are stored inside `big-boss-ke-randiya/assets/`.
 
-## Run it on your phone or computer
+## Features included
+- 18+ self-attestation gate (not identity or age verification).
+- Responsive mobile and desktop show landing page.
+- User-supplied Black Edition / Sydney Edition poster carousel.
+- THE HOUSE simulated feed with refresh action.
+- Fictional contestant cards #05 and #08 with local vote counter.
+- Local housemate nickname and vibe profile.
+- Task Arena with timed tasks, point scoring and no-penalty skip.
+- Power Cards and Secret Mission cards.
+- After Dark Truth / Dare / Chemistry prompt deck with Playful, Bold and Spicy levels.
+- Pass / skip and complete prompt actions.
+- Eyes on the Prize reaction-time game.
+- Confession Room with local-only save and clear.
+- Chemistry Check with selectable shared boundaries.
+- Innerwear Runway house vote across BLXCKED Black Lace, Sydney Innerwear and Pink Lace Edit.
+- Alliance Builder with local-only alliance choices.
+- Consent / house rules panel.
+- BLXCKED and Sydney Innerwear campaign panels.
+- Link back to the existing `../private-feedback.html` local text-only feedback demo.
 
-The app uses JavaScript ES modules and browser APIs. Run it from a local web server (not by opening `index.html` as a `file://` URL).
+## Safety, privacy and technical boundaries
+- All game interactions are local browser interactions; no backend, accounts, livestream, remote matching, remote votes, payments or external AI APIs.
+- The age gate is self-attestation only; it does not verify age or identity.
+- Prompts are flirty/suggestive and non-graphic. The site does not instruct or depict explicit sex acts.
+- Real-life physical contact or intimacy is never a required task. Any touch or kiss requires clear, current agreement from everyone involved. Pass, pause and stop are always allowed.
+- No intimate-media upload, recording, public sharing or live-feed broadcasting.
+- Confession notes, votes, score and player nickname are stored in this browser's localStorage. Avoid entering identifying or sensitive personal details, especially on a shared device.
 
-### Option A — GitHub Codespaces
+## Files
+- `index.html` — page structure and modals.
+- `styles.css` — responsive visual design.
+- `app.js` — interactions and local state.
+- `assets/show-poster-black-edition.webp` — supplied poster image 1, compressed to WebP.
+- `assets/show-poster-sydney-edition.webp` — supplied poster image 2, compressed to WebP.
 
-1. Create a repository named `private-rate-lab` on GitHub.
-2. Extract this ZIP, open the `private-rate-fixed-pages` folder, and upload its contents to the repository root. Keep `tests/` and `.github/workflows/` as folders; do not flatten them.
-3. Open the repository on GitHub and choose **Code → Codespaces → Create codespace on main**.
-4. In the terminal, run:
-
-   ```bash
-   python3 -m http.server 8000
-   ```
-
-5. Open the forwarded port 8000 preview. On mobile, open the forwarded URL in Chrome.
-
-### Option B — GitHub Pages (static demo only)
-
-1. Push the project files to the repository root.
-2. Open **Settings → Pages**.
-3. Choose **Deploy from a branch**, select `main` and `/ (root)`, then save.
-4. Wait for GitHub Pages to publish the static demo.
-
-Use only synthetic demo data. Review GitHub Pages terms and your legal/compliance obligations before publishing any adult-oriented or sensitive-data product. GitHub Pages is static hosting and does not provide a backend, private user accounts or server-side access control.
-
-## Test the project
-
-Node.js 20+ is recommended for the included smoke tests:
-
-```bash
-npm test
-npm run check
-```
-
-No npm dependencies are required.
-
-## Local data and encryption
-
-- Demo settings and event history are stored in this browser's `localStorage` namespace.
-- The app does not sync data to a server.
-- The encrypted backup feature uses Web Crypto PBKDF2-SHA-256 (310,000 iterations) to derive an AES-256-GCM key. The password is not stored.
-- A forgotten backup password cannot be recovered.
-- Local browser storage is not a secure vault. Anyone with access to your unlocked browser profile may be able to inspect it.
-- The readable JSON export is not encrypted.
-- Resetting the app does not delete downloaded exports or copies outside this app's storage namespace.
-
-## Important technical boundaries
-
-- The age confirmation dialog is a prototype gate, not identity or age verification.
-- Preview modes, role simulation, consent replay and expiry are local demonstrations. They do not enforce remote access permissions.
-- Browser-side deletion cannot revoke screenshots or copies made outside the app.
-- The feedback translator uses a small local rule set. It is not a trained AI model.
-- The radar map, weather summary and museum entries use fictional sample values.
-- No photos or other intimate media can be uploaded in this version.
-
-## Folder structure
-
-```text
-private-rate-lab/
-├── index.html
-├── manifest.webmanifest
-├── sw.js
-├── package.json
-├── README.md
-├── styles.css
-├── app.js
-├── store.js
-├── security.js
-├── icon.svg
-├── tests/smoke.test.js
-└── .github/workflows/tests.yml
-```
-
-## Version
-
-`0.1.0` — Experimental frontend prototype.
+No build step is required.

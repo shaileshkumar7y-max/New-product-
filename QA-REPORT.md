@@ -1,24 +1,28 @@
-# V4 QA report
+# QA Report — BIG BOSS KE RANDIYA
 
-## Build scope
-- New additive folder only; existing repository root files and images are referenced but not changed.
-- All previous root WebP files use `../` paths when referenced from `/brand-v4/`.
-- All new V4 master/crop images reside in `assets/` and use `./assets/` paths.
-- Old Private Rate Lab preserved under `private-rate-lab/`.
-- New 18+ text-only feedback page uses sessionStorage only; no upload or network calls.
+## Completed checks
+- `node --check app.js`: PASS.
+- `npm test`: 6/6 tests PASS.
+- Show identity and main section inventory: PASS.
+- All direct JavaScript ID selectors exist in the HTML: PASS.
+- Both supplied poster WebP files exist: PASS.
+- Parent-relative root image references match files in the current GitHub repository tree: PASS.
+- Existing `../private-feedback.html` navigation target exists in the repository: PASS.
+- Local-only boundary check (no fetch, XHR, WebSocket, camera, video or iframe): PASS.
+- Game interaction inventory (truth/dare/chemistry, score, task skip, secret missions, alliance, reaction game, confession, consent rules and runway voting): PASS.
 
-## Test evidence
-- Local HTTP smoke test: **55/55** page, script, stylesheet, restored-lab and image requests returned HTTP 200 against a fixture matching the repository root image inventory.
-- JavaScript syntax checks: app.js, data.js, feedback.js — run before package.
-- Catalogue data: 26 entries after expansion.
-- Visual library: 16 distinct master files in the interactive gallery.
-- New image files: 29 total (16 masters + 13 detail derivatives).
-- All HTML/CSS/JS/module/image URLs are checked against the extracted local folder and repository-root image fixture.
-- HTML section IDs and local navigation are checked.
-- Feedback tests cover age gate, local session persistence, export and clear controls by source-level/static assertions; a real Android browser run remains pending.
+## Images
+- `assets/show-poster-black-edition.webp` — 232,160 bytes.
+- `assets/show-poster-sydney-edition.webp` — 256,292 bytes.
+- Existing campaign files used through `../` paths are retained at repository root.
 
-## Not claimed
-- No live multi-user rating/reviewer network.
-- No image upload, remote storage, authentication, payment or checkout.
-- No verified stock/prices/sizes beyond concept placeholders.
-- No real Android Chrome test until the user uploads the additive folder and opens the live Pages route.
+## Not claimed as tested
+- The headless browser navigation was blocked by the container's browser policy, so a full Chromium rendering/interaction run could not be completed here.
+- Final visual inspection on your Android Chrome must happen after you upload the folder and GitHub Pages deploys it.
+
+## Functional boundaries
+- No real livestream, remote contestant network, online chat, payments or cross-device voting.
+- Votes, points, player nickname, confessions and house rules remain in this browser's localStorage. LocalStorage is not encrypted and is not suitable for sensitive personal information.
+- Age gate is self-attestation only, not identity or age verification.
+- Prompts are flirty/suggestive and non-graphic. All physical actions are optional and require clear current consent.
+- User-supplied posters are presented as concept artwork. The site is not affiliated with a television show or broadcaster.

@@ -1,20 +1,12 @@
-# Start Here — Private Rate Lab
+# START HERE — BIG BOSS KE RANDIYA
 
-## What you received
+1. Extract `big-boss-ke-randiya.zip`.
+2. Upload the whole `big-boss-ke-randiya` folder to the root of `New-product-` on GitHub.
+3. Keep the nested `assets` folder intact.
+4. Do not delete or replace any existing files or images in the repository root.
+5. Commit to `main`; wait for GitHub Pages to finish deploying.
+6. Open `https://shaileshkumar7y-max.github.io/New-product-/big-boss-ke-randiya/`.
 
-- One complete website project folder.
-- Mobile-first dark UI.
-- 20+ interactive screens and experiments.
-- No backend, no paid API, and no external JavaScript package.
-- Local browser storage and optional encrypted backup.
-- Offline PWA shell and GitHub Actions smoke tests.
+The existing site's `private-feedback.html` remains available and is linked from this show page. This show page is a separate add-on route, so the current homepage stays unchanged.
 
-## Open it
-
-Do not open `index.html` directly from the file manager. JavaScript modules and the offline app shell need a local web server or HTTPS.
-
-**Recommended on Android:** upload the files to a GitHub repository, then use GitHub Codespaces or GitHub Pages as described in `README.md`.
-
-## Important
-
-This version is a synthetic-data front-end prototype. It does not support real accounts, real invitations, remote reviewers, intimate photo uploads, identity verification or server-enforced permissions. The sample invite code and quick-exit screen are simulations only.
+On first visit, tick the 18+ self-confirmation and enter. Open House Rules and check adult/skip settings before playing together. The age gate does not perform formal age verification.

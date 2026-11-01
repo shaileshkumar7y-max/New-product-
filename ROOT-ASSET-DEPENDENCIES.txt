@@ -1,0 +1,12 @@
+The show folder references these existing repository-root assets via ../ paths:
+- blxcked-luxury-night.webp
+- her-after-dark.webp
+- blxcked-runway.webp
+- blxcked-better-together.webp
+- her-after-dark-silk-morning-golden-reflection.webp
+- lace-collection-vanity.webp
+- bollywood-romance-poster-collection.webp
+- pink-lace-collection.webp
+- confidence-together-campaign.webp
+- private-feedback.html (navigation target)
+Do not move or delete these existing files when uploading the new folder.
