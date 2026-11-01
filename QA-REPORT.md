@@ -1,28 +1,29 @@
-# QA Report — BIG BOSS KE RANDIYA
+# V5 QA Report
 
-## Completed checks
-- `node --check app.js`: PASS.
-- `npm test`: 6/6 tests PASS.
-- Show identity and main section inventory: PASS.
-- All direct JavaScript ID selectors exist in the HTML: PASS.
-- Both supplied poster WebP files exist: PASS.
-- Parent-relative root image references match files in the current GitHub repository tree: PASS.
-- Existing `../private-feedback.html` navigation target exists in the repository: PASS.
-- Local-only boundary check (no fetch, XHR, WebSocket, camera, video or iframe): PASS.
-- Game interaction inventory (truth/dare/chemistry, score, task skip, secret missions, alliance, reaction game, confession, consent rules and runway voting): PASS.
+Local verification:
+- JavaScript syntax check: PASS
+- Data module syntax check: PASS
+- 8 automated smoke tests: PASS (`node --test tests/v5-smoke.test.mjs`)
+- 26 product entries retained
+- 4 wheels retained, with custom local options
+- Nomination Night, Immunity Vault and weekly house points wired
+- 10 campaign directions retained
+- 12 collaboration ideas retained
+- 3 hero story records retained
+- Product image and detail paths normalized to `./assets/`
+- V5 page image references bundled locally
+- Responsive mobile CSS breakpoint present
+- PWA manifest and service worker cache checked
 
-## Images
-- `assets/show-poster-black-edition.webp` — 232,160 bytes.
-- `assets/show-poster-sydney-edition.webp` — 256,292 bytes.
-- Existing campaign files used through `../` paths are retained at repository root.
+Not yet verified:
+- Actual GitHub Pages deployment after user upload
+- Android Chrome visual rendering on the user's device
+- Third-party font download when offline
 
-## Not claimed as tested
-- The headless browser navigation was blocked by the container's browser policy, so a full Chromium rendering/interaction run could not be completed here.
-- Final visual inspection on your Android Chrome must happen after you upload the folder and GitHub Pages deploys it.
+No root repository file is changed by this ZIP. It adds `innerwear-v5/` only.
 
-## Functional boundaries
-- No real livestream, remote contestant network, online chat, payments or cross-device voting.
-- Votes, points, player nickname, confessions and house rules remain in this browser's localStorage. LocalStorage is not encrypted and is not suitable for sensitive personal information.
-- Age gate is self-attestation only, not identity or age verification.
-- Prompts are flirty/suggestive and non-graphic. All physical actions are optional and require clear current consent.
-- User-supplied posters are presented as concept artwork. The site is not affiliated with a television show or broadcaster.
+Browser screenshot capture attempted with headless Chromium but stalled in this runtime; no device-render claim is made. Recheck on Android Chrome after Pages upload.
+
+Image inventory: 52 WebP files bundled (7.56 MB raw asset total).
+Image path HTTP check: 47/47 referenced assets returned 200 on local static server.
+CSS parser: no syntax errors. Headless browser navigation was blocked by this runtime, so Android visual verification remains pending.

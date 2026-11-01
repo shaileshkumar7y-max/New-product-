@@ -1,12 +1,10 @@
-# START HERE — BIG BOSS KE RANDIYA
+# START HERE — V5 (Android upload)
+1. Download and extract `innerwear-the-new-edit-v5.zip`.
+2. Open the extracted folder `innerwear-v5`.
+3. In GitHub, open `shaileshkumar7y-max/New-product-` → Add file → Upload files.
+4. Upload the whole `innerwear-v5` folder to the repository root. Do not upload only the files inside it.
+5. Keep every previous root file, image and folder. Do not overwrite or delete them.
+6. Commit to `main` and wait for GitHub Pages to finish.
+7. Open `https://shaileshkumar7y-max.github.io/New-product-/innerwear-v5/`.
 
-1. Extract `big-boss-ke-randiya.zip`.
-2. Upload the whole `big-boss-ke-randiya` folder to the root of `New-product-` on GitHub.
-3. Keep the nested `assets` folder intact.
-4. Do not delete or replace any existing files or images in the repository root.
-5. Commit to `main`; wait for GitHub Pages to finish deploying.
-6. Open `https://shaileshkumar7y-max.github.io/New-product-/big-boss-ke-randiya/`.
-
-The existing site's `private-feedback.html` remains available and is linked from this show page. This show page is a separate add-on route, so the current homepage stays unchanged.
-
-On first visit, tick the 18+ self-confirmation and enter. Open House Rules and check adult/skip settings before playing together. The age gate does not perform formal age verification.
+The current show remains at the root URL; V5 links to it. Private Feedback remains at `/private-feedback.html`.

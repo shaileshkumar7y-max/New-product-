@@ -1,79 +1,176 @@
-(() => {
-  'use strict';
-  const $ = (s, root=document) => root.querySelector(s);
-  const $$ = (s, root=document) => [...root.querySelectorAll(s)];
-  const STORE = 'bbkr-innerwear-house-v1';
-  const load = () => { try { return JSON.parse(localStorage.getItem(STORE) || '{}'); } catch { return {}; } };
-  const saved = load();
-  const state = {
-    score: Number(saved.score)||0,
-    votes: saved.votes && typeof saved.votes==='object' ? saved.votes : {'05':0,'08':0},
-    player: saved.player || null,
-    rules: saved.rules || null,
-    confession: typeof saved.confession==='string' ? saved.confession : '',
-    bestReaction: Number(saved.bestReaction)||0,
-    mode:'truth', prompt:null, taskTimer:null, reactionTimer:null, reactionReady:false, reactionStarted:0, poster:0
-  };
-  const posters = ['./assets/show-poster-black-edition.webp','./assets/show-poster-sydney-edition.webp'];
-  const prompts = {
-    truth:{
-      1:['What is the most attractive quality in someone?','What outfit makes you feel most confident?','Who in the room has the best style?','What is your funniest first-date story?'],
-      2:['What is one harmless fantasy date you would love to plan?','What compliment do you secretly love hearing?','What makes chemistry feel genuine to you?','What is your boldest fashion choice?'],
-      3:['What is a romantic moment you would happily replay?','What makes a partner feel irresistible beyond appearance?','What is one flirty thing you have wanted to say but held back?','Describe your perfect private date night—keep it as detailed or simple as you like.']
-    },
-    dare:{
-      1:['Give someone a sincere compliment.','Do your best runway walk for 10 seconds.','Choose a song for the house soundtrack.','Strike your most confident campaign pose.'],
-      2:['Hold eye contact with your chosen partner for 15 seconds—only if both agree.','Whisper a sweet compliment, or pass.','Create a 10-second slow-dance moment with a willing partner.','Style a bold look using two items nearby.'],
-      3:['Ask your partner for a kiss; accept yes or no without pressure.','Plan a surprise date in three sentences.','Share a playful secret that you are comfortable telling.','Let your partner choose a song for your best confident pose.']
-    },
-    chemistry:{
-      1:['Pick one: sunrise date or late-night drive?','Choose your shared couple theme song.','Name one thing that makes you feel appreciated.'],
-      2:['Take turns describing your ideal date in 20 seconds each.','Pick a matching style mood: classic, bold or playful.','Share one boundary that makes games feel comfortable.'],
-      3:['Agree on one romantic gesture you would both enjoy.','Create a two-person challenge that either player can skip.','Ask what helps each person feel safe, wanted and respected.']
-    }
-  };
-  const feedItems = [
-    ['✦','TASK ARENA','Contestant #05 unlocked the Confidence Challenge.','NOW'],
-    ['◉','INNERWEAR SPECIAL','Sydney Innerwear runway round is ready for the house.','2 MIN'],
-    ['♡','AFTER DARK','A new chemistry prompt is waiting—both players choose in.','5 MIN'],
-    ['★','POWER CARD','Immunity and double-points cards are available in demo mode.','8 MIN']
-  ];
-  const powerCards=[['SKIP TOKEN','Skip one task without losing points.'],['DOUBLE POINTS','Earn double points on your next completed task.'],['HOUSE DJ','Choose the next song or mood for the game.'],['CHOICE CARD','Choose truth, dare or chemistry for the next round.'],['PAUSE POWER','Pause the game and reset the vibe.'],['STYLE CAPTAIN','Pick the theme for the next Innerwear runway round.']];
-  const secretMissions=[['THE KINDNESS SPY','Give two sincere compliments during the next round.'],['STYLE DETECTIVE','Spot one detail in another player’s outfit and compliment the styling.'],['SOUNDTRACK SECRET','Pick a song that changes the mood of the house.'],['THE CALM BOSS','Suggest a 30-second reset when the room gets too competitive.'],['CHEMISTRY CLUE','Ask one thoughtful question and listen without interrupting.'],['RUNWAY SHADOW','Copy a confident pose from the campaign poster—keep it fun.']];
-  const taskList=[
-    ['THE CONFIDENCE CHALLENGE','Give your partner three genuine compliments. Keep it kind, specific and fun.','60 SEC',20],
-    ['RUNWAY FACE-OFF','Each player chooses a walk, pose or outfit style. Vote for the most confident entrance.','45 SEC',15],
-    ['THE CHEMISTRY TEST','Take turns naming one thing that makes a date memorable. Find one answer in common.','90 SEC',25],
-    ['HOUSE SOUNDTRACK','Pick a song that matches your current mood and explain why.','60 SEC',15],
-    ['EYES ON THE PRIZE','Keep eye contact for ten seconds only if both players are comfortable.','30 SEC',20]
-  ];
-  let taskIndex=0, voteTotal=0;
-  function persist(){ try{ localStorage.setItem(STORE,JSON.stringify({score:state.score,votes:state.votes,player:state.player,rules:state.rules,confession:state.confession,bestReaction:state.bestReaction,runwayVotes:state.runwayVotes})); }catch{ toast('Local storage is full; current session still works.'); } }
-  function toast(message){const el=$('#toast');el.textContent=message;el.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove('show'),2600);}
-  function updateScore(delta){state.score=Math.max(0,state.score+delta);$('#scoreValue').textContent=String(state.score).padStart(3,'0');$('#scoreProgress').style.width=`${Math.min(100,state.score%100)}%`;persist();}
-  function renderFeed(){const box=$('#houseFeed');box.innerHTML=feedItems.map((x,i)=>`<div class="feed-item"><span class="feed-symbol">${x[0]}</span><div><b>${x[1]}</b><p>${x[2]}</p></div><time>${x[3]}</time></div>`).join('');}
-  function updateVotes(){ $('#voteSummary').textContent=`Local demo votes: #05 — ${state.votes['05']||0} · #08 — ${state.votes['08']||0}`; }
-  function updateRunwayVotes(){ $('#runwayBlackCount').textContent=`${state.runwayVotes['BLXCKED BLACK LACE']||0} VOTES`; $('#runwaySydneyCount').textContent=`${state.runwayVotes['SYDNEY INNERWEAR']||0} VOTES`; $('#runwayPinkCount').textContent=`${state.runwayVotes['PINK LACE EDIT']||0} VOTES`; }
-  function voteRunway(look){state.runwayVotes[look]=(state.runwayVotes[look]||0)+1;persist();updateRunwayVotes();$('#runwayResult').textContent=`Your vote for ${look} is saved on this device.`;updateScore(5);}
-  function setPoster(n){state.poster=(n+posters.length)%posters.length;$('#heroPoster').src=posters[state.poster];$('#heroPoster').alt=state.poster===0?'Big Boss Ke Randiya Black Edition poster':'Big Boss Ke Randiya Sydney Innerwear poster';$('.poster-label').textContent=`CONCEPT POSTER · 0${state.poster+1}`;}
-  function drawPrompt(){const level=Number($('#heatLevel').value);const pool=prompts[state.mode][level];const text=pool[Math.floor(Math.random()*pool.length)];state.prompt=text;$('#promptType').textContent=`${state.mode.toUpperCase()} / LEVEL ${level}`;$('#promptText').textContent=text;$('#promptIcon').textContent=state.mode==='truth'?'◉':state.mode==='dare'?'✦':'♡';}
-  function openModal(id){const d=$(`#${id}`);if(d?.showModal)d.showModal();}
-  function closeModal(id){const d=$(`#${id}`);if(d?.open)d.close();}
-  function enterGame(){localStorage.setItem('bbkr-age-confirmed','yes');closeModal('ageGate');toast('Welcome to the house. Play by consent.');}
-  function refreshFeed(){feedItems.unshift(['✦','HOUSE UPDATE','A fresh demo update: choose a task, pick a game and set the house vibe.','NOW']);feedItems.pop();renderFeed();toast('House feed refreshed.');}
-  function startTask(){if(!$('#ruleAdults').checked){toast('Confirm all players are 18+ in House Rules first.');openModal('rulesModal');return;}if(!$('#ruleSkip').checked){toast('Keep the skip option enabled before starting.');return;}if(state.taskTimer){clearInterval(state.taskTimer);state.taskTimer=null;}const task=taskList[taskIndex];let seconds=Number(task[2].split(' ')[0]);$('#taskStatus').textContent=`${task[0]} · ${seconds}s`;$('#startTask').disabled=true;state.taskTimer=setInterval(()=>{seconds--;$('#taskStatus').textContent=seconds>0?`${task[0]} · ${seconds}s`:'TASK COMPLETE';if(seconds<=0){clearInterval(state.taskTimer);state.taskTimer=null;$('#startTask').disabled=false;updateScore(task[3]);toast(`Task completed · +${task[3]} points`);taskIndex=(taskIndex+1)%taskList.length;const next=taskList[taskIndex];$('.task-feature h3').textContent=next[0];$('.task-feature p').textContent=next[1];$('.task-number').textContent=`TASK ${String(taskIndex+1).padStart(2,'0')}`;$('.task-meta').innerHTML=`<span>⏱ ${next[2]}</span><span>★ ${next[3]} POINTS</span><span>♡ OPT-IN</span>`;}} ,1000);}
-  function skipTask(){if(state.taskTimer){clearInterval(state.taskTimer);state.taskTimer=null;}$('#startTask').disabled=false;$('#taskStatus').textContent='TASK SKIPPED · NO PENALTY';taskIndex=(taskIndex+1)%taskList.length;const next=taskList[taskIndex];$('.task-feature h3').textContent=next[0];$('.task-feature p').textContent=next[1];$('.task-number').textContent=`TASK ${String(taskIndex+1).padStart(2,'0')}`;$('.task-meta').innerHTML=`<span>⏱ ${next[2]}</span><span>★ ${next[3]} POINTS</span><span>♡ OPT-IN</span>`;toast('Skipped. No penalty.');}
-  function drawPower(){const item=powerCards[Math.floor(Math.random()*powerCards.length)];$('#powerTitle').textContent=item[0];$('#powerDescription').textContent=item[1];toast(`Power card: ${item[0]}`);}
-  function drawSecret(){const item=secretMissions[Math.floor(Math.random()*secretMissions.length)];$('#secretTitle').textContent=item[0];$('#secretDescription').textContent=item[1]+' Skip or swap whenever you like.';toast('Secret mission revealed.');}
-  function buildAlliance(){const ally=$('#allyPick').value;const goal=$('#allianceGoal').value;$('#allianceResult').textContent=`Alliance formed: ${ally} · ${goal}. It lasts for your next local task only.`;toast('Local alliance formed.');}
-  function startReaction(){const zone=$('#reactionZone');if(state.reactionTimer)clearTimeout(state.reactionTimer);state.reactionReady=false;zone.className='reaction-zone';zone.innerHTML='<span>WAIT FOR THE LIGHT…</span>';const delay=900+Math.random()*2600;state.reactionTimer=setTimeout(()=>{state.reactionReady=true;state.reactionStarted=performance.now();zone.classList.add('ready');zone.innerHTML='<span>TAP NOW!</span>';},delay);}
-  function reactionTap(){const zone=$('#reactionZone');if(!state.reactionReady){if(state.reactionTimer){clearTimeout(state.reactionTimer);state.reactionTimer=null;}zone.className='reaction-zone early';zone.innerHTML='<span>TOO EARLY — TRY AGAIN</span>';$('#reactionResult').textContent='Wait for the purple light.';return;}const elapsed=Math.round(performance.now()-state.reactionStarted);state.reactionReady=false;zone.className='reaction-zone';zone.innerHTML=`<span>${elapsed} MS</span>`;if(!state.bestReaction||elapsed<state.bestReaction){state.bestReaction=elapsed;persist();}$('#reactionResult').textContent=`Your time: ${elapsed} ms · Best: ${state.bestReaction} ms`;updateScore(elapsed<350?15:elapsed<600?10:5);}
-  function saveRules(){const rules={adults:$('#ruleAdults').checked,touch:$('#ruleTouch').checked,skip:$('#ruleSkip').checked,record:$('#ruleRecord').checked};state.rules=rules;persist();$('#rulesStatus').textContent=rules.adults&&rules.skip?'House rules saved. Keep checking in with everyone.':'House rules saved. Confirm adult status and keep skip enabled to play.';toast('House rules saved locally.');}
-  function chemistryBuild(){if(!$('#ruleAdults').checked){toast('Confirm 18+ house rules first.');openModal('rulesModal');return;}const picks=[];if($('#chemTalk').checked)picks.push('flirty talk');if($('#chemCompliment').checked)picks.push('compliments');if($('#chemDance').checked)picks.push('dance / eye contact');if($('#chemTouch').checked&&$('#ruleTouch').checked)picks.push('optional agreed touch');$('#chemistryResult').textContent=picks.length?`Shared round: ${picks.join(' · ')}. Both players must say yes before starting.`:'No shared prompts selected. Pick a different game or take a break.';}
-  function createPlayer(){const name=$('#playerName').value.trim();if(!name){$('#playerStatus').textContent='Add a nickname first.';return;}state.player={name:name.slice(0,18),vibe:$('#playerVibe').value};persist();$('#playerStatus').textContent=`Welcome, ${state.player.name}. Your ${state.player.vibe.toLowerCase()} house profile is saved on this device.`;toast('Housemate created.');}
-  function init(){renderFeed();updateVotes();updateRunwayVotes();$('#scoreValue').textContent=String(state.score).padStart(3,'0');$('#scoreProgress').style.width=`${Math.min(100,state.score%100)}%`;if(state.confession)$('#confessionText').value=state.confession;if(state.player)$('#playerName').value=state.player.name;if(state.rules){$('#ruleAdults').checked=!!state.rules.adults;$('#ruleTouch').checked=!!state.rules.touch;$('#ruleSkip').checked=!!state.rules.skip;$('#ruleRecord').checked=!!state.rules.record;}if(localStorage.getItem('bbkr-age-confirmed')==='yes')closeModal('ageGate');else openModal('ageGate');}
-  $('#ageConfirm').addEventListener('change',e=>$('#ageEnter').disabled=!e.target.checked);$('#ageEnter').addEventListener('click',enterGame);$('#joinTop').addEventListener('click',()=>{if($('#ageGate').open)return;document.querySelector('#house').scrollIntoView({behavior:'smooth'});});$('#enterHouse').addEventListener('click',()=>document.querySelector('#house').scrollIntoView({behavior:'smooth'}));$('#finalEnter').addEventListener('click',()=>document.querySelector('#house').scrollIntoView({behavior:'smooth'}));$('#posterPrev').addEventListener('click',()=>setPoster(state.poster-1));$('#posterNext').addEventListener('click',()=>setPoster(state.poster+1));$('#refreshFeed').addEventListener('click',refreshFeed);$('#rulesOpen').addEventListener('click',()=>openModal('rulesModal'));$('#goConsentControls').addEventListener('click',()=>{closeModal('rulesModal');document.querySelector('#rules').scrollIntoView({behavior:'smooth'});});$$('[data-close]').forEach(b=>b.addEventListener('click',()=>closeModal(b.dataset.close)));$('#menuOpen').addEventListener('click',()=>$('#mobileNav').hidden=!$('#mobileNav').hidden);$$('.mobile-nav a').forEach(a=>a.addEventListener('click',()=>$('#mobileNav').hidden=true));
-  $$('[data-vote]').forEach(b=>b.addEventListener('click',()=>{state.votes[b.dataset.vote]=(state.votes[b.dataset.vote]||0)+1;persist();updateVotes();toast(`Your local vote for #${b.dataset.vote} is saved.`);}));$$('[data-runway]').forEach(b=>b.addEventListener('click',()=>voteRunway(b.dataset.runway)));$('#createPlayer').addEventListener('click',()=>openModal('playerModal'));$('#savePlayer').addEventListener('click',createPlayer);$('#startTask').addEventListener('click',startTask);$('#skipTask').addEventListener('click',skipTask);$('#drawPower').addEventListener('click',drawPower);$('#drawSecret').addEventListener('click',drawSecret);$('#buildAlliance').addEventListener('click',buildAlliance);
-  $('#heatLevel').addEventListener('input',e=>{const v=Number(e.target.value);$('#heatLabel').textContent=['','1 · PLAYFUL','2 · BOLD','3 · SPICY'][v];});$$('[data-mode]').forEach(b=>b.addEventListener('click',()=>{$$('[data-mode]').forEach(x=>x.classList.toggle('active',x===b));state.mode=b.dataset.mode;drawPrompt();}));$('#drawPrompt').addEventListener('click',()=>{if(!$('#ruleAdults').checked){toast('Confirm everyone is 18+ first.');openModal('rulesModal');return;}if(!$('#ruleSkip').checked){toast('Skip must remain available.');return;}drawPrompt();});$('#passPrompt').addEventListener('click',()=>{state.prompt=null;$('#promptText').textContent='Prompt passed. No penalty. Draw another when ready.';$('#promptType').textContent='PASS / RESPECT';toast('Passed. Moving on.');});$('#completePrompt').addEventListener('click',()=>{if(!state.prompt){toast('Draw a prompt first.');return;}updateScore(10);$('#promptText').textContent='Round complete. Great teamwork.';state.prompt=null;});
-  $('#reactionStart').addEventListener('click',startReaction);$('#reactionZone').addEventListener('click',reactionTap);$('#saveConfession').addEventListener('click',()=>{state.confession=$('#confessionText').value.slice(0,400);persist();$('#confessionStatus').textContent='Saved locally on this device only.';toast('Confession saved locally.');});$('#clearConfession').addEventListener('click',()=>{state.confession='';$('#confessionText').value='';persist();$('#confessionStatus').textContent='Cleared from this browser storage.';});$('#chemistryBuild').addEventListener('click',chemistryBuild);$('#saveRules').addEventListener('click',saveRules);init();
-})();
+
+import { PRODUCTS, CAMPAIGNS, COLLABORATIONS, WHEELS, DATE_IDEAS } from './data.js';
+
+const $ = (s,root=document)=>root.querySelector(s);
+const $$ = (s,root=document)=>[...root.querySelectorAll(s)];
+const KEY='innerwear-new-edit-v5';
+const safeLoad=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch{return {}}};
+const saved=safeLoad();
+const state={
+ filter:'ALL',query:'',sort:'featured',
+ bag:Array.isArray(saved.bag)?saved.bag:[],
+ wishlist:Array.isArray(saved.wishlist)?saved.wishlist:[],
+ custom:{...(saved.custom||{})},
+ wheelRotation:0, selectedSizes:{},
+ campaignTab:'ads'
+};
+const artImages=[
+ ['./assets/mughal-royal-romance-poster.webp','Mughal royal romance poster'],
+ ['./assets/backlit-saree-atelier-sketch.webp','Backlit saree graphite study'],
+ ['../bollywood-romance-poster-collection.webp','Romance poster collection'],
+ ['../sepia-couples-moodboard.webp','Sepia couples moodboard']
+];
+function persist(){try{localStorage.setItem(KEY,JSON.stringify({bag:state.bag,wishlist:state.wishlist,custom:state.custom}))}catch{toast('Browser storage is full; this change is temporary.')}}
+function toast(msg){const el=$('#toast');if(!el)return;el.textContent=msg;el.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('show'),2200)}
+function allImagePath(path){return path.replace('../','../').replace('./assets/','./assets/')}
+function renderProducts(){
+ let list=PRODUCTS.filter(p=>(state.filter==='ALL'||p.brand===state.filter)&&(`${p.name} ${p.brand} ${p.category} ${p.description}`.toLowerCase().includes(state.query.toLowerCase())));
+ if(state.sort==='az')list.sort((a,b)=>a.name.localeCompare(b.name));
+ if(state.sort==='za')list.sort((a,b)=>b.name.localeCompare(a.name));
+ $('#productGrid').innerHTML=list.map(p=>`
+ <article class="product-card">
+  <div class="product-image"><img src="${p.image}" alt="${esc(p.name)}" loading="lazy" onerror="this.onerror=null;this.src='../image-placeholder.svg'">
+   <span class="product-badge">${esc(p.badge||p.category)}</span>
+   <button class="heart-btn ${state.wishlist.includes(p.id)?'active':''}" data-wish="${p.id}" aria-label="Toggle wishlist">♡</button>
+  </div>
+  <div class="product-info"><span class="product-brand">${esc(p.brand)}</span><h3>${esc(p.name)}</h3><p>${esc(p.description)}</p>
+   <div class="product-bottom"><span>${esc((p.sizes||[]).join(' / '))}</span><button class="quick-view" data-view="${p.id}">QUICK VIEW ↗</button></div>
+  </div>
+ </article>`).join('')||'<p class="section-note">No matching concept products. Try another filter.</p>';
+ $('#productCount').textContent=`${list.length} concept pieces`;
+ updateCounts();
+}
+function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function updateCounts(){$('#bagCount').textContent=state.bag.length;$('#wishCount').textContent=state.wishlist.length}
+function findProduct(id){return PRODUCTS.find(p=>p.id===id)}
+function openDialog(id){const d=$(id);if(d?.showModal)d.showModal()}
+function closeDialog(id){const d=$(id);if(d?.open)d.close()}
+function productModal(id){
+ const p=findProduct(id);if(!p)return;
+ const size=p.sizes?.[0]||'ONE SIZE';state.selectedSizes[id]=state.selectedSizes[id]||size;
+ $('#productModalBody').innerHTML=`<img src="${p.detail||p.image}" alt="${esc(p.name)}" onerror="this.src='${p.image}'">
+ <div><span class="product-brand">${esc(p.brand)} / ${esc(p.badge||'CONCEPT')}</span><h3>${esc(p.name)}</h3><p>${esc(p.description)}</p><p><b>Concept preview</b> · Product details, material and live availability are not confirmed.</p>
+ <div class="size-options">${(p.sizes||['ONE SIZE']).map(s=>`<button data-size="${esc(s)}" data-product="${id}" class="${state.selectedSizes[id]===s?'selected':''}">${esc(s)}</button>`).join('')}</div>
+ <button class="btn btn-gold" id="addProduct" data-add="${id}">ADD TO DEMO BAG</button>
+ <button class="btn btn-outline" id="modalWish" data-wish="${id}">♡ SAVE TO WISHLIST</button></div>`;
+ openDialog('#productModal');
+}
+function addBag(id){const p=findProduct(id);if(!p)return;state.bag.push({id,size:state.selectedSizes[id]||p.sizes?.[0]||'ONE SIZE'});persist();renderBag();updateCounts();toast('Added to your demo bag.')}
+function renderBag(){
+ const box=$('#bagItems');if(!state.bag.length){box.innerHTML='<p class="section-note">Your demo bag is empty.</p>';return}
+ box.innerHTML=state.bag.map((item,i)=>{const p=findProduct(item.id);return `<div class="bag-item"><img src="${p.image}" alt=""><div><b>${esc(p.name)}</b><br>${esc(p.brand)} · Size ${esc(item.size)}</div><button data-remove-bag="${i}">REMOVE</button></div>`}).join('');
+}
+function renderWishlist(){
+ const box=$('#wishlistItems');if(!state.wishlist.length){box.innerHTML='<p class="section-note">No saved items yet.</p>';return}
+ box.innerHTML=state.wishlist.map(id=>{const p=findProduct(id);return p?`<div class="bag-item"><img src="${p.image}" alt=""><div><b>${esc(p.name)}</b><br>${esc(p.brand)}</div><button data-remove-wish="${id}">REMOVE</button></div>`:''}).join('');
+}
+function toggleWish(id){state.wishlist=state.wishlist.includes(id)?state.wishlist.filter(x=>x!==id):[...state.wishlist,id];persist();renderProducts();renderWishlist();toast(state.wishlist.includes(id)?'Saved to wishlist.':'Removed from wishlist.')}
+function renderCampaigns(){
+ const box=$('#campaignContent');
+ if(state.campaignTab==='ads')box.innerHTML=CAMPAIGNS.map((x,i)=>`<article class="campaign-item"><small>BLXCKED / AD CONCEPT ${String(i+1).padStart(2,'0')}</small><h3>${esc(x[0])}</h3><p>${esc(x[1])}</p></article>`).join('');
+ if(state.campaignTab==='collabs')box.innerHTML=COLLABORATIONS.map((x,i)=>`<article class="campaign-item"><small>COLLABORATION / ${String(i+1).padStart(2,'0')}</small><h3>${esc(x)}</h3><p>Creative collaboration direction for INNERWEAR.</p></article>`).join('');
+ if(state.campaignTab==='visuals')box.innerHTML=artImages.map((x,i)=>`<button class="gallery-tile" data-image="${x[0]}"><img src="${x[0]}" alt="${esc(x[1])}"><span>${esc(x[1])}</span></button>`).join('');
+}
+function generateDate(){
+ const vibe=$('#dateMood').value,time=$('#dateTime').value,budget=$('#dateBudget').value;
+ const matches=DATE_IDEAS.filter(x=>x.vibe===vibe&&(x.time===time||!x.time)&&(x.budget===budget||x.budget==='any'||budget==='any'));
+ const item=(matches.length?matches:DATE_IDEAS.filter(x=>x.vibe===vibe))[Math.floor(Math.random()*(matches.length||1))]||DATE_IDEAS[0];
+ $('#dateResult').innerHTML=`<b>${esc(item.title)}</b><br>${esc(item.detail)}`;
+}
+function generateGift(){
+ const vibe=$('#giftVibe').value,budget=$('#giftBudget').value;
+ const map={
+ 'Classic':['A clean everyday essentials set','A minimal travel organiser','A classic watch/bracelet styling edit'],
+ 'Playful':['A custom playlist + date kit','A graphic lounge set concept','A playful surprise box'],
+ 'Minimal':['A monochrome essentials set','A premium fabric care kit','A clean wardrobe organiser'],
+ 'Romantic':['A handwritten note + curated gift box','A matching style edit','A planned dinner and photo walk']
+ };
+ const items=map[vibe]||map.Classic;
+ $('#giftResult').innerHTML=`<b>${esc(vibe)} gift directions</b><br>${items.map(esc).join(' · ')}<br><small>${esc(budget)} · Inspiration only; no checkout or live stock.</small>`;
+}
+function wheelItems(){const type=$('#wheelType').value;return [...(WHEELS[type]?.items||[]),...(state.custom[type]||[]) ]}
+function spinWheel(){
+ const items=wheelItems();const wheel=$('#wheel');const pick=items[Math.floor(Math.random()*items.length)];
+ state.wheelRotation+=1440+Math.random()*720;
+ wheel.style.transform=`rotate(${state.wheelRotation}deg)`;
+ $('#wheelResult').textContent='SPINNING…';
+ setTimeout(()=>{$('#wheelResult').textContent=pick.toUpperCase();toast(`Wheel result: ${pick}`)},2450);
+}
+function addWheelOption(){
+ const type=$('#wheelType').value,val=$('#customWheelOption').value.trim();
+ if(!val)return toast('Enter an option first.');
+ state.custom[type]=[...(state.custom[type]||[]),val].slice(-12);$('#customWheelOption').value='';persist();toast('Custom wheel option saved locally.');
+}
+function estimateSize(){
+ const under=Number($('#underbust').value),bust=Number($('#bust').value);
+ if(!under||!bust||under<50||under>150||bust<50||bust>170||bust<=under){$('#sizeResult').textContent='Enter valid measurements. Bust should be higher than underbust.';return}
+ const band=Math.round(under/5)*5;
+ const diff=bust-under;
+ const cup=diff<10?'AA/A':diff<12?'A':diff<14?'B':diff<16?'C':diff<18?'D':diff<20?'DD/E':'F+';
+ $('#sizeResult').innerHTML=`<b>Rough starting point: ${band} / ${cup}</b><br>Compare with the brand-specific size chart and actual fit. This estimate is not a final size recommendation. Measurements are not saved.`;
+}
+function renderSearch(q){
+ const val=q.toLowerCase();const found=PRODUCTS.filter(p=>`${p.name} ${p.brand} ${p.category}`.toLowerCase().includes(val)).slice(0,8);
+ $('#searchResults').innerHTML=found.map(p=>`<a class="search-result" href="#shop" data-search-view="${p.id}">${esc(p.name)} <small>· ${esc(p.brand)}</small></a>`).join('')||'<p class="section-note">No matches found.</p>';
+}
+function bindEvents(){
+ $('#brandFilters').addEventListener('click',e=>{const b=e.target.closest('[data-filter]');if(!b)return;state.filter=b.dataset.filter;$$('.filter').forEach(x=>x.classList.toggle('active',x===b));renderProducts()});
+ $('#productSearch').addEventListener('input',e=>{state.query=e.target.value;renderProducts()});
+ $('#sortProducts').addEventListener('change',e=>{state.sort=e.target.value;renderProducts()});
+ $('#resetShop').addEventListener('click',()=>{state.filter='ALL';state.query='';state.sort='featured';$('#productSearch').value='';$('#sortProducts').value='featured';$$('.filter').forEach(x=>x.classList.toggle('active',x.dataset.filter==='ALL'));renderProducts()});
+ $('#productGrid').addEventListener('click',e=>{const view=e.target.closest('[data-view]');const wish=e.target.closest('[data-wish]');if(view)productModal(view.dataset.view);if(wish)toggleWish(wish.dataset.wish)});
+ $('#productModalBody').addEventListener('click',e=>{const s=e.target.closest('[data-size]');const a=e.target.closest('[data-add]');const w=e.target.closest('[data-wish]');if(s){state.selectedSizes[s.dataset.product]=s.dataset.size;$$('[data-size]','#productModalBody').forEach(x=>x.classList.toggle('selected',x===s))}if(a)addBag(a.dataset.add);if(w)toggleWish(w.dataset.wish)});
+ $('#openBag').addEventListener('click',()=>{renderBag();openDialog('#bagModal')});
+ $('#openWishlist').addEventListener('click',()=>{renderWishlist();openDialog('#wishlistModal')});
+ $('#bagItems').addEventListener('click',e=>{const b=e.target.closest('[data-remove-bag]');if(!b)return;state.bag.splice(Number(b.dataset.removeBag),1);persist();renderBag();updateCounts()});
+ $('#wishlistItems').addEventListener('click',e=>{const b=e.target.closest('[data-remove-wish]');if(!b)return;toggleWish(b.dataset.removeWish)});
+ $('#clearBag').addEventListener('click',()=>{state.bag=[];persist();renderBag();updateCounts()});
+ $$('[data-close]').forEach(b=>b.addEventListener('click',()=>closeDialog('#'+b.dataset.close)));
+ $$('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d)d.close()}));
+ $('#campaignContent').addEventListener('click',e=>{const b=e.target.closest('[data-image]');if(b)openLightbox(b.dataset.image,b.querySelector('span')?.textContent||'Campaign visual')});
+ $$('.campaign-tabs button').forEach(b=>b.addEventListener('click',()=>{$$('.campaign-tabs button').forEach(x=>x.classList.toggle('active',x===b));state.campaignTab=b.dataset.campaignTab;renderCampaigns()}));
+ $('#artGallery').addEventListener('click',e=>{const b=e.target.closest('[data-image]');if(b)openLightbox(b.dataset.image,b.querySelector('span')?.textContent||'Art Atelier')});
+ $('#generateDate').addEventListener('click',generateDate);
+ $('#generateGift').addEventListener('click',generateGift);
+ $('#spinWheel').addEventListener('click',spinWheel);
+ $('#addWheelOption').addEventListener('click',addWheelOption);
+ $('#estimateSize').addEventListener('click',estimateSize);
+ $('#wheelType').addEventListener('change',()=>{$('#wheelResult').textContent='READY TO SPIN';$('#wheel').style.transform='rotate(0deg)';state.wheelRotation=0});
+ $('#menuToggle').addEventListener('click',()=>{$('#mobileNav').hidden=!$('#mobileNav').hidden});
+ $('#openSearch').addEventListener('click',()=>openDialog('#searchModal'));
+ $('#globalSearch').addEventListener('input',e=>renderSearch(e.target.value));
+ $('#searchResults').addEventListener('click',e=>{const a=e.target.closest('[data-search-view]');if(!a)return;closeDialog('#searchModal');setTimeout(()=>productModal(a.dataset.searchView),100)});
+ $('#globalSearch').addEventListener('keydown',e=>{if(e.key==='Escape')closeDialog('#searchModal')});
+
+}
+function openLightbox(src,caption){$('#lightboxImage').src=src;$('#lightboxCaption').textContent=caption;openDialog('#lightbox')}
+
+function initShowUpgrade(){
+ const KEY='innerwear-show-upgrade-v5';
+ let data={};
+ try{data=JSON.parse(localStorage.getItem(KEY)||'{}')}catch{data={}}
+ const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(data))}catch{}};
+ const result=$('#nominationResult');
+ const pts=$('#upgradePoints');
+ const immunity=$('#immunityState');
+ const render=()=>{
+   pts.textContent=String(data.points||0);
+   immunity.textContent=data.immunity?'Immunity card claimed for this demo round.':'One local immunity card is available for this demo round.';
+   result.textContent=data.nomination?`Contestant #${data.nomination.person} nominated · ${data.nomination.reason}`:'No nominations recorded in this browser yet.';
+ };
+ $('#submitNomination')?.addEventListener('click',()=>{
+   data.nomination={person:$('#nomineePick').value,reason:$('#nominationReason').value,time:Date.now()};
+   save();render();toast('Nomination saved locally.');
+ });
+ $('#claimImmunity')?.addEventListener('click',()=>{
+   if(data.immunity){toast('Immunity card has already been claimed.');return;}
+   data.immunity=true;save();render();toast('Immunity card claimed.');
+ });
+ $('#addUpgradePoints')?.addEventListener('click',()=>{data.points=(data.points||0)+5;save();render();toast('+5 house points.')});
+ render();
+}
+
+function init(){renderProducts();renderBag();renderWishlist();renderCampaigns();updateCounts();bindEvents();initShowUpgrade()}
+init();
+
+if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {})); }

@@ -1,13 +1,18 @@
 {
-  "name": "Private Rate Lab — Experimental Edition",
-  "short_name": "PR Lab",
-  "description": "A privacy-first interactive feedback and consent experience prototype.",
-  "start_url": "./",
+  "name": "INNERWEAR \u2014 The New Edit V5",
+  "short_name": "INNERWEAR V5",
+  "description": "The INNERWEAR brand worlds, campaigns and experiences.",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#0b0b12",
-  "theme_color": "#0b0b12",
+  "background_color": "#0b0911",
+  "theme_color": "#0b0911",
   "icons": [
-    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
   ]
 }

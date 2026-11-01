@@ -1,17 +1,46 @@
-# THE NEW EDIT V4 — Feature checklist
+# V5 Feature Checklist
 
-- [x] Fixed nested GitHub Pages image paths (parent root assets use ../; local V4 images use ./assets/).
-- [x] 12 original root image masters remain referenced without copying or replacing them.
-- [x] 9 existing root detail crops remain referenced.
-- [x] Added 16 new Library/chat image masters in WebP.
-- [x] Added 13 new detail crops in WebP.
-- [x] Added 16-image visual library gallery with lightbox.
-- [x] Expanded catalogue with boutique, pink lace, better together, Royal Sanskari, Noor preview and Art Atelier concepts.
-- [x] Added TRADITIONAL, NOOR and ART filters.
-- [x] Restored the full previous Private Rate Lab under private-rate-lab/.
-- [x] Added 18+ text-only private feedback page (session storage only; no uploads or server).
-- [x] Added links to the feedback page and archived Privacy Lab.
-- [x] Added fallback graphic for failed image requests.
-- [ ] Live GitHub Pages and Android Chrome verification after upload.
+## INNERWEAR hub
+- [x] Main brand identity and world navigation
+- [x] BLXCKED
+- [x] HER AFTER DARK
+- [x] ART ATELIER
+- [x] Royal Sanskari / Noor / Grace previews
+- [x] Couples Studio
+- [x] BIG BOSS KE RANDIYA launch link
+- [x] Nomination Night mini-board
+- [x] Immunity Vault local claim
+- [x] Weekly house points tracker
 
-No existing root file or image is modified by this additive V4 folder.
+## Commerce concept UI
+- [x] 26 concept products
+- [x] Brand filters
+- [x] Search and sorting
+- [x] Product quick view
+- [x] Size selector
+- [x] Local demo bag
+- [x] Local wishlist
+
+## Creative and interactive
+- [x] 10 ad campaigns
+- [x] 12 collaboration concepts
+- [x] Art gallery and lightbox
+- [x] Date night generator
+- [x] Boyfriend gift finder
+- [x] 4 wheels with local custom options
+- [x] Approximate measurement helper
+
+## Constraints
+- [x] No backend
+- [x] No paid API
+- [x] Existing root files preserved by upload design
+- [x] Existing show and private feedback URLs linked
+- [ ] Live Android device verification after deployment
+
+## Release hardening
+- [x] PWA manifest and scoped service worker
+- [x] Offline app-shell cache and runtime image cache
+- [x] 8 automated smoke tests
+- [x] CSS parse check
+- [x] 47 unique local image references verified over HTTP
+- [ ] Android Chrome screenshot and touch testing after upload
