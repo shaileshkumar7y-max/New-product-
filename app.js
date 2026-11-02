@@ -1,101 +1,374 @@
-import {GALLERY,TASKS,PROMPTS,FEED,POWERS,MISSIONS,FLAGS,KNOW,MYSTERY,SLANG,WHEELS,MEMORY_PROMPTS,CHEMISTRY_LINES} from './data.js';
-(() => {
-  'use strict';
-  const $ = (s,root=document)=>root.querySelector(s);
-  const $$ = (s,root=document)=>[...root.querySelectorAll(s)];
-  const KEY='bbkr-v2-local-state';
-  const safeLoad=()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch{return {}}};
-  const saved=safeLoad();
-  const state={score:Number(saved.score)||0,rounds:Number(saved.rounds)||0,votes:saved.votes||{'05':0,'08':0},player:saved.player||null,achievements:saved.achievements||[],nominations:saved.nominations||[],immunity:!!saved.immunity,slang:saved.slang||saved.language||'hinglish',sound:!!saved.sound,reducedMotion:!!saved.reducedMotion,mode:'truth',level:2,taskIndex:0,taskRemaining:45,taskTimer:null,sixtyRemaining:60,sixtyTimer:null,flagIndex:0,knowIndex:0,finale:Number(saved.finale)||0,customGallery:null,customWheelItems:saved.customWheelItems||{},bestReaction:Number(saved.bestReaction)||0,confession:saved.confession||'',runwayVotes:saved.runwayVotes||{'BLXCKED BLACK LACE':0,'SYDNEY INNERWEAR':0,'PINK LACE EDIT':0},lastGallery:-1,currentGallery:[],lastSurprise:-1,poster:0,played:0,reactionTimeout:null,reactionReady:false,reactionStartAt:0,wheelRotation:0,wheelTimeout:null,truthSkipRound:Number(saved.truthSkipRound)||0,memoryIndex:0};
-  const posters=['../show-poster-black-edition.webp','../show-poster-sydney-edition.webp'];
-  let currentImageIndex=0;
-  let activeFilter='all';
-  let currentTask=null;
-  const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify({score:state.score,rounds:state.rounds,votes:state.votes,player:state.player,achievements:state.achievements,nominations:state.nominations,immunity:state.immunity,slang:state.slang,sound:state.sound,reducedMotion:state.reducedMotion,finale:state.finale,played:state.played,customWheelItems:state.customWheelItems,bestReaction:state.bestReaction,confession:state.confession,runwayVotes:state.runwayVotes,truthSkipRound:state.truthSkipRound}))}catch{toast('Local storage full hai. Export ya reset kar lo.')}};
-  function toast(msg){const el=$('#toast');if(!el)return;el.textContent=msg;el.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('show'),2400)}
-  function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-  function addPoints(n,reason='Round complete'){state.score=Math.max(0,state.score+n);state.rounds++;updateStats();persist();playTone();toast(`${reason} · +${n} points`)}
-  function playTone(){if(!state.sound)return;try{const AudioCtx=window.AudioContext||window.webkitAudioContext;if(!AudioCtx)return;const ctx=new AudioCtx();const osc=ctx.createOscillator(),gain=ctx.createGain();osc.type='sine';osc.frequency.value=660;gain.gain.setValueAtTime(.035,ctx.currentTime);gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.13);osc.connect(gain);gain.connect(ctx.destination);osc.start();osc.stop(ctx.currentTime+.13);osc.onended=()=>ctx.close()}catch{}}
-  function updateStats(){const score=state.score;$('#scoreValue').textContent=String(score).padStart(3,'0');$('#heroPoints').textContent=String(score).padStart(3,'0');$('#heroRounds').textContent=String(state.rounds).padStart(2,'0');$('#scoreBar').style.width=`${Math.min(100,score%100)}%`;$('#rankLabel').textContent=rankName(score);$('#rankName').textContent=rankName(score);$('#badgeCount').textContent=`${state.achievements.length} BADGES`;$('#rankDescription').textContent=rankDescription(score);renderLeaderboard();renderAchievements()}
-  function rankName(s){return s>=300?'HOUSE LEGEND':s>=180?'TASK BOSS':s>=90?'GAME CHANGER':s>=30?'HOUSE REGULAR':'HOUSE ROOKIE'}
-  function rankDescription(s){return s>=300?'The house knows your name.':s>=180?'You are running the task arena.':s>=90?'Momentum ban raha hai.':s>=30?'Good start, keep the game kind.':'Play a few rounds to unlock your first badge.'}
-  function renderLeaderboard(){const rows=[{name:state.player?.name||'You',score:state.score,tag:'YOUR LOCAL PROFILE'},{name:'Contestant #05',score:Number(state.votes['05']||0)*5+55,tag:'FICTIONAL DEMO SCORE'},{name:'Contestant #08',score:Number(state.votes['08']||0)*5+48,tag:'FICTIONAL DEMO SCORE'}].sort((a,b)=>b.score-a.score);$('#leaderboardList').innerHTML=rows.map((r,i)=>`<div class="leader-row"><b>${i+1}</b><div>${esc(r.name)}<small>${r.tag}</small></div><b>${r.score} PTS</b></div>`).join('')}
-  function renderAchievements(){const items=[];if(state.score>=10)items.push('FIRST ROUND');if(state.score>=50)items.push('POINT COLLECTOR');if(state.rounds>=5)items.push('FIVE ROUNDS');if(state.achievements.includes('kind'))items.push('KINDNESS CAPTAIN');if(state.finale>=5)items.push('FINALE FIVE');$('#achievementBadges').innerHTML=items.length?items.map(x=>`<span>✦ ${x}</span>`).join(''):'<span>✦ FIRST BADGE WAITING</span>'}
-  function renderPlayer(){const p=state.player;$('#playerDisplay').textContent=p?.name||'Guest Player';$('#playerMeta').textContent=p?`${p.vibe} · LOCAL HOUSEMATE`:'Set your nickname and play vibe.';$('#playerAvatar').textContent=(p?.name||'G').charAt(0).toUpperCase();if(p){$('#playerName').value=p.name;$('#playerVibe').value=p.vibe}}
-  function renderVotes(){$('#vote05').textContent=state.votes['05']||0;$('#vote08').textContent=state.votes['08']||0}
-  function refreshFeed(){const item=FEED[Math.floor(Math.random()*FEED.length)];$('#feedHeadline').textContent=item[0];$('#feedCopy').textContent=item[1];$('#feedList').innerHTML=[...FEED].sort(()=>Math.random()-.5).slice(0,4).map((x,i)=>`<div class="feed-item"><span class="feed-symbol">${['✦','◉','♡','★'][i]}</span><div><strong>${esc(x[0])}</strong><small>${esc(x[1])}</small></div><span class="feed-time">${i?'JUST NOW':'LIVE'}</span></div>`).join('')}
-  function setPoster(n){state.poster=(n+posters.length)%posters.length;const img=$('#heroPoster');img.src=posters[state.poster];img.alt=`BIG BOSS KE RANDIYA ${state.poster?'Sydney':'Black'} Edition poster`;}
-  function drawTask(){clearInterval(state.taskTimer);state.taskTimer=null;const mode=$('#taskMode').value,level=$('#taskLevel').value;let list=TASKS.filter(t=>(mode==='all'||t[2]===mode)&&(level==='all'||t[3]===level));if(!list.length)list=TASKS;const t=list[Math.floor(Math.random()*list.length)];currentTask=t;state.taskRemaining=t[4];$('#taskNumber').textContent=`TASK ${String(TASKS.indexOf(t)+1).padStart(2,'0')} / ${TASKS.length}`;$('#taskTitle').textContent=t[0];$('#taskPrompt').textContent=t[1];$('#taskTime').textContent=`⏱ ${t[4]} SEC`;$('#taskPoints').textContent=`★ ${t[5]} POINTS`;$('#taskLevelBadge').textContent=t[3].toUpperCase();updateTaskTimer();$('#taskStatus').textContent='New task ready. Start, skip ya pass kar sakte ho.'}
-  function updateTaskTimer(){const total=currentTask?.[4]||45;$('#taskTimer').textContent=`00:${String(state.taskRemaining).padStart(2,'0')}`;$('#taskTimerBar').style.width=`${Math.max(0,state.taskRemaining/total*100)}%`}
-  function startTask(){if(!currentTask)drawTask();if(state.taskTimer)return;if(state.taskRemaining<=0)state.taskRemaining=currentTask[4];$('#taskStatus').textContent='Timer chal raha hai… focus boss!';state.taskTimer=setInterval(()=>{state.taskRemaining--;updateTaskTimer();if(state.taskRemaining<=0){clearInterval(state.taskTimer);state.taskTimer=null;$('#taskStatus').textContent='Time up! Complete ya skip choose karo.';toast('Task timer complete.')}} ,1000)}
-  function pauseTask(){if(!state.taskTimer){$('#taskStatus').textContent='Timer already paused.';return}clearInterval(state.taskTimer);state.taskTimer=null;$('#taskStatus').textContent='Paused. Jab ready ho resume karna.'}
-  function skipTask(){clearInterval(state.taskTimer);state.taskTimer=null;$('#taskStatus').textContent='Task skipped. Koi penalty nahi.';drawTask()}
-  function completeTask(){if(!currentTask){toast('Pehle task select karo.');return}clearInterval(state.taskTimer);state.taskTimer=null;addPoints(currentTask[5],currentTask[0]);state.achievements.push('task');persist();drawTask()}
-  function drawPower(){const p=POWERS[Math.floor(Math.random()*POWERS.length)];$('#powerTitle').textContent=p[0];$('#powerCopy').textContent=p[1];toast(`${p[0]} unlocked`)}
-  function drawSecret(){const p=MISSIONS[Math.floor(Math.random()*MISSIONS.length)];$('#secretTitle').textContent=p[0];$('#secretCopy').textContent=p[1];toast('Secret mission revealed')}
-  function drawPrompt(){const arr=PROMPTS[state.mode][state.level]||PROMPTS.truth[1];const p=arr[Math.floor(Math.random()*arr.length)];$('#promptKind').textContent=`${state.mode.toUpperCase()} / LEVEL ${state.level}`;$('#promptText').textContent=p;$('#promptMeta').textContent='Both players choose yes. Pass, pause or stop any time.';}
-  function setMode(mode){state.mode=mode;$$('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));$('#promptKind').textContent=`${mode.toUpperCase()} / READY`;$('#promptText').textContent='Mode set. Draw a fresh prompt.'}
-  function setLevel(v){state.level=Number(v);$('#heatValue').textContent=['','1 · PLAYFUL','2 · BOLD','3 · SPICY'][state.level]}
-  function renderGallery(filter='all'){activeFilter=filter;$$('[data-gallery]').forEach(b=>b.classList.toggle('active',b.dataset.gallery===filter));const items=GALLERY.filter(x=>filter==='all'||x.category===filter);state.currentGallery=items;$('#galleryGrid').innerHTML=items.map((x,i)=>`<article class="gallery-card"><button data-gallery-index="${i}" aria-label="Open ${esc(x.title)}"><img src="${x.src}" alt="${esc(x.title)}" loading="lazy"><span>${esc(x.title)}</span></button></article>`).join('');$$('#galleryGrid img').forEach(img=>img.addEventListener('error',()=>{img.src='../image-placeholder.svg';img.alt='Image unavailable';},{once:true}))}
-  function openImage(i){currentImageIndex=Math.max(0,Math.min(i,state.currentGallery.length-1));const item=state.currentGallery[currentImageIndex];if(!item)return;$('#modalImage').src=item.src;$('#modalImage').onerror=()=>{$('#modalImage').src='../image-placeholder.svg'};$('#imageModalTitle').textContent=item.title;$('#modalCaption').textContent=item.caption;showDialog('imageModal')}
-  function nextImage(){if(!state.currentGallery.length)return;openImage((currentImageIndex+1)%state.currentGallery.length)}
-  function surprise(){const choices=GALLERY.filter(x=>['blxcked','afterdark','couples','art'].includes(x.category));let n=Math.floor(Math.random()*choices.length);if(choices.length>1&&n===state.lastSurprise)n=(n+1)%choices.length;state.lastSurprise=n;const x=choices[n];$('#surprisePanel').hidden=false;$('#surpriseImage').src=x.src;$('#surpriseImage').onerror=()=>{$('#surpriseImage').src='../image-placeholder.svg'};$('#surpriseTitle').textContent=x.title;$('#surpriseDescription').textContent=x.caption+' · Tap next for another random pick.';$('#surprisePanel').scrollIntoView({behavior:state.reducedMotion?'auto':'smooth',block:'nearest'})}
+'use strict';
 
-  function openAnatomy(type){const file=type==='vulva'?'./assets/vulva-educational.svg':'./assets/penis-educational.svg';$('#anatomyTitle').textContent=type==='vulva'?'CHUT GALLERY · VULVA EDUCATION':'LUND GALLERY · PENIS EDUCATION';$('#anatomyBody').innerHTML=`<div class="anatomy-art"><img src="${file}" alt="Non-explicit educational anatomy diagram"></div><p class="muted">Anatomy basics: normal variation is common. If you have pain, unusual symptoms or health concerns, consult a qualified clinician.</p>`;showDialog('anatomyModal')}
-  function setFlag(){const f=FLAGS[state.flagIndex%FLAGS.length];$('#flagPrompt').textContent=f.q;$('#flagResult').textContent='Choose RED or GREEN.'}
-  function answerFlag(v){const f=FLAGS[state.flagIndex%FLAGS.length];const correct=v===f.a;$('#flagResult').textContent=(correct?'Correct! ':'Not quite. ')+f.why;if(correct)addPoints(5,'Flag check');}
-  function setKnow(){const q=KNOW[state.knowIndex%KNOW.length];$('#knowQuestion').textContent=q.q;$('#knowOptions').innerHTML=q.o.map((o,i)=>`<button data-know="${i}">${esc(o)}</button>`).join('');$('#knowResult').textContent='Pick the answer you think fits.'}
-  function answerKnow(n){const q=KNOW[state.knowIndex%KNOW.length];if(Number(n)===q.a){$('#knowResult').textContent='Nice guess! +5 points.';addPoints(5,'Good guess')}else $('#knowResult').textContent='Good try. Ask them and find out!';}
-  function compliment(text){$('#complimentResult').textContent=text;addPoints(3,'Kind words');state.achievements.push('kind');persist()}
-  function newSixty(){const options=['Name five things that make a great date.','Name five green flags in a relationship.','List five songs for a house playlist.','Name five ways to make a friend feel welcome.','Pitch five imaginary fashion ideas.'];$('#sixtyPrompt').textContent=options[Math.floor(Math.random()*options.length)]}
-  function updateSixty(){const m=String(Math.floor(state.sixtyRemaining/60)).padStart(2,'0'),s=String(state.sixtyRemaining%60).padStart(2,'0');$('#sixtyTimer').textContent=`${m}:${s}`}
-  function startSixty(){if(state.sixtyTimer)return;$('#sixtyStatus').textContent='Timer running!';state.sixtyTimer=setInterval(()=>{state.sixtyRemaining--;updateSixty();if(state.sixtyRemaining<=0){clearInterval(state.sixtyTimer);state.sixtyTimer=null;$('#sixtyStatus').textContent='Time up. Nice round!';addPoints(10,'60-second round')}},1000)}
-  function resetSixty(){clearInterval(state.sixtyTimer);state.sixtyTimer=null;state.sixtyRemaining=60;updateSixty();$('#sixtyStatus').textContent='Timer reset.'}
-  function mystery(){const p=MYSTERY[Math.floor(Math.random()*MYSTERY.length)];$('#mysteryResult').textContent=p;toast('Mystery opened!')}
-  function advanceFinale(){if(state.finale>=5){toast('Finale complete. Champion!');return}state.finale++;$$('#finaleSteps span').forEach((x,i)=>x.classList.toggle('done',i<state.finale));$('#finaleStatus').textContent=`Level ${state.finale} / 5`;addPoints(15,'Finale ladder');if(state.finale===5){state.achievements.push('finale');persist();$('#finaleStatus').textContent='Finale champion unlocked!'}}
-  function renderWheels(){const type=$('#wheelType').value;const items=[...(WHEELS[type]?.items||WHEELS.style.items),...(state.customWheelItems[type]||[])];$('#wheelResult').textContent=`${type.toUpperCase()} WHEEL · ${items.length} OPTIONS`;$('#wheelDisc').setAttribute('aria-label',`${type} wheel with ${items.length} options`)}
-  function addWheelOption(){const text=$('#customWheelOption').value.trim().replace(/[<>]/g,'').slice(0,36);if(!text){toast('Pehle custom option likho.');return}const type=$('#wheelType').value;state.customWheelItems[type]=state.customWheelItems[type]||[];if(state.customWheelItems[type].some(x=>x.toLowerCase()===text.toLowerCase())){toast('Ye option pehle se hai.');return}state.customWheelItems[type].push(text);$('#customWheelOption').value='';persist();renderWheels();toast('Custom option added!')}
-  function spinWheel(){const type=$('#wheelType').value;const items=[...(WHEELS[type]?.items||WHEELS.style.items),...(state.customWheelItems[type]||[])];const index=Math.floor(Math.random()*items.length);const item=items[index];state.wheelRotation+=1440+(360-index*(360/items.length));$('#wheelDisc').style.transform=`rotate(${state.wheelRotation}deg)`;$('#spinWheel').disabled=true;$('#wheelResult').textContent='SPINNING…';clearTimeout(state.wheelTimeout);state.wheelTimeout=setTimeout(()=>{$('#wheelResult').textContent=`${type.toUpperCase()} PICK: ${item}`;$('#spinWheel').disabled=false;addPoints(3,'Wheel spin')},3050)}
-  function startReaction(){clearTimeout(state.reactionTimeout);state.reactionReady=false;state.reactionStartAt=0;$('#reactionZone').classList.remove('ready');$('#reactionZone').textContent='WAIT FOR GREEN…';$('#reactionStart').disabled=true;const wait=1300+Math.random()*2700;state.reactionTimeout=setTimeout(()=>{state.reactionReady=true;state.reactionStartAt=performance.now();$('#reactionZone').classList.add('ready');$('#reactionZone').textContent='TAP NOW!';$('#reactionStart').disabled=false},wait)}
-  function reactionTap(){if(!state.reactionStartAt){toast('False start! Green light ka wait karo.');return}if(!state.reactionReady)return;const ms=Math.round(performance.now()-state.reactionStartAt);state.reactionReady=false;state.reactionStartAt=0;$('#reactionZone').classList.remove('ready');$('#reactionZone').textContent='NICE REFLEX';if(!state.bestReaction||ms<state.bestReaction)state.bestReaction=ms;$('#reactionResult').textContent=`Your time: ${ms} ms · Best: ${state.bestReaction} ms`;persist();addPoints(ms<450?10:5,'Reaction test')}
-  function saveConfession(){state.confession=$('#confessionText').value.slice(0,400);persist();$('#confessionStatus').textContent='Saved in this browser only. Nothing is uploaded.';toast('Confession saved locally.')}
-  function clearConfession(){state.confession='';$('#confessionText').value='';persist();$('#confessionStatus').textContent='Confession cleared.'}
-  function buildAlliance(){const ally=$('#allyPick').value,goal=$('#allianceGoal').value;$('#allianceResult').textContent=`Alliance formed with ${ally} · Strategy: ${goal}. Local demo only.`;addPoints(5,'Alliance formed')}
-  function voteRunway(name){state.runwayVotes[name]=(Number(state.runwayVotes[name])||0)+1;renderRunway();persist();$('#runwayResult').textContent=`Vote saved for ${name}. Local house vote only.`;toast('Runway vote recorded!')}
-  function renderRunway(){const ids={'BLXCKED BLACK LACE':'#runwayBlack','SYDNEY INNERWEAR':'#runwaySydney','PINK LACE EDIT':'#runwayPink'};Object.entries(ids).forEach(([k,sel])=>$(sel).textContent=`${state.runwayVotes[k]||0} VOTES`)}
-  function buildChemistry(){const chosen=[['chemTalk','talk'],['chemCompliment','compliment'],['chemDance','dance'],['chemQuiz','quiz']].filter(([id])=>$('#'+id).checked).map(([,key])=>key);if(!chosen.length){$('#chemistryResult').textContent='Choose at least one option, or skip the round.';return}const key=chosen[Math.floor(Math.random()*chosen.length)];$('#chemistryResult').textContent=CHEMISTRY_LINES[key];addPoints(3,'Chemistry round built')}
-  function renderTruthSkip(){const total=5;$$('#truthSkipProgress span').forEach((x,i)=>x.classList.toggle('done',i<state.truthSkipRound));$('#truthSkipStatus').textContent=`Round ${Math.min(state.truthSkipRound,total)} / ${total}`;if(state.truthSkipRound>=total){$('#truthSkipPrompt').textContent='Tournament complete. You made it through!';$('#truthAnswer').disabled=true;$('#truthSkip').disabled=true}else{const all=Object.values(PROMPTS.truth).flat();$('#truthSkipPrompt').textContent=all[(state.truthSkipRound+2)%all.length];$('#truthAnswer').disabled=false;$('#truthSkip').disabled=false}}
-  function truthAdvance(answered){if(state.truthSkipRound>=5){toast('Tournament already complete.');return}const round=state.truthSkipRound+1;state.truthSkipRound=round;if(answered)addPoints(5,'Truth tournament');else toast('Skip accepted. No points lost.');renderTruthSkip();persist()}
-  function nextMemory(){const p=MEMORY_PROMPTS[state.memoryIndex%MEMORY_PROMPTS.length];$('#memoryPrompt').textContent=p;state.memoryIndex++;$('#memoryStatus').textContent='Answer together, or pass. No score pressure.'}
-  function nominate(){const n=$('#nominee').value,reason=$('#nominationReason').value;state.nominations.unshift({id:n,reason,time:Date.now()});state.nominations=state.nominations.slice(0,8);renderNominations();persist();toast(`Contestant #${n} nominated (local demo)`)}
-  function renderNominations(){const box=$('#nominationList');if(!state.nominations.length){box.textContent='No nominations yet.';return}box.innerHTML=state.nominations.map(x=>`<div class="nomination-row"><b>#${x.id}</b> · ${esc(x.reason)}</div>`).join('')}
-  function claimImmunity(){if(state.immunity){toast('Immunity already claimed for this save.');return}state.immunity=true;$('#immunityTitle').textContent='Immunity protected';$('#immunityCopy').textContent='Your local immunity card is active for this demo.';$('#claimImmunity').disabled=true;persist();toast('Immunity card unlocked!')}
-  function slangReaction(){const mode=$('input[name="slang"]:checked')?.value||'hinglish';state.slang=mode;const a=SLANG[mode]||SLANG.hinglish;$('#slangLine').textContent=a[Math.floor(Math.random()*a.length)];persist()}
-  function openPlayer(){showDialog('playerModal')}
-  function savePlayer(){const name=$('#playerName').value.trim().replace(/[<>]/g,'').slice(0,18);if(name.length<2){$('#playerStatus').textContent='Nickname kam se kam 2 letters ka rakho.';return}state.player={name,vibe:$('#playerVibe').value};persist();renderPlayer();$('#playerStatus').textContent='Saved locally. Welcome to the house!';setTimeout(()=>closeDialog('playerModal'),600)}
-  function showDialog(id){const d=$('#'+id);if(d?.showModal)d.showModal();else if(d)d.setAttribute('open','')}
-  function closeDialog(id){const d=$('#'+id);if(d?.close)d.close();else d?.removeAttribute('open')}
-  function bindDialogs(){ $$('[data-close]').forEach(b=>b.addEventListener('click',()=>closeDialog(b.dataset.close)));$$('dialog.modal').forEach(d=>d.addEventListener('click',e=>{if(e.target===d)closeDialog(d.id)})); }
-  function exportData(){const payload={version:2,score:state.score,rounds:state.rounds,votes:state.votes,player:state.player,achievements:state.achievements,nominations:state.nominations,immunity:state.immunity,customWheelItems:state.customWheelItems,bestReaction:state.bestReaction,confession:state.confession,runwayVotes:state.runwayVotes,exportedAt:new Date().toISOString()};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='bbkr-v2-local-progress.json';a.click();URL.revokeObjectURL(a.href);$('#dataStatus').textContent='Export created on this device.'}
-  function resetData(){if(!confirm('Reset all local game progress on this browser?'))return;localStorage.removeItem(KEY);location.reload()}
-  function saveRules(){if(!$('#everyoneAdult').checked){$('#rulesStatus').textContent='Har player 18+ confirm kare, tabhi proceed karein.';return}if(!$('#skipAllowed').checked||!$('#recordingBan').checked){$('#rulesStatus').textContent='Skip/stop and no-recording rules must stay enabled.';return}$('#rulesStatus').textContent='House rules saved. Ask first, respect every answer.';toast('House rules saved.')}
-  function initAgeGate(){const ok=sessionStorage.getItem('bbkr-v2-adult')==='yes';if(!ok)showDialog('ageGate');$('#ageConfirm').addEventListener('change',e=>$('#ageEnter').disabled=!e.target.checked);$('#ageEnter').addEventListener('click',()=>{if(!$('#ageConfirm').checked)return;sessionStorage.setItem('bbkr-v2-adult','yes');closeDialog('ageGate')})}
-  function init(){
-    bindDialogs();initAgeGate();renderPlayer();renderVotes();updateStats();refreshFeed();renderGallery();renderNominations();drawTask();setFlag();setKnow();updateSixty();setPoster(0);renderRunway();renderWheels();$('#confessionText').value=state.confession;$('#reactionResult').textContent=state.bestReaction?`Best time: ${state.bestReaction} ms`:'Best: —';$$('#finaleSteps span').forEach((x,i)=>x.classList.toggle('done',i<state.finale));$('#finaleStatus').textContent=`Level ${state.finale} / 5`;renderTruthSkip();
-    $('#menuToggle').addEventListener('click',()=>{$('#mobileMenu').hidden=!$('#mobileMenu').hidden});$$('#mobileMenu a').forEach(a=>a.addEventListener('click',()=>$('#mobileMenu').hidden=true));
-    ['#headerEnter','#enterHouse'].forEach(s=>$(s).addEventListener('click',()=>$('#house').scrollIntoView({behavior:state.reducedMotion?'auto':'smooth'})));
-    $('#openSettings').addEventListener('click',()=>showDialog('settingsModal'));
-    $('#posterPrev').addEventListener('click',()=>setPoster(state.poster-1));$('#posterNext').addEventListener('click',()=>setPoster(state.poster+1));
-    $('#refreshFeed').addEventListener('click',()=>{refreshFeed();toast('Fresh house update aa gaya!')});
-    $('#editPlayer').addEventListener('click',openPlayer);$('#joinContestant').addEventListener('click',openPlayer);$('#savePlayer').addEventListener('click',savePlayer);
-    $$('[data-vote]').forEach(b=>b.addEventListener('click',()=>{const n=b.dataset.vote;state.votes[n]=(Number(state.votes[n])||0)+1;renderVotes();persist();toast(`Vote recorded for #${n} locally.`)}));
-    $('#taskMode').addEventListener('change',drawTask);$('#taskLevel').addEventListener('change',drawTask);$('#startTask').addEventListener('click',startTask);$('#pauseTask').addEventListener('click',pauseTask);$('#skipTask').addEventListener('click',skipTask);$('#completeTask').addEventListener('click',completeTask);$('#drawPower').addEventListener('click',drawPower);$('#drawSecret').addEventListener('click',drawSecret);
-    $$('[data-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));$('#heatLevel').addEventListener('input',e=>setLevel(e.target.value));$('#drawPrompt').addEventListener('click',drawPrompt);$('#passPrompt').addEventListener('click',()=>{$('#promptMeta').textContent='Skipped. No points lost. Pick a fresh prompt.';toast('Pass accepted. No penalty.')});$('#completePrompt').addEventListener('click',()=>{addPoints(10,'Prompt completed');$('#promptText').textContent='Round complete! Draw another when ready.'});
-    $$('[data-gallery]').forEach(b=>b.addEventListener('click',()=>renderGallery(b.dataset.gallery)));$('#galleryGrid').addEventListener('click',e=>{const b=e.target.closest('[data-gallery-index]');if(b)openImage(Number(b.dataset.galleryIndex))});$('#modalNext').addEventListener('click',nextImage);$('#surpriseMe').addEventListener('click',surprise);$('#nextSurprise').addEventListener('click',surprise);$('#openChutGallery').addEventListener('click',()=>openAnatomy('vulva'));$('#openLundGallery').addEventListener('click',()=>openAnatomy('penis'));
-    $('#reactionStart').addEventListener('click',startReaction);$('#reactionZone').addEventListener('click',reactionTap);$('#buildChemistry').addEventListener('click',buildChemistry);$('#truthAnswer').addEventListener('click',()=>truthAdvance(true));$('#truthSkip').addEventListener('click',()=>truthAdvance(false));$('#nextMemory').addEventListener('click',nextMemory);$('#saveConfession').addEventListener('click',saveConfession);$('#clearConfession').addEventListener('click',clearConfession);$('#buildAlliance').addEventListener('click',buildAlliance);$$('[data-runway]').forEach(b=>b.addEventListener('click',()=>voteRunway(b.dataset.runway)));$('#wheelType').addEventListener('change',renderWheels);$('#addWheelOption').addEventListener('click',addWheelOption);$('#spinWheel').addEventListener('click',spinWheel);
-    $$('[data-flag]').forEach(b=>b.addEventListener('click',()=>answerFlag(b.dataset.flag)));$('#nextFlag').addEventListener('click',()=>{state.flagIndex++;setFlag()});$('#knowOptions').addEventListener('click',e=>{const b=e.target.closest('[data-know]');if(b)answerKnow(b.dataset.know)});$('#nextKnow').addEventListener('click',()=>{state.knowIndex++;setKnow()});$$('[data-compliment]').forEach(b=>b.addEventListener('click',()=>compliment(b.dataset.compliment)));$('#startSixty').addEventListener('click',startSixty);$('#resetSixty').addEventListener('click',resetSixty);$('#newSixty').addEventListener('click',newSixty);$('#openMystery').addEventListener('click',mystery);$('#finaleAdvance').addEventListener('click',advanceFinale);
-    $('#submitNomination').addEventListener('click',nominate);$('#claimImmunity').addEventListener('click',claimImmunity);$('#slangReaction').addEventListener('click',slangReaction);$$('input[name="slang"]').forEach(r=>r.addEventListener('change',()=>{state.slang=r.value;persist()}));$('#saveRules').addEventListener('click',saveRules);
-    $('#immunityTitle').textContent=state.immunity?'Immunity protected':'One shield. One round.';$('#immunityCopy').textContent=state.immunity?'Your local immunity card is active for this demo.':'Claim your once-per-save immunity card.';$('#claimImmunity').disabled=state.immunity;$('#languageSelect').value=state.slang;$('#languageSelect').addEventListener('change',e=>{state.slang=e.target.value;$$('input[name="slang"]').forEach(r=>r.checked=r.value===state.slang);persist();toast('Banter mode updated.')});$$('input[name="slang"]').forEach(r=>r.checked=r.value===state.slang);$('#soundToggle').checked=state.sound;$('#soundToggle').addEventListener('change',e=>{state.sound=e.target.checked;persist()});$('#motionToggle').checked=state.reducedMotion;$('#motionToggle').addEventListener('change',e=>{state.reducedMotion=e.target.checked;document.body.classList.toggle('reduce-motion',state.reducedMotion);persist()});document.body.classList.toggle('reduce-motion',state.reducedMotion);$('#exportData').addEventListener('click',exportData);$('#resetData').addEventListener('click',resetData);
+const ART_RAW = 'https://raw.githubusercontent.com/lewdry/artflip/main/public';
+const POSE_RAW = 'https://raw.githubusercontent.com/wquguru/shisei/main/images/line/w600';
+
+const artworks = [
+  {
+    id: 'met-438013', title: 'Reclining Nude', artist: 'Auguste Renoir', year: '1883', medium: 'Oil on canvas',
+    museum: 'The Metropolitan Museum of Art', category: 'painting', kind: 'Painting',
+    thumb: `${ART_RAW}/thumbs/438013.webp`, image: `${ART_RAW}/images/438013.jpg`,
+    fallback: 'https://images.metmuseum.org/CRDImages/ep/web-large/DP-14976-001.jpg',
+    sourceUrl: 'https://www.metmuseum.org/art/collection/search/438013', rights: 'Public domain — Met record marks this object as public domain.',
+    tags: ['classical', 'figure study', 'reclining', 'female nude']
+  },
+  {
+    id: 'met-438661', title: 'Study of a Female Nude', artist: 'Henri Lehmann', year: '1840', medium: 'Oil on canvas',
+    museum: 'The Metropolitan Museum of Art', category: 'painting', kind: 'Painting',
+    thumb: `${ART_RAW}/thumbs/438661.webp`, image: `${ART_RAW}/images/438661.jpg`,
+    fallback: 'https://images.metmuseum.org/CRDImages/ep/web-large/DP103071.jpg',
+    sourceUrl: 'https://www.metmuseum.org/art/collection/search/438661', rights: 'Public domain — Met record marks this object as public domain.',
+    tags: ['classical', 'figure study', 'academic', 'female nude']
+  },
+  {
+    id: 'met-337063', title: 'Reclining Female Nude', artist: 'Rembrandt van Rijn', year: '1658', medium: 'Etching, drypoint and engraving',
+    museum: 'The Metropolitan Museum of Art', category: 'drawing', kind: 'Print',
+    thumb: `${ART_RAW}/thumbs/337063.webp`, image: `${ART_RAW}/images/337063.jpg`,
+    fallback: 'https://images.metmuseum.org/CRDImages/dp/web-large/DP815606.jpg',
+    sourceUrl: 'https://www.metmuseum.org/art/collection/search/337063', rights: 'Public domain — Met record marks this object as public domain.',
+    tags: ['classical', 'print', 'etching', 'reclining']
+  },
+  {
+    id: 'mia-1655', title: 'Nude on a Couch', artist: 'Gustave Caillebotte', year: 'c. 1880', medium: 'Oil on canvas',
+    museum: 'Minneapolis Institute of Art', category: 'painting', kind: 'Painting',
+    thumb: `${ART_RAW}/thumbs/mia-1655.webp`, image: `${ART_RAW}/images/mia-1655.jpg`,
+    fallback: '', sourceUrl: 'https://collections.artsmia.org/art/1655',
+    rights: 'ArtFlip metadata marks this record as public domain. Verify the museum record before commercial reuse.',
+    tags: ['classical', 'figure study', 'interior']
   }
-  init();
-})();
+];
+
+const angleLabels = { front: 'FRONT VIEW', diag: 'THREE-QUARTER VIEW', side: 'SIDE VIEW', above: 'ABOVE VIEW', below: 'BELOW VIEW' };
+const poseSets = [
+  { id: 'P001', title: 'Sitting, one knee raised', category: 'sitting', description: 'A relaxed seated pose with one knee raised and the torso gently leaning back.', views: { front: 'std_P001_front.webp', diag: 'std_P001_diag.webp', side: 'std_P001_side.webp', above: 'std_P001_above.webp', below: 'std_P001_below.webp' } },
+  { id: 'P015', title: 'Standing contrapposto', category: 'standing', description: 'A balanced standing pose with weight shifted to one leg and one hand resting at the hip.', views: { front: 'std_P015_front.webp', diag: 'std_P015_diag.webp', side: 'std_P015_side.webp', above: null, below: 'std_P015_below.webp' } },
+  { id: 'P032', title: 'Kneeling, hands behind head', category: 'kneeling', description: 'A kneeling pose for studying the line of the shoulders, elbows and torso.', views: { front: 'std_P032_front.webp', diag: 'std_P032_diag.webp', side: 'std_P032_side.webp', above: 'std_P032_above.webp', below: null } },
+  { id: 'P049', title: 'Lying on back, arms overhead', category: 'lying', description: 'A reclining full-body silhouette with both arms extended overhead.', views: { front: 'std_P049_front.webp', diag: 'std_P049_diag.webp', side: 'std_P049_side.webp', above: null, below: 'std_P049_below.webp' } },
+  { id: 'P058', title: 'Squatting, hands on knees', category: 'dynamic', description: 'A compact squat that makes the balance of the torso and lower body easy to compare.', views: { front: 'std_P058_front.webp', diag: 'std_P058_diag.webp', side: 'std_P058_side.webp', above: 'std_P058_above.webp', below: 'std_P058_below.webp' } },
+  { id: 'P064', title: 'Bent forward, hands on knees', category: 'dynamic', description: 'A forward hinge useful for studying the spine curve and weight distribution.', views: { front: 'std_P064_front.webp', diag: 'std_P064_diag.webp', side: 'std_P064_side.webp', above: 'std_P064_above.webp', below: 'std_P064_below.webp' } },
+  { id: 'P073', title: 'Standing twist, arms spread', category: 'dynamic', description: 'A twisting standing pose for studying rotation through the shoulders and waist.', views: { front: 'std_P073_front.webp', diag: 'std_P073_diag.webp', side: null, above: null, below: 'std_P073_below.webp' } },
+  { id: 'P070', title: 'Standing, arched backward', category: 'dynamic', description: 'A controlled back-arching pose that highlights the curve of the torso.', views: { front: null, diag: null, side: 'std_P070_side.webp', above: null, below: 'std_P070_below.webp' } }
+].map(p => ({ ...p, image: `${POSE_RAW}/${p.views.diag || p.views.front || p.views.side || p.views.below}` }));
+
+const STORAGE_KEY = 'naked-canvas-phase2-favourites';
+const CONSENT_KEY = 'naked-canvas-18plus-confirmed';
+let saved = readSaved();
+let currentArtIndex = 0;
+let currentPose = null;
+let currentAngle = 'front';
+let artFilter = 'all';
+let poseFilter = 'all';
+
+const $ = id => document.getElementById(id);
+const safeText = value => String(value ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+const artImage = artwork => artwork.image;
+const poseImage = (pose, angle) => pose.views[angle] ? `${POSE_RAW}/${pose.views[angle]}` : '';
+
+function readSaved() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+  catch { return []; }
+}
+function persistSaved() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(saved)); }
+  catch { showToast('Browser storage is unavailable. Your favourites may not persist.'); }
+  updateSavedCount();
+}
+function isSaved(id) { return saved.some(item => item.id === id); }
+function toggleSaved(item) {
+  if (isSaved(item.id)) saved = saved.filter(entry => entry.id !== item.id);
+  else saved = [...saved, item];
+  persistSaved();
+  renderSaved();
+  renderArtworks();
+  renderPoses();
+  updateModalSaveState();
+  showToast(isSaved(item.id) ? 'Saved to your private shelf.' : 'Removed from your shelf.');
+}
+function updateSavedCount() { $('savedCount').textContent = String(saved.length); }
+function showToast(message) {
+  const toast = $('toast');
+  toast.textContent = message;
+  toast.classList.add('show');
+  clearTimeout(showToast.timer);
+  showToast.timer = setTimeout(() => toast.classList.remove('show'), 2100);
+}
+function markImageUnavailable(img) {
+  img.classList.add('image-error');
+  const frame = img.closest('.art-card-image, .pose-image, .pose-stage, .modal-image-wrap, .saved-item');
+  if (frame) frame.classList.add('load-failed');
+}
+function withFallback(img, fallback) {
+  img.addEventListener('error', () => {
+    if (fallback && !img.dataset.fallbackUsed) {
+      img.dataset.fallbackUsed = '1';
+      img.src = fallback;
+      return;
+    }
+    markImageUnavailable(img);
+  });
+}
+function artCard(artwork, index) {
+  const savedClass = isSaved(artwork.id) ? 'saved' : '';
+  return `<article class="art-card" data-art-id="${safeText(artwork.id)}" tabindex="0" role="button" aria-label="Open ${safeText(artwork.title)}">
+    <div class="art-card-image"><img loading="lazy" src="${safeText(artwork.thumb)}" data-full="${safeText(artwork.image)}" data-fallback="${safeText(artwork.fallback)}" alt="${safeText(artwork.title)} by ${safeText(artwork.artist)}"><span class="art-tag">${safeText(artwork.kind.toUpperCase())}</span><button class="heart-button ${savedClass}" data-save-art="${safeText(artwork.id)}" aria-label="${savedClass ? 'Remove saved artwork' : 'Save artwork'}">${savedClass ? '♥' : '♡'}</button></div>
+    <div class="art-card-info"><h3>${safeText(artwork.title)}</h3><p>${safeText(artwork.artist)} · ${safeText(artwork.year)}</p><div class="card-foot"><span>${safeText(artwork.museum)}</span><span>VIEW ↗</span></div></div>
+  </article>`;
+}
+function renderArtworks() {
+  const q = $('artSearch').value.trim().toLowerCase();
+  const filtered = artworks.filter(a => (artFilter === 'all' || a.category === artFilter) && [a.title,a.artist,a.year,a.medium,a.museum,...a.tags].join(' ').toLowerCase().includes(q));
+  $('artGrid').innerHTML = filtered.map(a => artCard(a, artworks.indexOf(a))).join('');
+  $('artEmpty').classList.toggle('hidden', filtered.length !== 0);
+  $('artCount').textContent = String(artworks.length).padStart(2, '0');
+  $('artGrid').querySelectorAll('img').forEach(img => withFallback(img, img.dataset.fallback));
+}
+function poseCard(pose) {
+  const savedClass = isSaved(pose.id) ? 'saved' : '';
+  const src = pose.image;
+  return `<article class="pose-card" data-pose-id="${safeText(pose.id)}">
+    <div class="pose-image" data-open-pose="${safeText(pose.id)}" tabindex="0" role="button" aria-label="Open ${safeText(pose.title)} pose angles"><img loading="lazy" src="${safeText(src)}" alt="${safeText(pose.title)} — mannequin pose study"></div>
+    <div class="pose-card-info"><div class="pose-topline"><span class="pose-id">${safeText(pose.id)} / SHISEI</span><button class="heart-button ${savedClass}" data-save-pose="${safeText(pose.id)}" aria-label="${savedClass ? 'Remove saved pose' : 'Save pose'}">${savedClass ? '♥' : '♡'}</button></div><h3>${safeText(pose.title)}</h3><p>${safeText(pose.description)}</p><div class="pose-card-actions"><span class="pose-id">${Object.values(pose.views).filter(Boolean).length} VIEWPOINT${Object.values(pose.views).filter(Boolean).length === 1 ? '' : 'S'}</span><button class="text-button" data-open-pose="${safeText(pose.id)}">Explore angles ↗</button></div></div>
+  </article>`;
+}
+function renderPoses() {
+  const q = $('poseSearch').value.trim().toLowerCase();
+  const filtered = poseSets.filter(p => (poseFilter === 'all' || p.category === poseFilter || (poseFilter === 'dynamic' && ['squatting','leaning','twist','arching'].includes(p.category))) && [p.id,p.title,p.description,p.category].join(' ').toLowerCase().includes(q));
+  $('poseGrid').innerHTML = filtered.map(poseCard).join('');
+  $('poseGrid').querySelectorAll('img').forEach(img => img.addEventListener('error', () => markImageUnavailable(img), { once: true }));
+  $('poseEmpty').classList.toggle('hidden', filtered.length !== 0);
+  $('poseCount').textContent = String(poseSets.length).padStart(2, '0');
+}
+function renderSaved() {
+  const grid = $('savedGrid');
+  grid.innerHTML = saved.map(item => `<div class="saved-item"><img src="${safeText(item.thumb || item.image || '')}" alt=""><div><strong>${safeText(item.title)}</strong><small>${safeText(item.type === 'pose' ? 'Pose reference' : (item.artist || 'Fine art'))}</small></div><button data-remove-saved="${safeText(item.id)}" aria-label="Remove ${safeText(item.title)}">×</button></div>`).join('');
+  $('savedEmpty').classList.toggle('hidden', saved.length !== 0);
+  grid.querySelectorAll('img').forEach(img => img.addEventListener('error', () => markImageUnavailable(img), { once: true }));
+}
+function openArt(artwork) {
+  currentArtIndex = artworks.indexOf(artwork);
+  fillArtModal();
+  $('artModal').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+  $('closeArtModal').focus();
+}
+function fillArtModal() {
+  const artwork = artworks[currentArtIndex];
+  $('modalImage').src = artwork.image;
+  $('modalImage').alt = `${artwork.title} by ${artwork.artist}`;
+  $('modalImage').onerror = () => {
+    if (artwork.fallback && $('modalImage').dataset.fallbackUsed !== '1') {
+      $('modalImage').dataset.fallbackUsed = '1';
+      $('modalImage').src = artwork.fallback;
+    } else markImageUnavailable($('modalImage'));
+  };
+  $('modalImage').dataset.fallbackUsed = '';
+  $('imageIndex').textContent = `${currentArtIndex + 1} / ${artworks.length}`;
+  $('modalMuseum').textContent = artwork.museum.toUpperCase();
+  $('modalTitle').textContent = artwork.title;
+  $('modalArtist').textContent = `${artwork.artist} · ${artwork.year}`;
+  $('modalMeta').innerHTML = `<dt>Medium</dt><dd>${safeText(artwork.medium)}</dd><dt>Collection</dt><dd>${safeText(artwork.museum)}</dd><dt>Category</dt><dd>${safeText(artwork.kind)}</dd>`;
+  $('sourceLink').href = artwork.sourceUrl;
+  $('modalRights').textContent = artwork.rights;
+  $('modalSave').textContent = isSaved(artwork.id) ? '♥ Saved' : '♡ Save artwork';
+  $('modalSave').dataset.id = artwork.id;
+}
+function updateModalSaveState() {
+  if (!$('artModal').classList.contains('hidden')) {
+    const item = artworks[currentArtIndex];
+    $('modalSave').textContent = isSaved(item.id) ? '♥ Saved' : '♡ Save artwork';
+  }
+  if (currentPose && !$('poseModal').classList.contains('hidden')) $('poseModalSave').textContent = isSaved(currentPose.id) ? '♥' : '♡';
+}
+function closeModal(id) {
+  $(id).classList.add('hidden');
+  if ($('artModal').classList.contains('hidden') && $('poseModal').classList.contains('hidden')) document.body.style.overflow = '';
+}
+function changeArtwork(direction) {
+  currentArtIndex = (currentArtIndex + direction + artworks.length) % artworks.length;
+  fillArtModal();
+}
+function openPose(pose) {
+  currentPose = pose;
+  currentAngle = pose.views.front ? 'front' : Object.keys(pose.views).find(k => pose.views[k]);
+  $('poseModalId').textContent = pose.id;
+  $('poseModalTitle').textContent = pose.title;
+  $('poseModalDesc').textContent = pose.description;
+  $('poseModalSave').textContent = isSaved(pose.id) ? '♥' : '♡';
+  renderPoseAngle();
+  $('poseModal').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+  $('closePoseModal').focus();
+}
+function renderPoseAngle() {
+  if (!currentPose) return;
+  const src = poseImage(currentPose, currentAngle);
+  const img = $('poseModalImage');
+  if (src) {
+    img.src = src;
+    img.alt = `${currentPose.title}, ${angleLabels[currentAngle].toLowerCase()}`;
+    img.classList.remove('image-error');
+    $('poseStage')?.classList.remove('load-failed');
+    img.onerror = () => markImageUnavailable(img);
+  }
+  $('poseAngleLabel').textContent = angleLabels[currentAngle];
+  $('angleSwitcher').querySelectorAll('[data-angle]').forEach(btn => {
+    const available = Boolean(currentPose.views[btn.dataset.angle]);
+    btn.disabled = !available;
+    btn.classList.toggle('active', btn.dataset.angle === currentAngle);
+    btn.title = available ? angleLabels[btn.dataset.angle] : 'This angle is not available for this pose';
+  });
+}
+function selectFilter(containerId, value) {
+  $(containerId).querySelectorAll('[data-filter]').forEach(btn => btn.classList.toggle('active', btn.dataset.filter === value));
+}
+
+$('confirmAge').addEventListener('click', () => {
+  try { localStorage.setItem(CONSENT_KEY, 'yes'); } catch {}
+  $('ageGate').classList.add('hidden');
+});
+try { if (localStorage.getItem(CONSENT_KEY) === 'yes') $('ageGate').classList.add('hidden'); } catch {}
+
+$('artGrid').addEventListener('click', event => {
+  const saveButton = event.target.closest('[data-save-art]');
+  if (saveButton) {
+    event.stopPropagation();
+    const artwork = artworks.find(a => a.id === saveButton.dataset.saveArt);
+    if (artwork) toggleSaved({ id: artwork.id, title: artwork.title, artist: artwork.artist, thumb: artwork.thumb, type: 'art' });
+    return;
+  }
+  const card = event.target.closest('[data-art-id]');
+  if (card) openArt(artworks.find(a => a.id === card.dataset.artId));
+});
+$('artGrid').addEventListener('keydown', event => {
+  if ((event.key === 'Enter' || event.key === ' ') && event.target.matches('[data-art-id]')) {
+    event.preventDefault(); openArt(artworks.find(a => a.id === event.target.dataset.artId));
+  }
+});
+$('poseGrid').addEventListener('keydown', event => {
+  if ((event.key === 'Enter' || event.key === ' ') && event.target.matches('[data-open-pose]')) {
+    event.preventDefault();
+    openPose(poseSets.find(p => p.id === event.target.dataset.openPose));
+  }
+});
+$('poseGrid').addEventListener('click', event => {
+  const saveButton = event.target.closest('[data-save-pose]');
+  if (saveButton) {
+    const pose = poseSets.find(p => p.id === saveButton.dataset.savePose);
+    if (pose) toggleSaved({ id: pose.id, title: pose.title, thumb: poseImage(pose, 'diag'), type: 'pose' });
+    return;
+  }
+  const openButton = event.target.closest('[data-open-pose]');
+  if (openButton) openPose(poseSets.find(p => p.id === openButton.dataset.openPose));
+});
+$('savedGrid').addEventListener('click', event => {
+  const button = event.target.closest('[data-remove-saved]');
+  if (!button) return;
+  const id = button.dataset.removeSaved;
+  saved = saved.filter(item => item.id !== id);
+  persistSaved(); renderSaved(); renderArtworks(); renderPoses(); showToast('Removed from your shelf.');
+});
+$('artFilters').addEventListener('click', event => {
+  const button = event.target.closest('[data-filter]');
+  if (!button) return;
+  artFilter = button.dataset.filter; selectFilter('artFilters', artFilter); renderArtworks();
+});
+$('poseFilters').addEventListener('click', event => {
+  const button = event.target.closest('[data-filter]');
+  if (!button) return;
+  poseFilter = button.dataset.filter; selectFilter('poseFilters', poseFilter); renderPoses();
+});
+$('artSearch').addEventListener('input', renderArtworks);
+$('poseSearch').addEventListener('input', renderPoses);
+$('modalSave').addEventListener('click', () => {
+  const item = artworks[currentArtIndex];
+  toggleSaved({ id: item.id, title: item.title, artist: item.artist, thumb: item.thumb, type: 'art' });
+});
+$('poseModalSave').addEventListener('click', () => {
+  if (!currentPose) return;
+  toggleSaved({ id: currentPose.id, title: currentPose.title, thumb: poseImage(currentPose, 'diag'), type: 'pose' });
+});
+$('angleSwitcher').addEventListener('click', event => {
+  const btn = event.target.closest('[data-angle]');
+  if (!btn || btn.disabled || !currentPose) return;
+  currentAngle = btn.dataset.angle; renderPoseAngle();
+});
+$('closeArtModal').addEventListener('click', () => closeModal('artModal'));
+$('closePoseModal').addEventListener('click', () => closeModal('poseModal'));
+$('prevArtwork').addEventListener('click', () => changeArtwork(-1));
+$('nextArtwork').addEventListener('click', () => changeArtwork(1));
+$('artModal').addEventListener('click', event => { if (event.target === $('artModal')) closeModal('artModal'); });
+$('poseModal').addEventListener('click', event => { if (event.target === $('poseModal')) closeModal('poseModal'); });
+
+// Touch-first navigation: swipe the artwork image to move through the collection,
+// or swipe the pose stage to move between available camera angles.
+function addSwipeNavigation(element, onSwipe) {
+  let start = null;
+  element.addEventListener('pointerdown', event => {
+    if (event.target.closest('button, a, input')) return;
+    start = { x: event.clientX, y: event.clientY };
+  });
+  element.addEventListener('pointerup', event => {
+    if (!start) return;
+    const dx = event.clientX - start.x;
+    const dy = event.clientY - start.y;
+    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.25) onSwipe(dx < 0 ? 1 : -1);
+    start = null;
+  });
+  element.addEventListener('pointercancel', () => { start = null; });
+}
+addSwipeNavigation($('modalImage'), direction => changeArtwork(direction));
+addSwipeNavigation($('poseModalImage'), direction => {
+  if (!currentPose) return;
+  const available = ['front','diag','side','above','below'].filter(angle => currentPose.views[angle]);
+  const current = available.indexOf(currentAngle);
+  currentAngle = available[(current + direction + available.length) % available.length];
+  renderPoseAngle();
+});
+
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') { closeModal('artModal'); closeModal('poseModal'); }
+  if (!$('artModal').classList.contains('hidden')) {
+    if (event.key === 'ArrowLeft') changeArtwork(-1);
+    if (event.key === 'ArrowRight') changeArtwork(1);
+  }
+  if (event.key === '/' && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName) && $('ageGate').classList.contains('hidden')) {
+    event.preventDefault(); $('artSearch').focus();
+  }
+});
+$('themeToggle').addEventListener('click', () => {
+  document.body.classList.toggle('light-theme');
+  try { localStorage.setItem('naked-canvas-theme', document.body.classList.contains('light-theme') ? 'light' : 'dark'); } catch {}
+});
+try { if (localStorage.getItem('naked-canvas-theme') === 'light') document.body.classList.add('light-theme'); } catch {}
+document.querySelectorAll('[data-scroll]').forEach(button => button.addEventListener('click', () => $(button.dataset.scroll).scrollIntoView({ behavior: 'smooth' })));
+document.querySelectorAll('.nav-link').forEach(button => button.addEventListener('click', () => {
+  document.querySelectorAll('.nav-link').forEach(item => item.classList.toggle('active', item === button));
+  $(button.dataset.target).scrollIntoView({ behavior: 'smooth' });
+}));
+
+// Reuse every image already present in the gallery as an optional AI reference.
+// These are source-hosted links; no third-party binaries are copied into this ZIP.
+window.NAKED_CANVAS_CREATOR_REFERENCES = [
+  ...artworks.map(art => ({
+    id: art.id,
+    title: `${art.title} — ${art.artist}`,
+    type: 'Artwork',
+    image: art.image,
+    thumb: art.thumb,
+    sourceUrl: art.sourceUrl,
+    rights: art.rights
+  })),
+  ...poseSets.flatMap(pose => Object.entries(pose.views)
+    .filter(([, file]) => Boolean(file))
+    .map(([angle, file]) => ({
+      id: `${pose.id}-${angle}`,
+      title: `${pose.title} — ${angleLabels[angle]}`,
+      type: 'Shisei CC0 pose reference',
+      image: `${POSE_RAW}/${file}`,
+      thumb: `${POSE_RAW}/${file}`,
+      sourceUrl: 'https://github.com/wquguru/shisei',
+      rights: 'Shisei image assets — CC0 1.0 Universal.'
+    })))
+];
+
+renderArtworks(); renderPoses(); renderSaved(); updateSavedCount();

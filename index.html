@@ -3,161 +3,222 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#090713">
-  <meta name="description" content="BIG BOSS KE RANDIYA — an adults-only INNERWEAR house game with playful, consent-first challenges.">
-  <title>BIG BOSS KE RANDIYA — INNERWEAR V2</title>
-  <link rel="icon" href="../icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./styles.css">
+  <meta name="theme-color" content="#151111">
+  <meta name="description" content="Naked Canvas — a curated fine-art and figure-study gallery with a non-explicit AI art creator.">
+  <title>Naked Canvas — Art After Dark</title>
+  <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
+  <link rel="preconnect" href="https://images.metmuseum.org" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="ticker-top"><span>18+ SELF-ATTESTED DEMO</span><span>POWERED BY <b>INNERWEAR</b></span><span>LOCAL PLAY · NO BACKEND · NO UPLOADS</span></div>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+
+  <div class="age-gate" id="ageGate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+    <div class="gate-card">
+      <div class="brand-mark">NC<span>•</span></div>
+      <p class="eyebrow">ART AFTER DARK</p>
+      <h1 id="gateTitle">A little bold.<br><em>A lot of art.</em></h1>
+      <p class="gate-copy">This gallery contains adult classical figure studies and non-explicit artistic nudity. Please confirm that you are 18 or older.</p>
+      <button class="button button-primary button-wide" id="confirmAge">I’m 18 or older — enter</button>
+      <p class="gate-foot">Academic fine art only. Keep it respectful, keep it legal.</p>
+    </div>
+  </div>
+
   <header class="site-header">
-    <a class="brand" href="#home" aria-label="Big Boss Ke Randiya home"><span class="brand-eye">◉</span><span><b>BIG BOSS</b><strong>KE RANDIYA</strong><small>AN INNERWEAR ORIGINAL</small></span></a>
-    <nav class="desktop-nav" aria-label="Main navigation">
-      <a href="#house">HOUSE</a><a href="#contestants">CONTESTANTS</a><a href="#tasks">TASKS</a><a href="#games">AFTER DARK</a><a href="#gallery">GALLERY</a><a href="#leaderboard">SCOREBOARD</a>
+    <a class="brand" href="#top" aria-label="Naked Canvas home">
+      <span class="brand-monogram">NC<span>•</span></span>
+      <span class="brand-words"><strong>NAKED CANVAS</strong><small>ART AFTER DARK</small></span>
+    </a>
+    <nav class="top-nav" aria-label="Main navigation">
+      <button class="nav-link active" data-target="art-section">Artworks</button>
+      <button class="nav-link" data-target="pose-section">Pose atlas</button>
+      <button class="nav-link" data-target="creator-section">AI Creator</button>
+      <button class="nav-link" data-target="saved-section">Saved <span class="saved-count" id="savedCount">0</span></button>
     </nav>
-    <div class="header-actions"><button class="icon-btn" id="openSettings" aria-label="Open settings">⚙</button><button class="gold-btn small" id="headerEnter">ENTER HOUSE ↗</button><button class="menu-btn" id="menuToggle" aria-label="Open menu">☰</button></div>
+    <button class="icon-button" id="themeToggle" aria-label="Toggle colour theme" title="Toggle theme">
+      <span aria-hidden="true">◐</span>
+    </button>
   </header>
-  <nav class="mobile-menu" id="mobileMenu" hidden><a href="#house">HOUSE</a><a href="#contestants">CONTESTANTS</a><a href="#tasks">TASKS</a><a href="#games">AFTER DARK</a><a href="#gallery">GALLERY</a><a href="#leaderboard">SCOREBOARD</a><a href="#settings">SETTINGS</a></nav>
 
-  <main id="home">
+  <main id="top">
     <section class="hero wrap">
-      <div class="hero-poster">
-        <img id="heroPoster" src="../show-poster-black-edition.webp" alt="BIG BOSS KE RANDIYA Black Edition poster">
-        <div class="poster-shade"></div>
-        <div class="poster-tag">THE INNERWEAR HOUSE / V2</div>
-        <div class="poster-controls"><button id="posterPrev" aria-label="Previous poster">‹</button><button id="posterNext" aria-label="Next poster">›</button></div>
-      </div>
       <div class="hero-copy">
-        <p class="eyebrow"><i class="live-dot"></i> DESI AFTER DARK / GAME NIGHT</p>
-        <h1>BIG BOSS<br><em>KE RANDIYA</em></h1>
-        <p class="hero-kicker">REAL WOMEN. REAL FANTASIES. <b>ALL CHOICES. ALL CONSENT.</b></p>
-        <p class="hero-description">A cheeky, high-energy house of style, drama, spicy questions and ridiculous challenges. Bring your sense of humour, set your boundaries and play your own way.</p>
-        <div class="hero-actions"><button class="gold-btn large" id="enterHouse">ENTER THE HOUSE ↗</button><a class="text-link" href="#games">EXPLORE AFTER DARK ↓</a></div>
-        <div class="sponsor-row"><span>POWERED BY</span><b>INNERWEAR</b><i></i><b class="sponsor-alt">BLXCKED</b><small>PREMIUM INNERWEAR</small></div>
-        <div class="hero-stats"><div><b id="heroPoints">000</b><span>HOUSE POINTS</span></div><div><b id="heroRounds">00</b><span>ROUNDS PLAYED</span></div><div><b>18+</b><span>ADULTS ONLY</span></div></div>
-      </div>
-    </section>
-
-    <div class="marquee"><span>AREY BHAI, HOUSE MEIN SWAGAT HAI</span><b>✦</b><span>STYLE · STRATEGY · BAKCHODI</span><b>✦</b><span>PASS IS ALWAYS POWER</span><b>✦</b><span>POWERED BY INNERWEAR</span></div>
-
-    <section class="section wrap" id="house">
-      <div class="section-head"><div><p class="eyebrow">01 / HOUSE CONTROL</p><h2>Welcome to the <em>house.</em></h2></div><p class="section-note">A local game-show simulation. No real contestants, livestream, account, matchmaking or remote voting.</p></div>
-      <div class="dashboard-grid">
-        <article class="panel spotlight-panel"><div class="panel-kicker">HOUSE FEED / LIVE-STYLE DEMO</div><div class="spotlight-orb">BB<span>✦</span></div><h3 id="feedHeadline">Aaj ghar mein kya pak raha hai?</h3><p id="feedCopy">House feed refresh karo aur ek naya drama update pao.</p><button class="outline-btn" id="refreshFeed">REFRESH HOUSE FEED ↻</button></article>
-        <article class="panel feed-panel"><div class="panel-head"><div><div class="panel-kicker">INSIDE THE HOUSE</div><h3>Latest updates</h3></div><span class="badge">SIMULATED</span></div><div id="feedList" class="feed-list"></div></article>
-        <article class="panel player-panel"><div class="panel-kicker">YOUR HOUSE ID</div><div class="player-avatar" id="playerAvatar">G</div><h3 id="playerDisplay">Guest Player</h3><p id="playerMeta">Set your nickname and play vibe.</p><button class="gold-btn" id="editPlayer">CREATE / EDIT PLAYER</button></article>
-      </div>
-    </section>
-
-    <section class="section wrap" id="contestants">
-      <div class="section-head"><div><p class="eyebrow">02 / THE HOUSEMATES</p><h2>Choose your <em>chaos.</em></h2></div><p class="section-note">Fictional poster-based contestants. Tap vote to support a favourite in this browser only.</p></div>
-      <div class="contestant-grid">
-        <article class="contestant-card"><img src="../show-poster-black-edition.webp" alt="Contestant 05 Black Edition poster" loading="lazy"><div class="contestant-overlay"><span>CONTESTANT #05</span><h3>THE BOLD ONE</h3><p>Style · Strength · Strategy</p><button class="vote-btn" data-vote="05">VOTE #05 <b id="vote05">0</b></button></div></article>
-        <article class="contestant-card"><img src="../show-poster-sydney-edition.webp" alt="Contestant 08 Sydney Edition poster" loading="lazy"><div class="contestant-overlay"><span>CONTESTANT #08</span><h3>THE GAME CHANGER</h3><p>Confidence · Charisma · Control</p><button class="vote-btn" data-vote="08">VOTE #08 <b id="vote08">0</b></button></div></article>
-        <article class="contestant-card join-card"><div class="join-orbit">✦</div><span>YOUR TURN</span><h3>Apna naam<br><em>likhwa de.</em></h3><p>Nickname banao, vibe set karo aur local house game mein enter karo.</p><button class="gold-btn" id="joinContestant">JOIN THE HOUSE ↗</button></article>
-      </div>
-    </section>
-
-    <section class="section wrap" id="tasks">
-      <div class="section-head"><div><p class="eyebrow">03 / TASK ARENA V2</p><h2>Task kar, <em>points maar.</em></h2></div><p class="section-note">50+ local task prompts across playful, bold and team modes. Timer, skip and pause controls are included.</p></div>
-      <div class="task-layout">
-        <div class="panel task-board">
-          <div class="panel-head"><span class="panel-kicker">WEEKLY TASK BOARD</span><span class="badge gold">V2 ENGINE</span></div>
-          <div class="task-controls"><label>MODE<select id="taskMode"><option value="all">All tasks</option><option value="solo">Solo</option><option value="duo">Duo</option><option value="group">Group</option></select></label><label>LEVEL<select id="taskLevel"><option value="all">Any level</option><option value="playful">Playful</option><option value="bold">Bold</option><option value="spicy">Spicy (non-graphic)</option></select></label></div>
-          <div class="task-card"><span class="task-number" id="taskNumber">TASK 01 / 50+</span><h3 id="taskTitle">THE CONFIDENCE CHALLENGE</h3><p id="taskPrompt">Give someone three genuine compliments. Keep it kind, specific and fun.</p><div class="task-meta"><span id="taskTime">⏱ 45 SEC</span><span id="taskPoints">★ 15 POINTS</span><span id="taskLevelBadge">PLAYFUL</span></div><div class="timer-row"><strong id="taskTimer">00:45</strong><div class="timer-track"><i id="taskTimerBar"></i></div></div><div class="task-actions"><button class="gold-btn" id="startTask">START TIMER</button><button class="outline-btn" id="pauseTask">PAUSE</button><button class="text-btn" id="skipTask">SKIP TASK →</button><button class="text-btn" id="completeTask">COMPLETE +PTS</button></div><small id="taskStatus" class="status-note">Ready ho? Start dabao.</small></div>
+        <p class="eyebrow"><span class="eyebrow-line"></span> THE ART OF THE HUMAN FORM</p>
+        <h1>Beauty without<br><em>the boring rules.</em></h1>
+        <p class="hero-lede">A curated corner for classical fine art, confident figure studies and the craft behind every composition.</p>
+        <div class="hero-actions">
+          <button class="button button-primary" data-scroll="art-section">Explore the gallery <span aria-hidden="true">↗</span></button>
+          <button class="button button-quiet" data-scroll="pose-section">Open pose atlas</button>
+          <button class="button button-quiet" data-scroll="creator-section">Create artwork ✦</button>
         </div>
-        <aside class="task-side">
-          <article class="panel score-card"><span class="panel-kicker">YOUR TOTAL SCORE</span><strong id="scoreValue">000</strong><div class="score-bar"><i id="scoreBar"></i></div><div class="score-meta"><span id="rankLabel">HOUSE ROOKIE</span><span id="badgeCount">0 BADGES</span></div></article>
-          <article class="panel power-card"><span class="panel-kicker">POWER CARD VAULT</span><h3 id="powerTitle">Draw your advantage.</h3><p id="powerCopy">Skip token, double points, immunity and more.</p><button class="outline-btn" id="drawPower">DRAW POWER CARD ✦</button></article>
-          <article class="panel power-card"><span class="panel-kicker">SECRET MISSION</span><h3 id="secretTitle">Kya raaz hai?</h3><p id="secretCopy">Reveal a harmless, funny mission.</p><button class="outline-btn" id="drawSecret">REVEAL MISSION ◈</button></article>
-        </aside>
+        <div class="hero-meta"><span>CURATED CLASSICS</span><i></i><span>ADULT FIGURE STUDIES</span><i></i><span>ARTIST REFERENCES</span></div>
       </div>
-    </section>
-
-    <section class="section wrap" id="games">
-      <div class="section-head"><div><p class="eyebrow">04 / AFTER DARK · 18+</p><h2>Thoda spicy. <em>Thoda silly.</em></h2></div><p class="section-note">Hindi slang mode is optional. Prompts stay non-graphic, every player can pass, and real-life intimacy is never a task.</p></div>
-      <div class="game-console panel">
-        <div class="game-console-copy"><div class="panel-kicker">THE GAME CONSOLE</div><h3>Truth, Dare<br><em>aur Chemistry.</em></h3><p>Pick a mode, choose intensity and draw a fresh prompt.</p><label class="field-label">BOLDNESS LEVEL <b id="heatValue">2 · BOLD</b><input type="range" id="heatLevel" min="1" max="3" value="2"></label><div class="heat-legend"><span>PLAYFUL</span><span>BOLD</span><span>SPICY</span></div><div class="mode-tabs"><button class="active" data-mode="truth">TRUTH</button><button data-mode="dare">DARE</button><button data-mode="chemistry">CHEMISTRY</button><button data-mode="confession">CONFESSION</button><button data-mode="double">DOUBLE TROUBLE</button></div><button class="gold-btn large" id="drawPrompt">DRAW A PROMPT ↗</button><div class="prompt-actions"><button class="outline-btn" id="passPrompt">PASS / SKIP</button><button class="outline-btn" id="completePrompt">DONE +10 PTS</button></div></div>
-        <div class="prompt-display"><span id="promptKind">YOUR NEXT PROMPT</span><div class="prompt-symbol">✦</div><p id="promptText">Ready ho? Prompt draw karo.</p><small id="promptMeta">No penalty for passing.</small></div>
-      </div>
-      <div class="mini-game-grid">
-        <article class="panel mini-game"><span class="mini-icon">🚩</span><div class="panel-kicker">MINI GAME 01</div><h3>Red Flag / Green Flag</h3><p id="flagPrompt">Someone respects your “no” without asking twice.</p><div class="mini-actions"><button class="outline-btn" data-flag="green">GREEN FLAG</button><button class="outline-btn" data-flag="red">RED FLAG</button></div><small id="flagResult">Choose your answer.</small><button class="text-btn" id="nextFlag">NEXT SCENARIO ↻</button></article>
-        <article class="panel mini-game"><span class="mini-icon">🧠</span><div class="panel-kicker">MINI GAME 02</div><h3>Who Knows Whom?</h3><p id="knowQuestion">Pick the answer your partner would choose.</p><div id="knowOptions" class="option-stack"></div><small id="knowResult">Correct answers earn 5 points.</small><button class="text-btn" id="nextKnow">NEXT QUESTION ↻</button></article>
-        <article class="panel mini-game"><span class="mini-icon">💬</span><div class="panel-kicker">MINI GAME 03</div><h3>Compliment Battle</h3><p>Choose a compliment style and give it sincerely.</p><div class="option-stack"><button data-compliment="Style game strong hai, boss!">STYLE</button><button data-compliment="Teri energy se poora room bright ho gaya.">ENERGY</button><button data-compliment="Teri smile full scene steal karti hai.">SMILE</button></div><small id="complimentResult">Kindness wins this round.</small></article>
-        <article class="panel mini-game"><span class="mini-icon">⏱</span><div class="panel-kicker">MINI GAME 04</div><h3>60-Second Challenge</h3><p id="sixtyPrompt">Name five things that make a great date.</p><div class="timer-large" id="sixtyTimer">01:00</div><div class="mini-actions"><button class="gold-btn" id="startSixty">START</button><button class="outline-btn" id="resetSixty">RESET</button><button class="text-btn" id="newSixty">NEW PROMPT</button></div><small id="sixtyStatus">Ready when you are.</small></article>
-        <article class="panel mini-game"><span class="mini-icon">🎁</span><div class="panel-kicker">MINI GAME 05</div><h3>Mystery Mood Box</h3><p id="mysteryResult">Open the box to reveal a random mood or game twist.</p><button class="gold-btn" id="openMystery">OPEN THE BOX ✦</button></article>
-        <article class="panel mini-game"><span class="mini-icon">🏁</span><div class="panel-kicker">MINI GAME 06</div><h3>Finale Ladder</h3><p>Complete different mini rounds and climb the finale ladder.</p><div class="finale-steps" id="finaleSteps"><span>01</span><span>02</span><span>03</span><span>04</span><span>05</span></div><button class="gold-btn" id="finaleAdvance">ADVANCE +15 PTS</button><small id="finaleStatus">Level 1 / 5</small></article>
-        <article class="panel mini-game"><span class="mini-icon">♡</span><div class="panel-kicker">MINI GAME 07 / OLD FEATURE V2</div><h3>Chemistry Check</h3><p>Select the kind of round everyone is comfortable with.</p><div class="chemistry-checks"><label><input type="checkbox" id="chemTalk" checked> Flirty talk</label><label><input type="checkbox" id="chemCompliment" checked> Compliments</label><label><input type="checkbox" id="chemDance"> Dance / eye contact</label><label><input type="checkbox" id="chemQuiz" checked> Couple quiz</label></div><button class="outline-btn" id="buildChemistry">BUILD SHARED ROUND</button><small id="chemistryResult">Only selected options are used in the local prompt.</small></article>
-        <article class="panel mini-game"><span class="mini-icon">🎟</span><div class="panel-kicker">MINI GAME 08</div><h3>Truth or Skip Tournament</h3><p>Five rounds. Choose truth or pass. Skip never costs points.</p><div class="tournament-progress" id="truthSkipProgress"><span>01</span><span>02</span><span>03</span><span>04</span><span>05</span></div><p id="truthSkipPrompt">Ready for round one?</p><div class="mini-actions"><button class="outline-btn" id="truthAnswer">ANSWER +5</button><button class="text-btn" id="truthSkip">SKIP FREE</button></div><small id="truthSkipStatus">Round 0 / 5</small></article>
-        <article class="panel mini-game"><span class="mini-icon">🧠</span><div class="panel-kicker">MINI GAME 09</div><h3>Couple Memory Challenge</h3><p id="memoryPrompt">Reveal a light-hearted memory question.</p><button class="outline-btn" id="nextMemory">REVEAL MEMORY PROMPT ↻</button><small id="memoryStatus">Answer only if comfortable.</small></article>
-      </div>
-      <div class="panel legacy-upgrades">
-        <div class="panel-head"><div><div class="panel-kicker">OLD HOUSE FEATURES / V2</div><h3>Classic games. Better controls.</h3></div><span class="badge gold">UPGRADED</span></div>
-        <div class="legacy-grid">
-          <article><span class="mini-icon">◉</span><b>REACTION TEST</b><p>Wait for the light, then tap fast. Personal best is saved locally.</p><button class="outline-btn" id="reactionStart">START REACTION TEST</button><button class="reaction-zone" id="reactionZone" disabled>WAITING</button><small id="reactionResult">Best: —</small></article>
-          <article><span class="mini-icon">✦</span><b>CONFESSION ROOM</b><p>Write a harmless house confession or game-night thought.</p><textarea id="confessionText" maxlength="400" placeholder="My secret house strategy is…"></textarea><div class="mini-actions"><button class="outline-btn" id="saveConfession">SAVE LOCALLY</button><button class="text-btn" id="clearConfession">CLEAR</button></div><small id="confessionStatus">Saved only in this browser.</small></article>
-          <article><span class="mini-icon">♜</span><b>ALLIANCE BUILDER</b><p>Pick a fictional ally and strategy for the next round.</p><label class="field-label">ALLY<select id="allyPick"><option>#05 · The Bold One</option><option>#08 · The Game Changer</option></select></label><label class="field-label">STRATEGY<select id="allianceGoal"><option>Style & runway</option><option>Task strategy</option><option>Comedy & chaos</option><option>Kindness squad</option></select></label><button class="outline-btn" id="buildAlliance">FORM ALLIANCE</button><small id="allianceResult">No alliance formed yet.</small></article>
+      <div class="hero-art" aria-label="Editorial art-gallery cover">
+        <div class="hero-frame">
+          <div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div>
+          <div class="hero-stamp">FORM<br>MEETS<br>FEELING</div>
+          <div class="hero-glow"></div>
+          <div class="hero-caption"><span>VOL. 01</span><span>THE HUMAN FORM</span></div>
         </div>
       </div>
-      <div class="panel wheel-panel">
-        <div class="wheel-copy"><div class="panel-kicker">FOUR CLASSIC WHEELS / V2</div><h3>Spin karo, <em>scene banao.</em></h3><p>Style, Mood, Date Night and Surprise wheels. Add your own custom option too.</p><label class="field-label">SELECT WHEEL<select id="wheelType"><option value="style">Style Wheel</option><option value="mood">Mood Wheel</option><option value="date">Date Night Wheel</option><option value="surprise">Surprise Wheel</option></select></label><label class="field-label">ADD CUSTOM OPTION<input id="customWheelOption" maxlength="36" placeholder="Apna option likho"></label><div class="mini-actions"><button class="outline-btn" id="addWheelOption">ADD OPTION</button><button class="gold-btn" id="spinWheel">SPIN THE WHEEL ↻</button></div><div class="wheel-result" id="wheelResult">READY TO SPIN</div></div>
-        <div class="wheel-visual"><div class="wheel-pointer">▼</div><div class="wheel-disc" id="wheelDisc"><span>INNERWEAR</span></div></div>
+    </section>
+
+    <section class="stat-strip wrap" aria-label="Gallery summary">
+      <div><strong id="artCount">04</strong><span>CURATED ARTWORKS</span></div>
+      <div><strong id="poseCount">08</strong><span>STARTER POSE SETS</span></div>
+      <div><strong>05</strong><span>CAMERA ANGLES</span></div>
+      <div><strong>18+</strong><span>ADULT ART SPACE</span></div>
+    </section>
+
+    <section class="section wrap" id="art-section">
+      <div class="section-heading">
+        <div><p class="eyebrow">01 / THE COLLECTION</p><h2>Artworks <em>worth a closer look.</em></h2></div>
+        <p class="section-aside">Classical works selected for composition, line, light and the timeless study of the human form.</p>
       </div>
-      <div class="panel runway-panel">
-        <div class="panel-head"><div><div class="panel-kicker">INNERWEAR RUNWAY / HOUSE VOTE</div><h3>Which look wins the spotlight?</h3></div><span class="badge">LOCAL VOTE</span></div>
-        <div class="runway-grid">
-          <button class="runway-card" data-runway="BLXCKED BLACK LACE"><img src="../black-lace-collection.webp" alt="BLXCKED Black Lace visual"><b>BLXCKED / BLACK LACE</b><small id="runwayBlack">0 VOTES</small></button>
-          <button class="runway-card" data-runway="SYDNEY INNERWEAR"><img src="../show-poster-sydney-edition.webp" alt="Sydney Innerwear poster"><b>SYDNEY / INNERWEAR</b><small id="runwaySydney">0 VOTES</small></button>
-          <button class="runway-card" data-runway="PINK LACE EDIT"><img src="../pink-lace-collection.webp" alt="Pink Lace visual"><b>PINK LACE / EDIT</b><small id="runwayPink">0 VOTES</small></button>
-        </div><p id="runwayResult" class="muted">Runway votes are saved locally.</p>
+      <div class="toolbar">
+        <label class="search-box"><span aria-hidden="true">⌕</span><input id="artSearch" type="search" placeholder="Search artist, title or medium…" autocomplete="off"><kbd>/</kbd></label>
+        <div class="filter-row" id="artFilters" aria-label="Filter artworks">
+          <button class="filter-chip active" data-filter="all">All works</button>
+          <button class="filter-chip" data-filter="painting">Paintings</button>
+          <button class="filter-chip" data-filter="drawing">Drawings & prints</button>
+        </div>
+      </div>
+      <div class="art-grid" id="artGrid" aria-live="polite"></div>
+      <p class="empty-state hidden" id="artEmpty">No artworks match that search. Try another artist or keyword.</p>
+      <p class="section-note">Artwork images are loaded from the source gallery; each card keeps the museum record and rights information attached.</p>
+    </section>
+
+    <section class="pose-section" id="pose-section">
+      <div class="wrap section">
+        <div class="section-heading">
+          <div><p class="eyebrow">02 / THE STUDY ROOM</p><h2>Pose atlas <em>from every angle.</em></h2></div>
+          <p class="section-aside">Faceless mannequin references for studying gesture, balance and silhouette. Choose a pose, then switch viewpoints.</p>
+        </div>
+        <div class="toolbar pose-toolbar">
+          <label class="search-box"><span aria-hidden="true">⌕</span><input id="poseSearch" type="search" placeholder="Search pose or movement…" autocomplete="off"></label>
+          <div class="filter-row" id="poseFilters" aria-label="Filter pose categories">
+            <button class="filter-chip active" data-filter="all">All poses</button>
+            <button class="filter-chip" data-filter="sitting">Sitting</button><button class="filter-chip" data-filter="standing">Standing</button><button class="filter-chip" data-filter="kneeling">Kneeling</button><button class="filter-chip" data-filter="lying">Lying</button><button class="filter-chip" data-filter="dynamic">Dynamic</button>
+          </div>
+        </div>
+        <div class="pose-grid" id="poseGrid" aria-live="polite"></div>
+        <p class="empty-state hidden" id="poseEmpty">No pose sets found. Try a different search.</p>
       </div>
     </section>
 
-    <section class="section wrap gallery-section" id="gallery">
-      <div class="section-head"><div><p class="eyebrow">05 / AFTER DARK GALLERY</p><h2>Pick a lane. <em>Surprise yourself.</em></h2></div><p class="section-note">Your saved campaign library, fashion/editorial images and non-explicit educational anatomy illustrations. No user photo uploads.</p></div>
-      <div class="gallery-controls">
-        <button class="gallery-filter active" data-gallery="all">ALL</button><button class="gallery-filter" data-gallery="blxcked">BLXCKED</button><button class="gallery-filter" data-gallery="afterdark">HER AFTER DARK</button><button class="gallery-filter" data-gallery="couples">COUPLES</button><button class="gallery-filter" data-gallery="art">ART</button>
+    <section class="section wrap creator-section" id="creator-section">
+      <div class="section-heading">
+        <div><p class="eyebrow">03 / THE CREATIVE STUDIO</p><h2>AI Creator <em>make it yours.</em></h2></div>
+        <p class="section-aside">Build a fine-art prompt, choose an available image model and create a new study. Generation uses your own approved Pollinations budget.</p>
       </div>
-      <div class="anatomy-buttons"><button class="anatomy-btn" id="openChutGallery">CHUT GALLERY <small>VULVA / EDUCATIONAL ART</small></button><button class="anatomy-btn" id="openLundGallery">LUND GALLERY <small>PENIS / EDUCATIONAL ART</small></button><button class="surprise-btn" id="surpriseMe">HORNY? SURPRISE ME ✦</button></div>
-      <div id="galleryGrid" class="gallery-grid"></div>
-      <div class="gallery-surprise panel" id="surprisePanel" hidden><img id="surpriseImage" alt="Random gallery selection"><div><span class="panel-kicker">RANDOM HOUSE PICK</span><h3 id="surpriseTitle">A surprise is waiting.</h3><p id="surpriseDescription">Tap again for another visual.</p><button class="outline-btn" id="nextSurprise">NEXT IMAGE ↻</button></div></div>
-    </section>
 
-    <section class="section wrap" id="houseStrategy">
-      <div class="section-head"><div><p class="eyebrow">06 / GAME STRATEGY</p><h2>Nomination Night <em>V2.</em></h2></div><p class="section-note">Local-only voting, immunity and score history. No online leaderboard or remote user data.</p></div>
-      <div class="strategy-grid">
-        <article class="panel"><div class="panel-kicker">NOMINATION BOARD</div><h3>Who is on your list?</h3><label class="field-label">CONTESTANT<select id="nominee"><option value="05">#05 · The Bold One</option><option value="08">#08 · The Game Changer</option></select></label><label class="field-label">REASON<select id="nominationReason"><option>Strongest rival</option><option>Most strategic player</option><option>Surprise game twist</option><option>Friendly nomination</option></select></label><button class="gold-btn" id="submitNomination">SUBMIT NOMINATION</button><div id="nominationList" class="result-list">No nominations yet.</div></article>
-        <article class="panel"><div class="panel-kicker">IMMUNITY VAULT</div><div class="vault-icon">✦</div><h3 id="immunityTitle">One shield. One round.</h3><p id="immunityCopy">Claim your once-per-save immunity card.</p><button class="gold-btn" id="claimImmunity">CLAIM IMMUNITY</button></article>
-        <article class="panel"><div class="panel-kicker">DESI SLANG MODE</div><h3>Apni zubaan set kar.</h3><p>Pick how the game reacts. Slang is optional and aimed at the situation, not at a person or identity.</p><div class="slang-options"><label><input type="radio" name="slang" value="clean"> CLEAN HINDI</label><label><input type="radio" name="slang" value="hinglish" checked> FUNNY HINGLISH</label><label><input type="radio" name="slang" value="desi"> DESI GAALI MODE</label></div><button class="outline-btn" id="slangReaction">SAY SOMETHING, BOSS!</button><p id="slangLine" class="slang-line">Arey wah, kya badiya scene hai!</p></article>
+      <div class="creator-connect-card">
+        <div class="creator-connect-copy">
+          <p class="eyebrow">PRIVATE BY DESIGN / NO APP BACKEND</p>
+          <h3 id="creatorConnectionTitle">Connect your image studio</h3>
+          <p id="creatorConnectionText">Connect with Pollinations using your own App Key. You approve the spending limit and expiry before any generation. Nothing is charged by this gallery itself.</p>
+          <div class="creator-status" id="creatorAuthStatus" role="status" aria-live="polite"><span class="status-dot"></span><span>Not connected · prompt builder is ready</span></div>
+        </div>
+        <div class="creator-connect-controls">
+          <label class="creator-field"><span>Pollinations App Key <small>(public client ID)</small></span><input id="pollinationsClientId" type="text" inputmode="text" autocomplete="off" placeholder="pk_…" maxlength="160"></label>
+          <div class="creator-redirect-row"><button class="text-button" id="copyRedirectUri" type="button">Copy this page’s redirect URL</button><a href="https://enter.pollinations.ai/keys" target="_blank" rel="noopener">Create App Key ↗</a></div>
+          <div class="creator-budget-row">
+            <label class="creator-field"><span>Consent budget <small>(Pollen cap)</small></span><input id="creatorBudget" type="number" min="0.1" max="100" step="0.1" value="1"></label>
+            <label class="creator-field"><span>Key expiry</span><select id="creatorExpiry"><option value="1">1 day</option><option value="7" selected>7 days</option><option value="30">30 days</option></select></label>
+          </div>
+          <div class="creator-auth-actions"><button class="button button-primary" id="connectPollinations" type="button">Connect Pollinations</button><button class="button button-quiet hidden" id="disconnectPollinations" type="button">Disconnect</button></div>
+        </div>
+      </div>
+
+      <div class="creator-workspace">
+        <div class="creator-form-panel">
+          <div class="creator-panel-heading"><span>01</span><div><h3>Build your art direction</h3><p>Shape the scene before you render.</p></div></div>
+          <div class="creator-control-grid">
+            <label class="creator-field creator-span-2"><span>Art direction</span><select id="creatorPreset">
+              <option value="academic">Academic figure study</option>
+              <option value="draped">Draped classical study</option>
+              <option value="gesture">Gesture drawing session</option>
+              <option value="portrait">Fine-art portrait</option>
+              <option value="sculpture">Classical sculpture study</option>
+              <option value="duo">Adult duo composition</option>
+            </select></label>
+            <label class="creator-field"><span>Medium</span><select id="creatorMedium"><option>Charcoal on textured paper</option><option>Graphite pencil</option><option>Classical oil painting</option><option>Watercolour on paper</option><option>Contemporary digital fine art</option><option>Marble sculpture rendering</option></select></label>
+            <label class="creator-field"><span>Pose / composition</span><select id="creatorPose"><option>Standing contrapposto</option><option>Seated, relaxed posture</option><option>Reclining on a studio chaise</option><option>Kneeling, balanced gesture</option><option>Expressive full-body movement</option><option>Close-up portrait composition</option></select></label>
+            <label class="creator-field"><span>Lighting</span><select id="creatorLighting"><option>Soft north-window light</option><option>Rembrandt chiaroscuro</option><option>Warm studio softbox</option><option>Low-key cinematic light</option><option>Gentle natural daylight</option></select></label>
+            <label class="creator-field"><span>Colour palette</span><select id="creatorPalette"><option>Warm sepia, ivory and umber</option><option>Monochrome charcoal and paper</option><option>Deep burgundy and warm ivory</option><option>Muted earth tones</option><option>Cool slate and silver</option><option>Classical ochre and Venetian red</option></select></label>
+            <label class="creator-field creator-span-2"><span>Your creative direction</span><textarea id="creatorSubject" rows="3" maxlength="700" placeholder="Describe the expression, gesture, setting, mood or details you want to study…">A confident adult art model in a calm studio, elegant posture and expressive silhouette</textarea></label>
+            <label class="creator-field creator-span-2"><span>Image model <small>(live official catalogue)</small></span><select id="creatorModel"><option value="">Loading available models…</option></select><small class="field-help" id="creatorModelNote">The live catalogue supplies available models. Price and supported image inputs vary by model.</small></label>
+            <label class="creator-field creator-span-2"><span>Reference image <small>(optional · from this gallery)</small></span><select id="creatorReference"><option value="">No reference image — text to image</option></select><small class="field-help" id="creatorReferenceNote">Choose any artwork or available pose angle from this gallery. The selected model must support image input.</small></label>
+            <div class="creator-reference-preview creator-span-2 hidden" id="creatorReferencePreviewWrap"><img id="creatorReferencePreview" alt="Selected gallery reference image"><div><strong id="creatorReferenceTitle"></strong><small id="creatorReferenceRights"></small></div></div>
+            <label class="creator-field"><span>Output size</span><select id="creatorSize"><option value="1024x1024">Square · 1024 × 1024</option><option value="768x1024">Portrait · 768 × 1024</option><option value="1024x768">Landscape · 1024 × 768</option><option value="1024x1536">Tall poster · 1024 × 1536</option></select></label>
+            <label class="creator-field"><span>Seed <small>(optional · where supported)</small></span><input id="creatorSeed" type="number" min="0" max="4294967295" step="1" inputmode="numeric" placeholder="Random seed"></label>
+          </div>
+          <div class="creator-form-actions"><button class="button button-quiet" id="buildCreatorPrompt" type="button">Build prompt</button><button class="button button-primary" id="generateCreatorImage" type="button" disabled>Generate artwork ✦</button><button class="button button-quiet hidden" id="cancelCreatorGeneration" type="button">Cancel generation</button></div>
+          <p class="creator-helper">Prompt building and copying are free. Image generation requires a connected Pollinations account and may use your approved Pollen budget. Check the <a href="https://gen.pollinations.ai/image/models" target="_blank" rel="noopener">live model catalogue</a> before generating.</p>
+        </div>
+
+        <div class="creator-result-panel">
+          <div class="creator-panel-heading"><span>02</span><div><h3>Your creative brief</h3><p>Edit the final prompt before sending it.</p></div></div>
+          <label class="creator-field"><span>Final image prompt</span><textarea id="creatorPrompt" rows="12" maxlength="3000" placeholder="Tap Build prompt to compose your art direction…"></textarea></label>
+          <div class="creator-prompt-actions"><button class="button button-quiet" id="copyCreatorPrompt" type="button">Copy prompt</button><button class="button button-quiet" id="shuffleCreatorIdea" type="button">New inspiration ↻</button></div>
+          <div class="creator-output" id="creatorOutput" aria-live="polite">
+            <div class="creator-output-placeholder"><span>✦</span><strong>Your next masterpiece starts here.</strong><p>Generated artwork will appear in this space.</p></div>
+            <img id="creatorOutputImage" class="hidden" alt="AI-generated non-explicit fine-art image">
+            <div class="creator-output-actions hidden" id="creatorOutputActions"><button class="button button-primary" id="downloadCreatorImage" type="button">Download image ↓</button><button class="button button-quiet" id="openCreatorImage" type="button">Open full size ↗</button><button class="button button-quiet" id="saveCreatorImage" type="button">Save to studio ♡</button></div>
+          </div>
+          <div class="creator-generation-status" id="creatorGenerationStatus" role="status" aria-live="polite">Ready when you are. No image has been generated yet.</div>
+          <div class="creator-retry-row"><button class="button button-quiet hidden" id="retryCreatorGeneration" type="button">Try again ↻</button><span class="field-help">Retry is always manual so a second image is never generated or charged without another tap.</span></div>
+          <div class="creator-saved-block"><div class="creator-saved-heading"><h4>My studio shelf</h4><button class="text-button hidden" id="clearCreatorShelf" type="button">Clear saved links</button></div><div class="creator-saved-grid" id="creatorSavedShelf"></div><p class="empty-state" id="creatorSavedEmpty">Your saved outputs will appear here. Save a result to keep its link and prompt on this device.</p></div>
+          <p class="creator-privacy-note">Privacy: your prompt and optional reference-image URL go directly from this browser to Pollinations. The user-approved token stays in this tab’s session only. Saved shelf entries store output links and prompts in this browser only; download images to keep a permanent copy because provider-hosted media links may not be permanent.</p>
+        </div>
       </div>
     </section>
 
-    <section class="section wrap" id="leaderboard">
-      <div class="section-head"><div><p class="eyebrow">07 / HOUSE SCOREBOARD</p><h2>Points ka <em>panga.</em></h2></div><p class="section-note">Your progress is local to this browser. Reset is available in Settings.</p></div>
-      <div class="leaderboard-grid"><article class="panel leaderboard-panel"><div class="panel-head"><h3>Weekly leaderboard</h3><span class="badge">LOCAL</span></div><div id="leaderboardList"></div></article><article class="panel achievements-panel"><div class="panel-kicker">YOUR ACHIEVEMENTS</div><h3 id="rankName">HOUSE ROOKIE</h3><p id="rankDescription">Play a round to start collecting badges.</p><div id="achievementBadges" class="achievement-badges"></div></article></div>
-    </section>
-
-    <section class="section wrap final-rules" id="rules">
-      <div class="rules-card"><div><p class="eyebrow">HOUSE RULE ZERO</p><h2>Consent is the <em>boss.</em></h2><p>Every player must be an adult and freely choose to play. No pressure, no intoxication-based dares, no recording, and no real-life sexual activity as a task. Pass, pause or stop anytime.</p></div><div class="rules-checks"><label><input id="everyoneAdult" type="checkbox"> Everyone playing is 18+</label><label><input id="touchConsent" type="checkbox" checked> Ask before any touch</label><label><input id="recordingBan" type="checkbox" checked> No photos or recording</label><label><input id="skipAllowed" type="checkbox" checked> Pass / pause / stop is always allowed</label><button class="gold-btn" id="saveRules">SAVE HOUSE RULES</button><small id="rulesStatus">Set boundaries before playing together.</small></div></div>
-    </section>
-
-    <section class="section wrap" id="settings">
-      <div class="section-head"><div><p class="eyebrow">08 / PLAYER SETTINGS</p><h2>Own your <em>experience.</em></h2></div><p class="section-note">Local browser settings and saved demo progress.</p></div>
-      <div class="settings-grid"><article class="panel"><h3>Language & sound</h3><label class="field-label">BANTER MODE<select id="languageSelect"><option value="clean">Clean Hindi</option><option value="hinglish">Funny Hinglish</option><option value="desi">Desi Gaali Mode</option></select></label><label class="toggle-row"><span>Sound effects</span><input id="soundToggle" type="checkbox"></label><label class="toggle-row"><span>Reduced motion</span><input id="motionToggle" type="checkbox"></label></article><article class="panel"><h3>Local data</h3><p>Score, votes, achievements and settings stay in this browser only.</p><button class="outline-btn" id="exportData">EXPORT MY GAME DATA</button><button class="danger-btn" id="resetData">RESET ALL LOCAL PROGRESS</button><small id="dataStatus">No account or server storage.</small></article></div>
+    <section class="section wrap saved-section" id="saved-section">
+      <div class="section-heading">
+        <div><p class="eyebrow">04 / YOUR PRIVATE SHELF</p><h2>Saved <em>for later.</em></h2></div>
+        <p class="section-aside">Your gallery favourites and saved AI output links stay in this browser. No account or app backend is required.</p>
+      </div>
+      <div class="saved-grid" id="savedGrid"></div>
+      <p class="empty-state" id="savedEmpty">Nothing saved yet. Tap the heart on an artwork or pose to keep it here.</p>
     </section>
   </main>
 
-  <nav class="bottom-nav" aria-label="Quick navigation"><a href="#home"><span>⌂</span>HOME</a><a href="#tasks"><span>⚑</span>TASKS</a><a href="#games"><span>✦</span>GAMES</a><a href="#gallery"><span>▧</span>GALLERY</a><a href="#leaderboard"><span>♜</span>SCORE</a></nav>
-  <footer class="site-footer"><b>BIG BOSS KE RANDIYA</b><span>POWERED BY INNERWEAR</span><p>Fictional adults-only game-show concept. Not affiliated with any television show or broadcaster. No live stream, online contestants, payments or intimate-media upload.</p><a href="../index.html">BACK TO INNERWEAR HUB ↗</a></footer>
+  <footer class="site-footer wrap">
+    <a class="brand footer-brand" href="#top"><span class="brand-monogram">NC<span>•</span></span><span class="brand-words"><strong>NAKED CANVAS</strong><small>ART AFTER DARK</small></span></a>
+    <p>Bold art. Raw beauty. Zero boring rules.</p>
+    <div class="footer-links"><a href="SOURCES_AND_LICENCES.md" target="_blank" rel="noopener">Sources & licences</a><a href="README.md" target="_blank" rel="noopener">Project notes</a></div>
+    <small class="copyright">PHASE 3 BUILD · ADULT CLASSICAL FINE ART · NON-EXPLICIT PRESENTATION</small>
+  </footer>
 
-  <dialog class="modal" id="ageGate"><div class="modal-box gate-box"><div class="gate-mark">18<span>+</span></div><p class="eyebrow">INNERWEAR HOUSE / ADULT ACCESS</p><h2>Welcome to the<br><em>after-dark house.</em></h2><p>Continue only if you are 18 or older. This self-confirmation is not formal age verification.</p><label class="check-row"><input id="ageConfirm" type="checkbox"> I confirm that I am 18 or older.</label><button class="gold-btn large" id="ageEnter" disabled>ENTER THE HOUSE ↗</button><small>If you are under 18, leave this page. Prompts are playful and non-graphic.</small></div></dialog>
-  <dialog class="modal" id="playerModal"><div class="modal-box"><div class="modal-head"><span class="panel-kicker">HOUSEMATE PROFILE</span><button class="close-modal" data-close="playerModal">×</button></div><h2>Choose your <em>nickname.</em></h2><label class="field-label">NICKNAME<input id="playerName" maxlength="18" placeholder="e.g. DramaBoss"></label><label class="field-label">YOUR VIBE<select id="playerVibe"><option>Funny</option><option>Bold</option><option>Strategist</option><option>Romantic</option><option>Chill</option></select></label><button class="gold-btn" id="savePlayer">SAVE PLAYER</button><small id="playerStatus"></small></div></dialog>
-  <dialog class="modal" id="imageModal"><div class="modal-box image-modal-box"><div class="modal-head"><span id="imageModalTitle">GALLERY IMAGE</span><button class="close-modal" data-close="imageModal">×</button></div><img id="modalImage" alt="Selected gallery image"><p id="modalCaption"></p><button class="outline-btn" id="modalNext">NEXT IMAGE ↻</button></div></dialog>
-  <dialog class="modal" id="anatomyModal"><div class="modal-box anatomy-box"><div class="modal-head"><span id="anatomyTitle">EDUCATIONAL ANATOMY ART</span><button class="close-modal" data-close="anatomyModal">×</button></div><div id="anatomyBody"></div><p class="muted">Non-explicit educational schematic. Not erotic imagery, medical diagnosis or personal medical advice.</p><button class="gold-btn" data-close="anatomyModal">GOT IT</button></div></dialog>
-  <dialog class="modal" id="settingsModal"><div class="modal-box"><div class="modal-head"><span>QUICK SETTINGS</span><button class="close-modal" data-close="settingsModal">×</button></div><p>Use Settings below for language, sound, motion and local-data controls.</p><a class="gold-btn" href="#settings" data-close="settingsModal">OPEN SETTINGS</a></div></dialog>
+  <div class="modal-backdrop hidden" id="artModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="art-modal">
+      <button class="modal-close" id="closeArtModal" aria-label="Close artwork viewer">×</button>
+      <button class="modal-arrow modal-prev" id="prevArtwork" aria-label="Previous artwork">‹</button>
+      <div class="modal-image-wrap"><img id="modalImage" alt=""><span class="image-index" id="imageIndex"></span></div>
+      <div class="modal-info"><p class="eyebrow" id="modalMuseum">MUSEUM COLLECTION</p><h2 id="modalTitle"></h2><p class="modal-artist" id="modalArtist"></p><dl id="modalMeta"></dl><div class="modal-actions"><button class="button button-primary" id="modalSave">♡ Save artwork</button><a class="button button-quiet" id="sourceLink" href="#" target="_blank" rel="noopener">View museum record ↗</a></div><p class="rights-note" id="modalRights"></p></div>
+      <button class="modal-arrow modal-next" id="nextArtwork" aria-label="Next artwork">›</button>
+    </div>
+  </div>
+
+  <div class="modal-backdrop hidden" id="poseModal" role="dialog" aria-modal="true" aria-labelledby="poseModalTitle">
+    <div class="pose-modal">
+      <button class="modal-close" id="closePoseModal" aria-label="Close pose viewer">×</button>
+      <div class="pose-modal-header"><div><p class="eyebrow">POSE REFERENCE / <span id="poseModalId"></span></p><h2 id="poseModalTitle"></h2><p id="poseModalDesc"></p></div><button class="heart-button" id="poseModalSave" aria-label="Save pose">♡</button></div>
+      <div class="pose-stage" id="poseStage"><img id="poseModalImage" alt="Adult mannequin pose reference"><span class="pose-angle-label" id="poseAngleLabel">FRONT VIEW</span></div>
+      <div class="angle-switcher" id="angleSwitcher" aria-label="Choose camera angle">
+        <button class="angle-chip active" data-angle="front">Front</button><button class="angle-chip" data-angle="diag">3/4 view</button><button class="angle-chip" data-angle="side">Side</button><button class="angle-chip" data-angle="above">Above</button><button class="angle-chip" data-angle="below">Below</button>
+      </div>
+      <p class="rights-note">Pose line-art reference: Shisei project · CC0 1.0 image licence. Missing angle views are disabled.</p>
+    </div>
+  </div>
+
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <script type="module" src="./data.js"></script>
-  <script type="module" src="./app.js"></script>
+  <script src="app.js" defer></script>
+  <script src="creator.js" defer></script>
 </body>
 </html>
